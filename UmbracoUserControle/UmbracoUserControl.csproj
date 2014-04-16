@@ -264,14 +264,14 @@
     <Content Include="Views\PasswordReset\PasswordReset.cshtml" />
     <Content Include="Views\Admin\PasswordResetVerification.cshtml" />
     <Content Include="Views\Admin\Success.cshtml" />
-    <None Include="Web.config.Example">
+    <None Include="Example\Web.Example.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Web.config.Debug.Example">
-      <DependentUpon>Web.config.Example</DependentUpon>
+    <None Include="Example\Web.Example.Debug.config">
+      <DependentUpon>Web.Example.config</DependentUpon>
     </None>
-    <None Include="Web.config.Release.Example">
-      <DependentUpon>Web.config.Example</DependentUpon>
+    <None Include="Example\Web.Example.Release.config">
+      <DependentUpon>Web.Example.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
