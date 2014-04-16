@@ -1,0 +1,25 @@
+﻿@model UmbracoUserControl.Models.UmbracoUserModel
+
+@{
+    ViewBag.Title = "Create New User";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <p>@TempData["Message"]</p>
+        @using (Html.BeginForm("LookUpUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+        {
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="emailAddress">Email Address</label>
+                <div class="col-md-4">
+                    <input type="email" class="form-control" id="emailAddress" name="emailAddress" placeholder="Email Address" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-4">
+                    <button class="btn btn-primary" type="submit">Go!</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
