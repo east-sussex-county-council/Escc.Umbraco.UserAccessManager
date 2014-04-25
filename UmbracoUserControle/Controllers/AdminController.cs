@@ -59,7 +59,7 @@ namespace UmbracoUserControl.Controllers
 
             bool success = userControlService.InitiatePasswordReset(model, url);
 
-            if (success == true)
+            if (success)
             {
                 TempData["Message"] = "Password reset proccess initiated, user will be emailed";
 
