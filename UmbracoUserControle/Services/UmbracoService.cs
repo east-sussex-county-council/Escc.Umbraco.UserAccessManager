@@ -57,11 +57,21 @@ namespace UmbracoUserControl.Services
                 var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
                 return modelList;
             }
-            else
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
+        }
+
+        public IList<UmbracoUserModel> GetAllUsersByUsername(string username)
+        {
+            var response = GetMessage("GetAllUsersByUsername?emailaddress=" + username);
+
+            if (response.IsSuccessStatusCode)
             {
-                var ex = response.Content.ReadAsAsync<Exception>().Result;
-                throw ex;
+                var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
+                return modelList;
             }
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
         }
 
         /// <summary>
@@ -122,6 +132,32 @@ namespace UmbracoUserControl.Services
                 var ex = response.Content.ReadAsAsync<Exception>().Result;
                 throw ex;
             }
+        }
+
+        public IList<ContentTreeModel> GetContentRoot()
+        {
+            var response = GetMessage("GetContentRoot");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var modelList = response.Content.ReadAsAsync<IList<ContentTreeModel>>().Result;
+                return modelList;
+            }
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
+        }
+
+        public IList<ContentTreeModel> GetContentChild(int id)
+        {
+            var response = GetMessage("GetContentChild");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var modelList = response.Content.ReadAsAsync<IList<ContentTreeModel>>().Result;
+                return modelList;
+            }
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
         }
     }
 }

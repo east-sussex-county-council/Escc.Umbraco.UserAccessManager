@@ -195,6 +195,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -205,11 +206,14 @@
     <Compile Include="IOC\Installers\ServiceIntegrationInstaller.cs" />
     <Compile Include="IOC\Installers\EmailServiceInstaller.cs" />
     <Compile Include="IOC\Installers\UmbracoServiceInstaller.cs" />
+    <Compile Include="Models\ContentTreeModel.cs" />
+    <Compile Include="Models\FindUserModel.cs" />
     <Compile Include="Models\PasswordResetModel.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\UmbracoUserModel.cs" />
     <Compile Include="IOC\WindsorControllerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BuildContentTreeService.cs" />
     <Compile Include="Services\DatabaseService.cs" />
     <Compile Include="Services\Interfaces\IDatabaseService.cs" />
     <Compile Include="Services\Interfaces\IEmailService.cs" />
@@ -233,6 +237,7 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\customeJS.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -273,6 +278,8 @@
     <None Include="Example\Web.Example.Release.config">
       <DependentUpon>Web.Example.config</DependentUpon>
     </None>
+    <Content Include="Views\Permissions\ContentTree.cshtml" />
+    <Content Include="Views\Permissions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

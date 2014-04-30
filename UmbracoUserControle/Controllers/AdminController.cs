@@ -1,6 +1,7 @@
 ﻿using Castle.Core.Logging;
 using Microsoft.ApplicationBlocks.ExceptionManagement;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services;
@@ -12,7 +13,7 @@ namespace UmbracoUserControl.Controllers
         private IUserControlService userControlService;
         private IUmbracoService umbracoService;
 
-        public ILogger Logger { get; set; }
+        private ILogger Logger { get; set; }
 
         public AdminController(IUmbracoService umbracoService, IUserControlService userControlService)
         {
@@ -21,41 +22,52 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpPost]
-        public ActionResult LookUpUser(UmbracoUserModel model)
+        public ActionResult LookUpUser(FindUserModel model)
         {
             if (ModelState.IsValid)
             {
-                return DisplayResults(model);
+                try
+                {
+                    var userModel = userControlService.LookupUsers(model);
+
+                    return DisplayResults(userModel);
+                }
+                catch (Exception ex)
+                {
+                    Logger.ErrorFormat("{0} Email address {1} was not found - error message {2} - Stack trace {3} - inner exception {4}", DateTime.Now, model.EmailAddress, ex.Message, ex.StackTrace, ex.InnerException);
+
+                    ExceptionManager.Publish(ex);
+                }
             }
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public ActionResult DisplayResults(UmbracoUserModel model)
+        public ActionResult DisplayResults(IList<UmbracoUserModel> modelList)
         {
-            try
-            {
-                var modelList = umbracoService.GetAllUsersByEmail(model.EmailAddress);
+            //try
+            //{
+            //var modelList = umbracoService.GetAllUsersByEmail(model.EmailAddress);
 
-                return View("UsersByEmail", modelList);
-            }
-            catch (Exception ex)
-            {
-                // to do remove logging from here and add else where
-                TempData["Message"] = "Error finding email address";
+            return View("UsersByEmail", modelList);
+            //}
+            //catch (Exception ex)
+            //{
+            //    // to do remove logging from here and add else where
+            //    TempData["Message"] = "Error finding email address";
 
-                Logger.ErrorFormat("{0} Email address {1} was not found - error message {2} - Stack trace {3} - inner exception {4}", DateTime.Now, model.EmailAddress, ex.Message, ex.StackTrace, ex.InnerException);
+            //    //Logger.ErrorFormat("{0} Email address {1} was not found - error message {2} - Stack trace {3} - inner exception {4}", DateTime.Now, model.EmailAddress, ex.Message, ex.StackTrace, ex.InnerException);
 
-                ExceptionManager.Publish(ex);
+            //    ExceptionManager.Publish(ex);
 
-                return RedirectToAction("Index", "Home");
-            }
+            //    return RedirectToAction("Index", "Home");
+            //}
         }
 
         [HttpGet]
         public ActionResult InitiatePasswordReset(PasswordResetModel model)
         {
-            var url = String.Format("http://{0}:{1}", Request.Url.Host, Request.Url.Port);
+            var url = String.Format("http://{0}:{1}{2}", Request.Url.Host, Request.Url.Port, Request.ApplicationPath);
 
             bool success = userControlService.InitiatePasswordReset(model, url);
 
@@ -129,7 +141,9 @@ namespace UmbracoUserControl.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return DisplayResults(model);
+            var findUserModel = new FindUserModel { EmailAddress = model.EmailAddress, UserName = model.UserName };
+
+            return LookUpUser(findUserModel);
         }
 
         [HttpGet]

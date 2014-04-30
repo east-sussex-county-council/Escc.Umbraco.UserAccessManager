@@ -1,0 +1,12 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "User Permissions";
+}
+
+<h2>Group List</h2>
+
+@*@Html.Partial("ContentTree")*@
+@{
+    Html.RenderAction("LookupContentTree", "Permissions");
+}

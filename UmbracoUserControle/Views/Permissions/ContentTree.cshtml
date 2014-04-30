@@ -1,0 +1,30 @@
+﻿@model IList<UmbracoUserControl.Models.ContentTreeModel>
+
+<h1>Content Tree</h1>
+<div class="row">
+    <div class="col-md-9">
+        @{
+            if (Model.Count() > 0)
+            {
+                foreach (var x in Model)
+                {
+                    if (x.RootId == x.Id)
+                    {
+                        <ul>
+                            <li>@x.Name</li>
+                        </ul>
+                    }
+                    if (x.ParentId == x.RootId)
+                    {
+                        <div class="row">
+                            <div class="col-md-9 col-md-offset-1">
+                                @x.Name
+                            </div>
+                        </div>
+                    }
+
+                }
+            }
+        }
+    </div>
+</div>
