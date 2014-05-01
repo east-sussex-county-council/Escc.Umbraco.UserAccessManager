@@ -9,9 +9,9 @@ namespace UmbracoUserControl.Services
 {
     public class UserControlService : IUserControlService
     {
-        private IUmbracoService umbracoService;
-        private IDatabaseService databaseService;
-        private IEmailService emailService;
+        private readonly IUmbracoService umbracoService;
+        private readonly IDatabaseService databaseService;
+        private readonly IEmailService emailService;
 
         private ILogger Logger { get; set; }
 
@@ -24,32 +24,30 @@ namespace UmbracoUserControl.Services
 
         public IList<UmbracoUserModel> LookupUsers(FindUserModel model)
         {
-            if (model.IsValidRequest)
+            if (!model.IsValidRequest) return null;
+
+            try
             {
-                //throw new Exception();// think about this bit of code and make better
-
-                try
+                if (model.IsEmailRequest)
                 {
-                    if (model.IsEmailRequest)
-                    {
-                        var modelList = umbracoService.GetAllUsersByEmail(model.EmailAddress);
+                    var modelList = umbracoService.GetAllUsersByEmail(model.EmailAddress);
 
-                        return modelList;
-                    }
-                    if (model.IsUserRequest)
-                    {
-                        var modelList = umbracoService.GetAllUsersByUsername(model.UserName);
-
-                        return modelList;
-                    }
+                    return modelList;
                 }
-                catch (Exception ex)
+                if (model.IsUserRequest)
                 {
-                    Logger.ErrorFormat(
-                        "{0} User lookup could not be actioned - error message {1} - Stack trace {2} - inner exception {3}",
-                        DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-                    throw;
+                    var modelList = umbracoService.GetAllUsersByUsername(model.UserName);
+
+                    return modelList;
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("{0} User lookup could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
+
+                ExceptionManager.Publish(ex);
+
+                throw;
             }
             return null;
         }

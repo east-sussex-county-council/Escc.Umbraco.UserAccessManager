@@ -1,5 +1,5 @@
 ﻿using Castle.Core.Logging;
-using Microsoft.ApplicationBlocks.ExceptionManagement;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -10,72 +10,49 @@ namespace UmbracoUserControl.Controllers
 {
     public class AdminController : Controller
     {
-        private IUserControlService userControlService;
-        private IUmbracoService umbracoService;
+        private readonly IUserControlService userControlService;
 
         private ILogger Logger { get; set; }
 
-        public AdminController(IUmbracoService umbracoService, IUserControlService userControlService)
+        public AdminController(IUserControlService userControlService)
         {
-            this.umbracoService = umbracoService;
             this.userControlService = userControlService;
         }
 
         [HttpPost]
         public ActionResult LookUpUser(FindUserModel model)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var userModel = userControlService.LookupUsers(model);
+            if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
 
-                    return DisplayResults(userModel);
-                }
-                catch (Exception ex)
-                {
-                    Logger.ErrorFormat("{0} Email address {1} was not found - error message {2} - Stack trace {3} - inner exception {4}", DateTime.Now, model.EmailAddress, ex.Message, ex.StackTrace, ex.InnerException);
-
-                    ExceptionManager.Publish(ex);
-                }
-            }
-            return RedirectToAction("Index", "Home");
+            var userModel = userControlService.LookupUsers(model);
+            int x = 1;
+            return DisplayResults(userModel, x);
         }
 
         [HttpGet]
-        public ActionResult DisplayResults(IList<UmbracoUserModel> modelList)
+        public ActionResult DisplayResults(IList<UmbracoUserModel> modelList, int? page)
         {
-            //try
-            //{
-            //var modelList = umbracoService.GetAllUsersByEmail(model.EmailAddress);
+            if (modelList == null) return RedirectToAction("Index", "Home");
 
-            return View("UsersByEmail", modelList);
-            //}
-            //catch (Exception ex)
-            //{
-            //    // to do remove logging from here and add else where
-            //    TempData["Message"] = "Error finding email address";
+            var pageSize = 1;
 
-            //    //Logger.ErrorFormat("{0} Email address {1} was not found - error message {2} - Stack trace {3} - inner exception {4}", DateTime.Now, model.EmailAddress, ex.Message, ex.StackTrace, ex.InnerException);
+            var pageNumber = (page ?? 1);
 
-            //    ExceptionManager.Publish(ex);
-
-            //    return RedirectToAction("Index", "Home");
-            //}
+            return View("UserLookup", modelList.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
         public ActionResult InitiatePasswordReset(PasswordResetModel model)
         {
+            if (Request.Url == null) return RedirectToAction("Index", "Home");
+
             var url = String.Format("http://{0}:{1}{2}", Request.Url.Host, Request.Url.Port, Request.ApplicationPath);
 
-            bool success = userControlService.InitiatePasswordReset(model, url);
+            var success = userControlService.InitiatePasswordReset(model, url);
 
             if (success)
             {
                 TempData["Message"] = "Password reset proccess initiated, user will be emailed";
-
-                return RedirectToAction("Index", "Home");
             }
 
             return RedirectToAction("Index", "Home");
@@ -90,10 +67,7 @@ namespace UmbracoUserControl.Controllers
         [HttpPost]
         public ActionResult ResetPassword(PasswordResetModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View("PasswordResetVerification", model);
-            }
+            if (!ModelState.IsValid) return View("PasswordResetVerification", model);
 
             var success = userControlService.ResetPassword(model);
 
@@ -123,12 +97,7 @@ namespace UmbracoUserControl.Controllers
 
             var success = userControlService.CreateUser(model);
 
-            if (success)
-            {
-                return RedirectToAction("InitiatePasswordReset", "Admin", model);
-            }
-
-            return RedirectToAction("Index", "Home");
+            return success ? RedirectToAction("InitiatePasswordReset", "Admin", model) : RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

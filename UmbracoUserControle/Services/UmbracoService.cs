@@ -63,7 +63,7 @@ namespace UmbracoUserControl.Services
 
         public IList<UmbracoUserModel> GetAllUsersByUsername(string username)
         {
-            var response = GetMessage("GetAllUsersByUsername?emailaddress=" + username);
+            var response = GetMessage("GetAllUsersByUsername?username=" + username);
 
             if (response.IsSuccessStatusCode)
             {

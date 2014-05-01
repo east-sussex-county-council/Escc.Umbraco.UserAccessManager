@@ -1,0 +1,47 @@
+﻿@model PagedList.IPagedList<UmbracoUserControl.Models.UmbracoUserModel>
+@using System.Activities.Expressions
+@using System.ComponentModel.DataAnnotations
+@using PagedList.Mvc;
+@using UmbracoUserControl.Models
+@{
+    ViewBag.Title = "UsersByEmail";
+}
+
+<h2>User Lookup</h2>
+
+@if (Model.Any())
+{
+    foreach (var user in Model)
+    {
+        <p>@user.FullName</p>
+        <p>@user.UserName</p>
+        <p>@user.EmailAddress</p>
+        <div class="btn-group">
+            @Html.ActionLink("Reset Password", "InitiatePasswordReset", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress }, new { @class = "btn btn-success", @role = "button" })
+
+            @{
+        if (@user.Lock != true)
+        {
+            @Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" })
+        }
+        else
+        {
+            @Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-warning", @role = "button" })
+        }
+
+        @Html.ActionLink("User Permissions", "Index", "Permissions", new { UserId = @user.UserId, @Name = user.FullName }, new { @class = "btn btn-info", @role = "button" })
+            }
+        </div>
+    }
+}
+else
+{
+    <p>No user has been found with that email address</p>
+    @Html.ActionLink("Create new user", "InitiateUserCreation", null, new { @class = "btn btn-info", @role = "button" })
+}
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("DisplayResults")
+</div>

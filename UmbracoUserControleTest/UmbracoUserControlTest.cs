@@ -63,7 +63,7 @@ namespace UmbracoUserControlTest
         [Test]
         public void AdminController_ResetPassword_RedisplayesView_WhenCalledWithInvalidPasswordModel()
         {
-            var controller = new AdminController(umbracoService, userControlService);
+            var controller = new AdminController(userControlService);
 
             controller.ModelState.AddModelError("error", "errorex");
 
@@ -81,7 +81,7 @@ namespace UmbracoUserControlTest
         {
             passWordResetModel.TimeLimit = DateTime.Now;
 
-            var controller = new AdminController(umbracoService, userControlService);
+            var controller = new AdminController(userControlService);
 
             var actionResult = controller.ResetPassword(passWordResetModel);
 
@@ -93,7 +93,7 @@ namespace UmbracoUserControlTest
         {
             passWordResetModel.TimeLimit = DateTime.Now.AddDays(-2);
 
-            var controller = new AdminController(umbracoService, userControlService);
+            var controller = new AdminController(userControlService);
 
             var actionResult = controller.ResetPassword(passWordResetModel);
 
