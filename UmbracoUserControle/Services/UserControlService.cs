@@ -1,6 +1,7 @@
 ﻿using Castle.Components.DictionaryAdapter.Xml;
 using Castle.Core.Logging;
 using Microsoft.ApplicationBlocks.ExceptionManagement;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using UmbracoUserControl.Models;

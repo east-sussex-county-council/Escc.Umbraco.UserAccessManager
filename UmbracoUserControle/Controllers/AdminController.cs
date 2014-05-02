@@ -24,21 +24,19 @@ namespace UmbracoUserControl.Controllers
         {
             if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
 
-            var userModel = userControlService.LookupUsers(model);
-            int x = 1;
-            return DisplayResults(userModel, x);
+            return DisplayResults(model);
         }
 
         [HttpGet]
-        public ActionResult DisplayResults(IList<UmbracoUserModel> modelList, int? page)
+        public ActionResult DisplayResults(FindUserModel model)
         {
-            if (modelList == null) return RedirectToAction("Index", "Home");
+            if (model == null) return RedirectToAction("Index", "Home");
 
-            var pageSize = 1;
+            var pageIndex = model.Page ?? 1;
 
-            var pageNumber = (page ?? 1);
+            model.SearchResult = userControlService.LookupUsers(model).ToPagedList(pageIndex, 10);
 
-            return View("UserLookup", modelList.ToPagedList(pageNumber, pageSize));
+            return View("UserLookup", model);
         }
 
         [HttpGet]
@@ -82,7 +80,7 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpGet]
-        public ActionResult InitiateUserCreation(UmbracoUserModel model)
+        public ActionResult InitiateUserCreation()
         {
             return View("CreateUser");
         }

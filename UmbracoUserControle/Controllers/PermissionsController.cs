@@ -35,5 +35,18 @@ namespace UmbracoUserControl.Controllers
 
             return PartialView("ContentTree", modelList);
         }
+
+        public JsonResult PopTreeResult(ContentTreeModel model)
+        {
+            var modelList = userControlService.GetContentRoot();
+            var id = modelList.First().Id;
+            List<ContentTreeModel> test = null;
+
+            test.AddRange(modelList);
+
+            test.AddRange(userControlService.GetContentChild(model.Id));
+
+            return Json(test);
+        }
     }
 }

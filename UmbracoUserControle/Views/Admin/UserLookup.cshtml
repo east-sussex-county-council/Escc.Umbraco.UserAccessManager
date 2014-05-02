@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<UmbracoUserControl.Models.UmbracoUserModel>
+﻿@model FindUserModel
 @using System.Activities.Expressions
 @using System.ComponentModel.DataAnnotations
 @using PagedList.Mvc;
@@ -9,9 +9,9 @@
 
 <h2>User Lookup</h2>
 
-@if (Model.Any())
+@if (Model.SearchResult.Any())
 {
-    foreach (var user in Model)
+    foreach (var user in Model.SearchResult)
     {
         <p>@user.FullName</p>
         <p>@user.UserName</p>
@@ -41,7 +41,7 @@ else
 }
 
 <div>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    Page @(Model.SearchResult.PageCount < Model.SearchResult.PageNumber ? 0 : Model.SearchResult.PageNumber) of @Model.SearchResult.PageCount
 
-    @Html.PagedListPager(Model, page => Url.Action("DisplayResults")
+    @Html.PagedListPager(Model.SearchResult, page => Url.Action("DisplayResults", new { page, Model.EmailAddress, Model.UserName }))
 </div>
