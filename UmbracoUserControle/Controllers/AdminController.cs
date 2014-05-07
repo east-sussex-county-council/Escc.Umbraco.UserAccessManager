@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services;
+using UmbracoUserControl.Services.Interfaces;
 
 namespace UmbracoUserControl.Controllers
 {
     public class AdminController : Controller
     {
         private readonly IUserControlService userControlService;
-
-        private ILogger Logger { get; set; }
 
         public AdminController(IUserControlService userControlService)
         {

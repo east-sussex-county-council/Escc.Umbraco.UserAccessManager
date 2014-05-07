@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UmbracoUserControl.Models;
+using UmbracoUserControl.Services.Interfaces;
+using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControl.Services
 {
@@ -45,6 +47,11 @@ namespace UmbracoUserControl.Services
         public void DeleteResetDetails(PasswordResetModel model)
         {
             db.Execute("Exec DeleteResetDetails @UniqueResetId, @UserId", new { model.UniqueResetId, model.UserId });
+        }
+
+        public IEnumerable<PermissionsModel> CheckUserPermissions(ContentTreeViewModel model)
+        {
+            return db.Query<PermissionsModel>("SELECT * FROM [UmbracoUserAdminTest].[dbo].[permissions] where [UserId] = @0", model.UserId);
         }
     }
 }

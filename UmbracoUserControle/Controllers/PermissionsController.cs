@@ -6,47 +6,53 @@ using System.Web;
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services;
+using UmbracoUserControl.Services.Interfaces;
+using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControl.Controllers
 {
     public class PermissionsController : Controller
     {
-        private IUserControlService userControlService;
+        private readonly IUserControlService userControlService;
+        private readonly IPermissionsControlService permissionsControlService;
 
-        //private IUmbracoService umbracoService;
-        private ILogger Logger { get; set; }
-
-        public PermissionsController(IUserControlService userControlService)
+        public PermissionsController(IUserControlService userControlService, IPermissionsControlService permissionsControlService)
         {
             this.userControlService = userControlService;
+            this.permissionsControlService = permissionsControlService;
         }
 
-        // GET: Permissions
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            return View();
+            var model = userControlService.LookupUserById(id);
+
+            return View(model);
         }
 
-        public ActionResult LookupContentTree(IList<ContentTreeModel> modelList)
+        public ActionResult LookupContentTree(ContentTreeViewModel model)
         {
-            //modelList = userControlService.GetContentRoot();
-            //var id = modelList.First().Id;
-            //modelList.Add(userControlService.GetContentChild(id));
-
-            return PartialView("ContentTree", modelList);
+            return PartialView("ContentTree", model);
         }
 
-        public JsonResult PopTreeResult(ContentTreeModel model)
+        public JsonResult PopTreeRootResult(ContentTreeViewModel model)
         {
-            var modelList = userControlService.GetContentRoot();
-            var id = modelList.First().Id;
-            List<ContentTreeModel> test = null;
+            var modelList = permissionsControlService.GetContentRoot(model);
 
-            test.AddRange(modelList);
+            return Json(modelList, JsonRequestBehavior.AllowGet);
+        }
 
-            test.AddRange(userControlService.GetContentChild(model.Id));
+        public JsonResult PopTreeChildResult(ContentTreeViewModel model)
+        {
+            var modelList = permissionsControlService.GetContentChild(model);
 
-            return Json(test);
+            return Json(modelList, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ChangePermissionsResult(ContentTreeViewModel model)
+        {
+            var success = permissionsControlService.SetContentPermissions(model);
+            // to do
+            return Json("");
         }
     }
 }

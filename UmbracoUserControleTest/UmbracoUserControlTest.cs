@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using UmbracoUserControl.Controllers;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services;
+using UmbracoUserControl.Services.Interfaces;
 
 namespace UmbracoUserControlTest
 {

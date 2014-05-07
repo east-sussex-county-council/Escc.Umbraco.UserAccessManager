@@ -6,10 +6,11 @@ using System.Linq;
 using System.Net.Mail;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services;
+using UmbracoUserControl.Services.Interfaces;
 
 namespace Umbraco7._0._0.Services
 {
-    public class EmailService : UmbracoUserControl.Services.IEmailService
+    public class EmailService : IEmailService
     {
         private MailMessage mail;
         private IDatabaseService databaseService;
@@ -27,24 +28,22 @@ namespace Umbraco7._0._0.Services
         /// <param name="emailBody">Body text of email</param>
         private void SMTPSendEmail(string emailTo, string emailSubject, string emailBody)
         {
-                mail = new MailMessage();
-                mail.To.Add(emailTo);
-                mail.From = new MailAddress(ConfigurationManager.AppSettings["EmailFrom"]);
-                mail.Subject = emailSubject;
-                mail.Body = emailBody;
-                mail.IsBodyHtml = true;
-                SmtpClient smtp = new SmtpClient()
-                {
-                    Host = ConfigurationManager.AppSettings["EmailHost"],
-                    Port = int.Parse(ConfigurationManager.AppSettings["EmailPort"]),
-                    UseDefaultCredentials = true
-                };
-                //smtp.Credentials = new NetworkCredential("user", "pass");
-                //smtp.Credentials = new System.Net.NetworkCredential();
-                //smtp.EnableSsl = true;
-                smtp.Send(mail);
-              
-
+            mail = new MailMessage();
+            mail.To.Add(emailTo);
+            mail.From = new MailAddress(ConfigurationManager.AppSettings["EmailFrom"]);
+            mail.Subject = emailSubject;
+            mail.Body = emailBody;
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient()
+            {
+                Host = ConfigurationManager.AppSettings["EmailHost"],
+                Port = int.Parse(ConfigurationManager.AppSettings["EmailPort"]),
+                UseDefaultCredentials = true
+            };
+            //smtp.Credentials = new NetworkCredential("user", "pass");
+            //smtp.Credentials = new System.Net.NetworkCredential();
+            //smtp.EnableSsl = true;
+            smtp.Send(mail);
         }
 
         /// <summary>

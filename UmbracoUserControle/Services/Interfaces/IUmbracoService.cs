@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using UmbracoUserControl.Models;
+﻿using System.Collections.Generic;
+using UmbracoUserControl.ViewModel;
 
-namespace UmbracoUserControl.Services
+namespace UmbracoUserControl.Services.Interfaces
 {
     public interface IUmbracoService
     {
@@ -12,14 +11,16 @@ namespace UmbracoUserControl.Services
 
         System.Collections.Generic.IList<UmbracoUserControl.Models.UmbracoUserModel> GetAllUsersByUsername(string username);
 
+        ContentTreeViewModel GetAllUsersById(int id);
+
         void ResetPassword(UmbracoUserControl.Models.PasswordResetModel model);
 
         void DisableUser(Models.UmbracoUserModel model);
 
         void EnableUser(Models.UmbracoUserModel model);
 
-        IList<ContentTreeModel> GetContentRoot();
+        IList<ContentTreeViewModel> GetContentRoot();
 
-        IList<ContentTreeModel> GetContentChild(int id);
+        IList<ContentTreeViewModel> GetContentChild(int id);
     }
 }

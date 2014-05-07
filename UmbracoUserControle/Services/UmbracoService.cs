@@ -4,12 +4,14 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using UmbracoUserControl.Models;
+using UmbracoUserControl.Services.Interfaces;
+using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControl.Services
 {
     public class UmbracoService : IUmbracoService
     {
-        private HttpClient client;
+        private readonly HttpClient client;
 
         public UmbracoService()
         {
@@ -69,6 +71,20 @@ namespace UmbracoUserControl.Services
             {
                 var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
                 return modelList;
+            }
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
+        }
+
+        public ContentTreeViewModel GetAllUsersById(int id)
+        {
+            var response = GetMessage("GetUserById?id=" + id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var model = response.Content.ReadAsAsync<ContentTreeViewModel>().Result;
+
+                return model;
             }
             var ex = response.Content.ReadAsAsync<Exception>().Result;
             throw ex;
@@ -134,26 +150,26 @@ namespace UmbracoUserControl.Services
             }
         }
 
-        public IList<ContentTreeModel> GetContentRoot()
+        public IList<ContentTreeViewModel> GetContentRoot()
         {
             var response = GetMessage("GetContentRoot");
 
             if (response.IsSuccessStatusCode)
             {
-                var modelList = response.Content.ReadAsAsync<IList<ContentTreeModel>>().Result;
+                var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
                 return modelList;
             }
             var ex = response.Content.ReadAsAsync<Exception>().Result;
             throw ex;
         }
 
-        public IList<ContentTreeModel> GetContentChild(int id)
+        public IList<ContentTreeViewModel> GetContentChild(int id)
         {
-            var response = GetMessage("GetContentChild");
+            var response = GetMessage("GetContentChild?id=" + id);
 
             if (response.IsSuccessStatusCode)
             {
-                var modelList = response.Content.ReadAsAsync<IList<ContentTreeModel>>().Result;
+                var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
                 return modelList;
             }
             var ex = response.Content.ReadAsAsync<Exception>().Result;

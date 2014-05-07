@@ -92,27 +92,27 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.0\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.0\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -208,27 +208,29 @@
     <Compile Include="IOC\Installers\ControllersInstaller .cs" />
     <Compile Include="IOC\Installers\LoggerInstaller.cs" />
     <Compile Include="IOC\Installers\DatabaseInstaller.cs" />
-    <Compile Include="IOC\Installers\PasswordResetServiceInstaller.cs" />
-    <Compile Include="IOC\Installers\ServiceIntegrationInstaller.cs" />
+    <Compile Include="IOC\Installers\UserControleServiceInstaller.cs" />
     <Compile Include="IOC\Installers\EmailServiceInstaller.cs" />
+    <Compile Include="IOC\Installers\PermissionsServiceInstaller.cs" />
     <Compile Include="IOC\Installers\UmbracoServiceInstaller.cs" />
-    <Compile Include="Models\ContentTreeModel.cs" />
     <Compile Include="Models\FindUserModel.cs" />
     <Compile Include="Models\PasswordResetModel.cs" />
+    <Compile Include="Models\PermissionsModel.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\UmbracoUserModel.cs" />
     <Compile Include="IOC\WindsorControllerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BuildContentTreeService.cs" />
     <Compile Include="Services\DatabaseService.cs" />
     <Compile Include="Services\Interfaces\IDatabaseService.cs" />
     <Compile Include="Services\Interfaces\IEmailService.cs" />
+    <Compile Include="Services\Interfaces\IPermissionsControlService.cs" />
     <Compile Include="Services\Interfaces\IUserControlService.cs" />
     <Compile Include="Services\Interfaces\IUmbracoService.cs" />
+    <Compile Include="Services\PermissionsControlService.cs" />
     <Compile Include="Services\UserControlService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\UmbracoService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\ContentTreeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -319,6 +321,16 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\tree\jquery.fancytree-all.js" />
+    <Content Include="Scripts\tree\jquery.fancytree-custom.min.js" />
+    <Content Include="Scripts\tree\jquery.fancytree.js" />
+    <Content Include="Scripts\tree\jquery.fancytree.min.js" />
+    <Content Include="Scripts\tree\skin-bootstrap\ui.fancytree.css" />
+    <Content Include="Scripts\tree\skin-bootstrap\ui.fancytree.min.css" />
+    <Content Include="Scripts\tree\skin-win7\icons.gif" />
+    <Content Include="Scripts\tree\skin-win7\loading.gif" />
+    <Content Include="Scripts\tree\skin-win7\ui.fancytree.css" />
+    <Content Include="Scripts\tree\skin-win7\vista_colors.txt" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -351,6 +363,7 @@
     </None>
     <Content Include="Views\Permissions\ContentTree.cshtml" />
     <Content Include="Views\Permissions\Index.cshtml" />
+    <Content Include="Scripts\tree\skin-win7\ui.fancytree.less" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

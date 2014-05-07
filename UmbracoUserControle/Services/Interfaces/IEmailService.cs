@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UmbracoUserControl.Services
+﻿namespace UmbracoUserControl.Services.Interfaces
 {
     public interface IEmailService
     {

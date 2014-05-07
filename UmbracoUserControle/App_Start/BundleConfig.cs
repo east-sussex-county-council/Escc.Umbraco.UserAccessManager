@@ -29,7 +29,7 @@ namespace UmbracoUserControl
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Scripts/tree/skin-bootstrap/ui.fancytree.css"));
+                      "~/Scripts/tree/skin-win7/ui.fancytree.css"));
         }
     }
 }

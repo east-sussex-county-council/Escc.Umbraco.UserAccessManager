@@ -1,12 +1,12 @@
-﻿@model dynamic
+﻿@model UmbracoUserControl.ViewModel.ContentTreeViewModel
 
 @{
     ViewBag.Title = "User Permissions";
 }
 
-<h2>Group List</h2>
 
-@*@Html.Partial("ContentTree")*@
+<h1>Content Tree for @Model.FullName</h1>
+
 @{
-    Html.RenderAction("LookupContentTree", "Permissions");
+    Html.RenderAction("LookupContentTree", "Permissions", new { UserId = @Model.UserId });
 }

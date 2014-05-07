@@ -29,7 +29,7 @@
             @Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-warning", @role = "button" })
         }
 
-        @Html.ActionLink("User Permissions", "Index", "Permissions", new { UserId = @user.UserId, @Name = user.FullName }, new { @class = "btn btn-info", @role = "button" })
+        @Html.ActionLink("User Permissions", "Index", "Permissions", new { id = @user.UserId }, new { @class = "btn btn-info", @role = "button" })
             }
         </div>
     }

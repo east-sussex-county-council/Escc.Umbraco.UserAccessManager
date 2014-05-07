@@ -1,15 +1,12 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using UmbracoUserControl.Services;
+using UmbracoUserControl.Services.Interfaces;
 
-namespace UmbracoUserControl.Plumbing.Installers
+namespace UmbracoUserControl.IOC.Installers
 {
-    public class PasswordResetServiceInstaller : IWindsorInstaller
+    public class UserControleServiceInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
