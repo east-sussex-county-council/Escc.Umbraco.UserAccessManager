@@ -5,6 +5,8 @@ using System.Web;
 
 namespace UmbracoUserControl.Models
 {
+    [PetaPoco.TableName("permissions")]
+    [PetaPoco.PrimaryKey("PermissionId")]
     public class PermissionsModel
     {
         public int PermissionId { get; set; }
@@ -13,6 +15,6 @@ namespace UmbracoUserControl.Models
 
         public int UserId { get; set; }
 
-        public DateTime Created { get; set; }
+        public string Created { get; set; }
     }
 }

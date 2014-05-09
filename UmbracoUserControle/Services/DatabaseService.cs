@@ -9,7 +9,7 @@ namespace UmbracoUserControl.Services
 {
     public class DatabaseService : IDatabaseService
     {
-        private PetaPoco.Database db;
+        private readonly PetaPoco.Database db;
 
         public DatabaseService()
         {
@@ -32,12 +32,7 @@ namespace UmbracoUserControl.Services
         /// <returns>Updated model - TimeLimit and EmailAddress</returns>
         public PasswordResetModel GetResetDetails(PasswordResetModel model)
         {
-            foreach (var result in db.Query<PasswordResetModel>("SELECT [TimeLimit],[EmailAddress] FROM passwordReset WHERE [ResetId] = @0 and [UserId] = @1", model.UniqueResetId, model.UserId))
-            {
-                return result;
-            }
-
-            return null;
+            return db.Query<PasswordResetModel>("SELECT [TimeLimit],[EmailAddress] FROM passwordReset WHERE [ResetId] = @0 and [UserId] = @1", model.UniqueResetId, model.UserId).FirstOrDefault();
         }
 
         /// <summary>
@@ -52,6 +47,28 @@ namespace UmbracoUserControl.Services
         public IEnumerable<PermissionsModel> CheckUserPermissions(ContentTreeViewModel model)
         {
             return db.Query<PermissionsModel>("SELECT * FROM [UmbracoUserAdminTest].[dbo].[permissions] where [UserId] = @0", model.UserId);
+        }
+
+        public void AddUserPermissions(PermissionsModel model)
+        {
+            db.Insert(model);
+        }
+
+        public void RemoveUserPermissions(PermissionsModel model)
+        {
+            db.Delete<PermissionsModel>("WHERE PageId = @0 and UserId = @1", model.PageId, model.UserId);
+        }
+
+        public void UpdateUserPermissions(int userId, IList<PermissionsModel> permissionsModelList)
+        {
+            db.Delete<PermissionsModel>("WHERE UserId = @0", userId);
+
+            foreach (var permission in permissionsModelList)
+            {
+                permission.Created = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+
+                db.Insert(permission);
+            }
         }
     }
 }

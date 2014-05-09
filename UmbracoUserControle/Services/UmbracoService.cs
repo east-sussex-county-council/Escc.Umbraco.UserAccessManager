@@ -15,10 +15,14 @@ namespace UmbracoUserControl.Services
 
         public UmbracoService()
         {
-            string siteUri = ConfigurationManager.AppSettings["SiteUri"];
+            var siteUri = ConfigurationManager.AppSettings["SiteUri"];
 
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["apiuser"], ConfigurationManager.AppSettings["apikey"]);
+            var handler = new HttpClientHandler
+            {
+                Credentials =
+                    new NetworkCredential(ConfigurationManager.AppSettings["apiuser"],
+                        ConfigurationManager.AppSettings["apikey"])
+            };
             client = new HttpClient(handler) { BaseAddress = new Uri(siteUri) };
         }
 
@@ -29,7 +33,7 @@ namespace UmbracoUserControl.Services
         /// <returns> Response code - Ok or BadGateway</returns>
         private HttpResponseMessage GetMessage(string uriPath)
         {
-            HttpResponseMessage response = client.GetAsync(uriPath).Result;
+            var response = client.GetAsync(uriPath).Result;
             return response;
         }
 
@@ -41,7 +45,7 @@ namespace UmbracoUserControl.Services
         /// <returns>List of items that matches the given model</returns>
         private HttpResponseMessage PostMessage<T>(string uriPath, T model)
         {
-            HttpResponseMessage response = client.PostAsJsonAsync(uriPath, model).Result;
+            var response = client.PostAsJsonAsync(uriPath, model).Result;
             return response;
         }
 
@@ -171,6 +175,38 @@ namespace UmbracoUserControl.Services
             {
                 var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
                 return modelList;
+            }
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
+        }
+
+        public bool SetContentPermissions(PermissionsModel model)
+        {
+            var response = PostMessage("PostSetPermissions", model);
+
+            if (response.IsSuccessStatusCode) return true;
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
+        }
+
+        public bool RemoveContentPermissions(PermissionsModel model)
+        {
+            var response = PostMessage("PostRemovePermissions", model);
+
+            if (response.IsSuccessStatusCode) return true;
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
+        }
+
+        public IList<PermissionsModel> CheckUserPremissions(int userId)
+        {
+            var response = GetMessage("GetCheckUserPermissions?userId=" + userId);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var model = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
+
+                return model;
             }
             var ex = response.Content.ReadAsAsync<Exception>().Result;
             throw ex;

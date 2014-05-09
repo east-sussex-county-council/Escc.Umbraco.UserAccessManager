@@ -13,5 +13,9 @@ namespace UmbracoUserControl.Services.Interfaces
         IList<ContentTreeViewModel> GetContentChild(ContentTreeViewModel userId);
 
         bool SetContentPermissions(ContentTreeViewModel model);
+
+        bool RemoveContentPermissions(ContentTreeViewModel model);
+
+        bool CheckUserPermissions(int userId);
     }
 }

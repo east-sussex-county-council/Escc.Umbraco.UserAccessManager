@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UmbracoUserControl.Models;
 using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControl.Services.Interfaces
@@ -22,5 +23,11 @@ namespace UmbracoUserControl.Services.Interfaces
         IList<ContentTreeViewModel> GetContentRoot();
 
         IList<ContentTreeViewModel> GetContentChild(int id);
+
+        bool SetContentPermissions(PermissionsModel model);
+
+        bool RemoveContentPermissions(PermissionsModel model);
+
+        IList<PermissionsModel> CheckUserPremissions(int userId);
     }
 }

@@ -1,11 +1,4 @@
-﻿using Castle.Core.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using UmbracoUserControl.Models;
-using UmbracoUserControl.Services;
+﻿using System.Web.Mvc;
 using UmbracoUserControl.Services.Interfaces;
 using UmbracoUserControl.ViewModel;
 
@@ -22,13 +15,15 @@ namespace UmbracoUserControl.Controllers
             this.permissionsControlService = permissionsControlService;
         }
 
+        [HttpGet]
         public ActionResult Index(int id)
         {
             var model = userControlService.LookupUserById(id);
 
-            return View(model);
+            return View("Index", model);
         }
 
+        [HttpGet]
         public ActionResult LookupContentTree(ContentTreeViewModel model)
         {
             return PartialView("ContentTree", model);
@@ -50,9 +45,35 @@ namespace UmbracoUserControl.Controllers
 
         public JsonResult ChangePermissionsResult(ContentTreeViewModel model)
         {
-            var success = permissionsControlService.SetContentPermissions(model);
-            // to do
-            return Json("");
+            if (model.selected)
+            {
+                var success = permissionsControlService.SetContentPermissions(model);
+
+                if (success)
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                };
+            }
+            else
+            {
+                var success = permissionsControlService.RemoveContentPermissions(model);
+
+                if (success)
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                };
+            }
+
+            return Json(false, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult CheckPermissionsForUser(int id)
+        {
+            var success = permissionsControlService.CheckUserPermissions(id);
+            // not doing anything with succes now
+            // think on what to do with it
+            return Index(id);
         }
     }
 }

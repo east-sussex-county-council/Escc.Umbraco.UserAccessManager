@@ -1,5 +1,7 @@
 ﻿@model UmbracoUserControl.ViewModel.ContentTreeViewModel
 
+@Html.ActionLink("Check user permissions", "CheckPermissionsForUser", "Permissions", new { id = @Model.UserId }, new { @class = "btn btn-info", @role = "button" })
+
 <div id="tree" class="col-md-4">
 </div>
 
