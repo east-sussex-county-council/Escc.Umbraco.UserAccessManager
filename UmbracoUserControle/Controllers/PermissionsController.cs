@@ -36,6 +36,7 @@ namespace UmbracoUserControl.Controllers
             return Json(modelList, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult PopTreeChildResult(ContentTreeViewModel model)
         {
             var modelList = permissionsControlService.GetContentChild(model);
@@ -43,6 +44,7 @@ namespace UmbracoUserControl.Controllers
             return Json(modelList, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
         public JsonResult ChangePermissionsResult(ContentTreeViewModel model)
         {
             if (model.selected)
@@ -52,7 +54,7 @@ namespace UmbracoUserControl.Controllers
                 if (success)
                 {
                     return Json(true, JsonRequestBehavior.AllowGet);
-                };
+                }
             }
             else
             {
@@ -61,7 +63,7 @@ namespace UmbracoUserControl.Controllers
                 if (success)
                 {
                     return Json(true, JsonRequestBehavior.AllowGet);
-                };
+                }
             }
 
             return Json(false, JsonRequestBehavior.AllowGet);
@@ -73,6 +75,11 @@ namespace UmbracoUserControl.Controllers
             var success = permissionsControlService.CheckUserPermissions(id);
             // not doing anything with succes now
             // think on what to do with it
+            if (!success)
+            {
+                ViewBag.Error = "An error has occured - Tree has not been updated";
+            }
+
             return Index(id);
         }
     }

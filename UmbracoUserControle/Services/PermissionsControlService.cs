@@ -111,7 +111,8 @@ namespace UmbracoUserControl.Services
                 {
                     PageId = model.PageId,
                     UserId = model.UserId,
-                    Created = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
+                    //Created = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
+                    Created = DateTime.Now
                 };
 
                 var success = umbracoService.SetContentPermissions(permissionsModel);

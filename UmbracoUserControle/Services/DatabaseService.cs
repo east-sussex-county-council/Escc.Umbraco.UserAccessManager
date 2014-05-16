@@ -61,13 +61,18 @@ namespace UmbracoUserControl.Services
 
         public void UpdateUserPermissions(int userId, IList<PermissionsModel> permissionsModelList)
         {
-            db.Delete<PermissionsModel>("WHERE UserId = @0", userId);
-
-            foreach (var permission in permissionsModelList)
+            using (var transaction = db.GetTransaction())
             {
-                permission.Created = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                db.Delete<PermissionsModel>("WHERE UserId = @0", userId);
 
-                db.Insert(permission);
+                foreach (var permission in permissionsModelList)
+                {
+                    permission.Created = DateTime.Now;
+
+                    db.Insert(permission);
+                }
+
+                transaction.Complete();
             }
         }
     }

@@ -15,6 +15,6 @@ namespace UmbracoUserControl.Models
 
         public int UserId { get; set; }
 
-        public string Created { get; set; }
+        public DateTime? Created { get; set; }
     }
 }
