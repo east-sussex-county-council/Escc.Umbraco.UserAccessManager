@@ -6814,3 +6814,7 @@ td.visible-print {
     display: none !important;
   }
 }
+
+#lesspadding {
+    padding-bottom: 0;
+}

@@ -29,5 +29,7 @@ namespace UmbracoUserControl.Services.Interfaces
         bool RemoveContentPermissions(PermissionsModel model);
 
         IList<PermissionsModel> CheckUserPremissions(int userId);
+
+        bool ClonePermissions(PermissionsModel model);
     }
 }

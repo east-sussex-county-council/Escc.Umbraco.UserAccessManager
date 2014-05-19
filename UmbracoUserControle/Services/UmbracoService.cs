@@ -211,5 +211,16 @@ namespace UmbracoUserControl.Services
             var ex = response.Content.ReadAsAsync<Exception>().Result;
             throw ex;
         }
+
+        public bool ClonePermissions(PermissionsModel model)
+        {
+            var response = PostMessage("PostCloneUserPermissions", model);
+
+            if (response.IsSuccessStatusCode) return true;
+
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+
+            throw ex;
+        }
     }
 }

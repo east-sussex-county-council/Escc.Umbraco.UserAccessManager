@@ -17,5 +17,7 @@ namespace UmbracoUserControl.Services.Interfaces
         bool RemoveContentPermissions(ContentTreeViewModel model);
 
         bool CheckUserPermissions(int userId);
+
+        bool ClonePermissions(int sourceId, int targetId);
     }
 }

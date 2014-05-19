@@ -16,5 +16,8 @@ namespace UmbracoUserControl.Models
         public int UserId { get; set; }
 
         public DateTime? Created { get; set; }
+
+        [PetaPoco.Ignore]
+        public int TargetId { get; set; }
     }
 }

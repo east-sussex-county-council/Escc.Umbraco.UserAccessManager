@@ -1,6 +1,48 @@
 ﻿@model UmbracoUserControl.ViewModel.ContentTreeViewModel
 
-@Html.ActionLink("Check user permissions", "CheckPermissionsForUser", "Permissions", new { id = @Model.UserId }, new { @class = "btn btn-info", @role = "button" })
+<div class="btn-group">
+    @Html.ActionLink("Check user permissions", "CheckPermissionsForUser", "Permissions", new { id = @Model.UserId }, new { @class = "btn btn-info", @role = "button" })
+
+    <!-- Button trigger modal -->
+    <button class="btn btn-success" data-toggle="modal" data-target="#myModal">
+        Copy User Permissions
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Copy Permissions</h4>
+            </div>
+            <div class="modal-body" id="lesspadding">
+                <p>Find the user you want to give permissions to</p>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" id="searchinput" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Email<span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li id="menuitemuser"><a>Username</a></li>
+                                    <li id="menuitememail"><a>Email Address</a></li>
+                                </ul>
+                            </div>
+                            <input type="email" class="form-control" id="searchterm" name="emailAddress" placeholder="Email Address" />
+                            <button class="btn btn-primary" type="button" id="finduser">Find User!</button>
+                        </div>
+                    </div>
+                <div class="result">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="postAjax">Copy</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="tree" class="col-md-4">
 </div>

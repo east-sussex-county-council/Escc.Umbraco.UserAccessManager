@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
+using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
 using UmbracoUserControl.ViewModel;
 
@@ -81,6 +83,26 @@ namespace UmbracoUserControl.Controllers
             }
 
             return Index(id);
+        }
+
+        [HttpGet]
+        public JsonResult CheckDestinationUser(FindUserModel model)
+        {
+            var user = userControlService.LookupUsers(model).First();
+
+            return Json(user, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult CopyPermissionsForUser(int sourceId, int targetId)
+        {
+            var isRedirect = permissionsControlService.ClonePermissions(sourceId, targetId);
+
+            return Json(new
+            {
+                redirectUrl = Url.Action("Index", targetId),
+                isRedirect
+            });
         }
     }
 }

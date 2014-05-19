@@ -111,7 +111,6 @@ namespace UmbracoUserControl.Services
                 {
                     PageId = model.PageId,
                     UserId = model.UserId,
-                    //Created = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
                     Created = DateTime.Now
                 };
 
@@ -175,6 +174,30 @@ namespace UmbracoUserControl.Services
             catch (Exception ex)
             {
                 Logger.ErrorFormat("{0} Checking user permissionns could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
+
+                ExceptionManager.Publish(ex);
+
+                throw;
+            }
+        }
+
+        public bool ClonePermissions(int sourceId, int targetId)
+        {
+            try
+            {
+                var model = new PermissionsModel { UserId = sourceId, TargetId = targetId };
+
+                var success = umbracoService.ClonePermissions(model);
+
+                if (!success) return false;
+
+                var successDbUpdate = CheckUserPermissions(model.TargetId);
+
+                return successDbUpdate;
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("{0} Cloning user permissionns could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
 
                 ExceptionManager.Publish(ex);
 
