@@ -19,5 +19,11 @@ namespace UmbracoUserControl.Models
 
         [PetaPoco.Ignore]
         public int TargetId { get; set; }
+
+        public string PageName { get; set; }
+
+        public string FullName { get; set; }
+
+        public string EmailAddress { get; set; }
     }
 }

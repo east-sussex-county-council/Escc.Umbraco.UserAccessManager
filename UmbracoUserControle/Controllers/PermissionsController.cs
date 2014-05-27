@@ -75,8 +75,7 @@ namespace UmbracoUserControl.Controllers
         public ActionResult CheckPermissionsForUser(int id)
         {
             var success = permissionsControlService.CheckUserPermissions(id);
-            // not doing anything with succes now
-            // think on what to do with it
+
             if (!success)
             {
                 ViewBag.Error = "An error has occured - Tree has not been updated";

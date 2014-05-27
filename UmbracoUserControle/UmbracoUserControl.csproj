@@ -202,6 +202,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
+    <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -364,6 +365,8 @@
     <Content Include="Views\Permissions\ContentTree.cshtml" />
     <Content Include="Views\Permissions\Index.cshtml" />
     <Content Include="Scripts\tree\skin-win7\ui.fancytree.less" />
+    <Content Include="Views\Tools\Index.cshtml" />
+    <Content Include="Views\Tools\CheckPagePermissions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

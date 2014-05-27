@@ -16,15 +16,15 @@ namespace UmbracoUserControl.Services
     {
         private readonly IUmbracoService umbracoService;
         private readonly IDatabaseService databaseService;
-        private readonly IEmailService emailService;
+        private readonly IUserControlService userControlService;
 
         private ILogger Logger { get; set; }
 
-        public PermissionsControlService(IDatabaseService databaseService, IUmbracoService umbracoService, IEmailService emailService)
+        public PermissionsControlService(IDatabaseService databaseService, IUmbracoService umbracoService, IUserControlService userControlService)
         {
             this.databaseService = databaseService;
             this.umbracoService = umbracoService;
-            this.emailService = emailService;
+            this.userControlService = userControlService;
         }
 
         private static bool UserHasPermissions(IEnumerable<PermissionsModel> modelList, int pageId)
@@ -46,10 +46,10 @@ namespace UmbracoUserControl.Services
                     model.title = model.PageName;
                     model.folder = true;
                     model.lazy = true;
-                    model.selected = true;
                     model.UserId = contentModel.UserId;
 
                     if (permissionsModels.IsNullOrEmpty()) continue;
+
                     if (UserHasPermissions(permissionsModels, model.PageId))
                     {
                         model.selected = true;
@@ -85,6 +85,7 @@ namespace UmbracoUserControl.Services
                     model.UserId = contentModel.UserId;
 
                     if (permissionsModels.IsNullOrEmpty()) continue;
+
                     if (UserHasPermissions(permissionsModels, model.PageId))
                     {
                         model.selected = true;
@@ -107,11 +108,16 @@ namespace UmbracoUserControl.Services
         {
             try
             {
+                var user = userControlService.LookupUserById(model.UserId);
+
                 var permissionsModel = new PermissionsModel
                 {
                     PageId = model.PageId,
                     UserId = model.UserId,
-                    Created = DateTime.Now
+                    Created = DateTime.Now,
+                    FullName = user.FullName,
+                    PageName = model.PageName,
+                    EmailAddress = user.EmailAddress
                 };
 
                 var success = umbracoService.SetContentPermissions(permissionsModel);
@@ -194,6 +200,26 @@ namespace UmbracoUserControl.Services
                 var successDbUpdate = CheckUserPermissions(model.TargetId);
 
                 return successDbUpdate;
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("{0} Cloning user permissionns could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
+
+                ExceptionManager.Publish(ex);
+
+                throw;
+            }
+        }
+
+        public IEnumerable<PermissionsModel> CheckPagePermissions(string url)
+        {
+            try
+            {
+                if (!url.Contains("/")) return null;
+
+                var pageName = url.Substring(url.LastIndexOf("/", url.Length) + 1);
+
+                return databaseService.CheckPagePermissions(pageName);
             }
             catch (Exception ex)
             {

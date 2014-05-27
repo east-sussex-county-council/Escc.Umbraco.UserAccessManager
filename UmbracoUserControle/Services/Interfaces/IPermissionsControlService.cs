@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using UmbracoUserControl.Models;
 using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControl.Services.Interfaces
@@ -19,5 +20,7 @@ namespace UmbracoUserControl.Services.Interfaces
         bool CheckUserPermissions(int userId);
 
         bool ClonePermissions(int sourceId, int targetId);
+
+        IEnumerable<PermissionsModel> CheckPagePermissions(string url);
     }
 }

@@ -1,47 +1,103 @@
 ﻿using Moq;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Umbraco7._0._0.Services;
 using UmbracoUserControl.Controllers;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services;
 using UmbracoUserControl.Services.Interfaces;
+using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControlTest
 {
     [TestFixture]
     public class UmbracoUserControlTest
     {
+        private IUserControlService mockUserControlService;
+        private IUmbracoService mockUmbracoService;
+        private IEmailService mockEmailService;
+        private IDatabaseService mockDatabaseService;
+        private IPermissionsControlService mockPermissionsControlService;
+
         private IUserControlService userControlService;
         private IUmbracoService umbracoService;
         private IEmailService emailService;
         private IDatabaseService databaseService;
+        private IPermissionsControlService permissionsControlService;
 
-        private DateTime Timelimit;
+        private DateTime timelimit;
         private PasswordResetModel passWordResetModel;
         private UmbracoUserModel umbracoUserModel;
         private PasswordResetModel passWordResetModelOut;
+        private FindUserModel findUserModel;
+        private IList<UmbracoUserModel> umbracoUserModelListOut;
+        private ContentTreeViewModel contentTreeViewModel;
+        private IList<ContentTreeViewModel> contentTreeViewModelListOut;
+        private PermissionsModel permissionsModel;
+        private IList<PermissionsModel> permissionsModelsListOut;
 
         [SetUp]
         public void UmbracoUserControlTestSetup()
         {
-            userControlService = new Mock<IUserControlService>().Object;
-            umbracoService = new Mock<IUmbracoService>().Object;
-            emailService = new Mock<IEmailService>().Object;
-
             passWordResetModel = new PasswordResetModel();
             passWordResetModelOut = new PasswordResetModel();
+
             umbracoUserModel = new UmbracoUserModel();
+            umbracoUserModelListOut = new List<UmbracoUserModel>();
 
-            var mock = new Mock<IDatabaseService>();
+            findUserModel = new FindUserModel();
 
-            mock.Setup(x => x.GetResetDetails(passWordResetModel))
+            contentTreeViewModel = new ContentTreeViewModel();
+            contentTreeViewModelListOut = new List<ContentTreeViewModel>();
+
+            permissionsModel = new PermissionsModel();
+            permissionsModelsListOut = new List<PermissionsModel>();
+
+            mockPermissionsControlService = new Mock<IPermissionsControlService>().Object;
+            mockEmailService = new Mock<IEmailService>().Object;
+
+            var userControlServiceMock = new Mock<IUserControlService>();
+
+            userControlServiceMock.Setup(x => x.LookupUserById(2))
+                .Returns(contentTreeViewModel);
+
+            mockUserControlService = userControlServiceMock.Object;
+
+            var umbracoServiceMock = new Mock<IUmbracoService>();
+
+            umbracoServiceMock.Setup(x => x.GetAllUsersByEmail("Email"))
+                .Returns(umbracoUserModelListOut);
+            umbracoServiceMock.Setup(x => x.GetAllUsersByUsername("Username"))
+                .Returns(umbracoUserModelListOut);
+            umbracoServiceMock.Setup(x => x.GetContentRoot())
+                .Returns(contentTreeViewModelListOut);
+            umbracoServiceMock.Setup(x => x.GetContentChild(1))
+                .Returns(contentTreeViewModelListOut);
+            umbracoServiceMock.Setup(x => x.SetContentPermissions(permissionsModel))
+                .Returns(true);
+
+            mockUmbracoService = umbracoServiceMock.Object;
+
+            var databaseServiceMock = new Mock<IDatabaseService>();
+
+            databaseServiceMock.Setup(x => x.GetResetDetails(passWordResetModel))
                 .Returns(passWordResetModelOut);
+            databaseServiceMock.Setup(x => x.CheckUserPermissions(contentTreeViewModel))
+                .Returns(permissionsModelsListOut);
 
-            databaseService = mock.Object;
+            mockDatabaseService = databaseServiceMock.Object;
 
-            Timelimit = DateTime.Now;
+            timelimit = DateTime.Now;
+
+            //umbracoService = new UmbracoService();
+            //databaseService = new DatabaseService();
+            //emailService = new EmailService(mockDatabaseService);
+            //userControlService = new UserControlService(mockDatabaseService, mockUmbracoService, mockEmailService);
+            //permissionsControlService = new PermissionsControlService(mockDatabaseService, mockUmbracoService, mockUserControlService);
         }
 
         [Test]
@@ -64,7 +120,7 @@ namespace UmbracoUserControlTest
         [Test]
         public void AdminController_ResetPassword_RedisplayesView_WhenCalledWithInvalidPasswordModel()
         {
-            var controller = new AdminController(userControlService);
+            var controller = new AdminController(mockUserControlService);
 
             controller.ModelState.AddModelError("error", "errorex");
 
@@ -82,7 +138,7 @@ namespace UmbracoUserControlTest
         {
             passWordResetModel.TimeLimit = DateTime.Now;
 
-            var controller = new AdminController(userControlService);
+            var controller = new AdminController(mockUserControlService);
 
             var actionResult = controller.ResetPassword(passWordResetModel);
 
@@ -94,7 +150,7 @@ namespace UmbracoUserControlTest
         {
             passWordResetModel.TimeLimit = DateTime.Now.AddDays(-2);
 
-            var controller = new AdminController(userControlService);
+            var controller = new AdminController(mockUserControlService);
 
             var actionResult = controller.ResetPassword(passWordResetModel);
 
@@ -106,17 +162,45 @@ namespace UmbracoUserControlTest
         [TestCase("Test@test.com", 1, true)]
         [TestCase("Test@test.com", 2, false)]
         [TestCase("Test@test.com", 3, false)]
-        public void UserControlService_ResetPassword_ReturnTrue_WhenCalledWithTimeNowIsWithinTimeLimit(string EmailAddress, int UserId, bool expected)
+        public void UserControlService_ResetPassword_ReturnTrue_WhenCalledWithTimeNowIsWithinTimeLimit(string emailAddress, int userId, bool expected)
         {
-            passWordResetModelOut.EmailAddress = EmailAddress;
-            passWordResetModelOut.TimeLimit = Timelimit.AddDays(-UserId);
+            passWordResetModelOut.EmailAddress = emailAddress;
+            passWordResetModelOut.TimeLimit = timelimit.AddDays(-userId);
 
-            var passwordReset = new UserControlService(databaseService, umbracoService, emailService);
+            var passwordReset = new UserControlService(mockDatabaseService, mockUmbracoService, mockEmailService);
 
-            passWordResetModel.EmailAddress = EmailAddress;
-            passWordResetModel.UserId = UserId;
+            passWordResetModel.EmailAddress = emailAddress;
+            passWordResetModel.UserId = userId;
 
-            bool success = passwordReset.ResetPassword(passWordResetModel);
+            var success = passwordReset.ResetPassword(passWordResetModel);
+
+            Assert.AreEqual(expected, success);
+        }
+
+        [Test]
+        [TestCase("Email", "", true)]
+        [TestCase("", "Username", true)]
+        [TestCase(" ", " ", false)]
+        public void UserControlService_LookupUser_ReturnUmbracoUserModel_WhenCalled(string emailAddress, string username, bool expected)
+        {
+            umbracoUserModel.EmailAddress = emailAddress;
+            umbracoUserModel.UserName = username;
+
+            umbracoUserModelListOut.Add(umbracoUserModel);
+
+            var lookupUser = new UserControlService(mockDatabaseService, mockUmbracoService, mockEmailService);
+
+            findUserModel.EmailAddress = emailAddress;
+            findUserModel.UserName = username;
+
+            var user = lookupUser.LookupUsers(findUserModel);
+
+            var success = false;
+
+            if (user != null)
+            {
+                success = emailAddress == user.First().EmailAddress || username == user.First().UserName;
+            }
 
             Assert.AreEqual(expected, success);
         }
@@ -124,16 +208,66 @@ namespace UmbracoUserControlTest
         [Test]
         [TestCase(1, true, true)]
         [TestCase(1, false, true)]
-        public void UserControleService_ToggleLock_ReturnTrue_WhenCalled(int UserId, bool toggleLock, bool expected)
+        public void UserControlService_ToggleLock_ReturnTrue_WhenCalled(int userId, bool toggleLock, bool expected)
         {
-            var disableUser = new UserControlService(databaseService, umbracoService, emailService);
+            var disableUser = new UserControlService(mockDatabaseService, mockUmbracoService, mockEmailService);
 
-            umbracoUserModel.UserId = UserId;
+            umbracoUserModel.UserId = userId;
             umbracoUserModel.Lock = toggleLock;
 
-            bool success = disableUser.ToggleLock(umbracoUserModel);
+            var success = disableUser.ToggleLock(umbracoUserModel);
 
             Assert.AreEqual(expected, success);
+        }
+
+        [Test]
+        [TestCase(1, 2, 2, "PageOne", 3, true)]
+        [TestCase(1, 2, 3, "PageOne", 4, false)]
+        public void PermissionsControlService_GetContentRoot_ReturnContentTreeViewModel_WhenCalled(int id, int pageId, int pageIdRoot, string pageName, int userId, bool expected)
+        {
+            permissionsModel.PermissionId = id;
+            permissionsModel.PageId = pageId;
+            permissionsModel.UserId = userId;
+            permissionsModel.Created = DateTime.Now;
+
+            permissionsModelsListOut.Add(permissionsModel);
+
+            contentTreeViewModel.UserId = userId;
+            contentTreeViewModel.PageId = pageIdRoot;
+            contentTreeViewModel.PageName = pageName;
+
+            contentTreeViewModelListOut.Add(contentTreeViewModel);
+
+            var permissionsSservice = new PermissionsControlService(mockDatabaseService, mockUmbracoService, mockUserControlService);
+
+            var page = permissionsSservice.GetContentRoot(contentTreeViewModel);
+
+            Assert.AreEqual(expected, page.First().selected);
+        }
+
+        [Test]
+        [TestCase(1, 2, 2, "PageOne", 1, 3, true)]
+        [TestCase(1, 2, 3, "PageOne", 1, 4, false)]
+        public void PermissionsControlService_GetContentChild_ReturnContentTreeViewModel_WhenCalled(int id, int pageId, int pageIdRoot, string pageName, int rootId, int userId, bool expected)
+        {
+            permissionsModel.PermissionId = id;
+            permissionsModel.PageId = pageId;
+            permissionsModel.UserId = userId;
+            permissionsModel.Created = DateTime.Now;
+
+            permissionsModelsListOut.Add(permissionsModel);
+
+            contentTreeViewModel.RootId = rootId;
+            contentTreeViewModel.PageId = pageIdRoot;
+            contentTreeViewModel.PageName = pageName;
+
+            contentTreeViewModelListOut.Add(contentTreeViewModel);
+
+            var permissionsSservice = new PermissionsControlService(mockDatabaseService, mockUmbracoService, mockUserControlService);
+
+            var page = permissionsSservice.GetContentChild(contentTreeViewModel);
+
+            Assert.AreEqual(expected, page.First().selected);
         }
     }
 }

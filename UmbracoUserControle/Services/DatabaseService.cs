@@ -75,5 +75,10 @@ namespace UmbracoUserControl.Services
                 transaction.Complete();
             }
         }
+
+        public IEnumerable<PermissionsModel> CheckPagePermissions(string pageName)
+        {
+            return db.Query<PermissionsModel>("Where PageName = @0", pageName);
+        }
     }
 }

@@ -19,5 +19,7 @@ namespace UmbracoUserControl.Services.Interfaces
         void RemoveUserPermissions(PermissionsModel databaseModel);
 
         void UpdateUserPermissions(int userId, IList<PermissionsModel> permissionsModelList);
+
+        IEnumerable<PermissionsModel> CheckPagePermissions(string pageName);
     }
 }

@@ -16,9 +16,9 @@ namespace UmbracoUserControl.Models
 
         public int? Page { get; set; }
 
-        public bool IsUserRequest { get { return string.IsNullOrWhiteSpace(EmailAddress); } }
+        public bool IsUserRequest { get { return !string.IsNullOrWhiteSpace(UserName); } }
 
-        public bool IsEmailRequest { get { return string.IsNullOrWhiteSpace(UserName); } }
+        public bool IsEmailRequest { get { return !string.IsNullOrWhiteSpace(EmailAddress); } }
 
         public bool IsValidRequest { get { return IsEmailRequest | IsUserRequest; } }
     }

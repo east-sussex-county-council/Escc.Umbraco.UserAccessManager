@@ -29,7 +29,6 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.scc
 .vs/*
-[Ss]cripts*/
 
 # Umbraco files
 [Uu]mbraco/
@@ -39,7 +38,7 @@ _ReSharper*/
 [Ii]nstall/
 [Cc]onfig/Splashes/
 [Dd]efault.aspx
-[Gg]lobal.asax
+
 [Vv]iews/[Ww]eb.config.transform
 [Uu]serControls/EastSussexGovUK/cached
 
