@@ -12,7 +12,7 @@ namespace UmbracoUserControl.Services.Interfaces
 
         void SetResetDetails(UmbracoUserControl.Models.PasswordResetModel model);
 
-        IEnumerable<PermissionsModel> CheckUserPermissions(ContentTreeViewModel model);
+        IEnumerable<PermissionsModel> CheckUserPermissions(int userId);
 
         void AddUserPermissions(PermissionsModel model);
 

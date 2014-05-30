@@ -170,7 +170,7 @@ namespace UmbracoUserControl.Services
         {
             try
             {
-                if (model.Lock == false)
+                if (model.Lock != false)
                 {
                     umbracoService.DisableUser(model);
                 }

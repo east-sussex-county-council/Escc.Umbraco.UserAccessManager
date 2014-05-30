@@ -17,10 +17,12 @@ namespace UmbracoUserControl.Services.Interfaces
 
         bool RemoveContentPermissions(ContentTreeViewModel model);
 
-        bool CheckUserPermissions(int userId);
+        bool SyncUserPermissions(int userId);
 
         bool ClonePermissions(int sourceId, int targetId);
 
         IEnumerable<PermissionsModel> CheckPagePermissions(string url);
+
+        IList<PermissionsModel> CheckUserPermissions(FindUserModel model);
     }
 }

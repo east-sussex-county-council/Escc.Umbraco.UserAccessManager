@@ -44,9 +44,9 @@ namespace UmbracoUserControl.Services
             db.Execute("Exec DeleteResetDetails @UniqueResetId, @UserId", new { model.UniqueResetId, model.UserId });
         }
 
-        public IEnumerable<PermissionsModel> CheckUserPermissions(ContentTreeViewModel model)
+        public IEnumerable<PermissionsModel> CheckUserPermissions(int userId)
         {
-            return db.Query<PermissionsModel>("SELECT * FROM [UmbracoUserAdminTest].[dbo].[permissions] where [UserId] = @0", model.UserId);
+            return db.Query<PermissionsModel>("SELECT * FROM [UmbracoUserAdminTest].[dbo].[permissions] where [UserId] = @0", userId);
         }
 
         public void AddUserPermissions(PermissionsModel model)

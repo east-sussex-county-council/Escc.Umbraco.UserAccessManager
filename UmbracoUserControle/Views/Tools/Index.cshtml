@@ -4,16 +4,33 @@
 
 <div class="row">
     <div class="col-md-6">
-        <p>@TempData["Message"]</p>
+        <h4>Lookup page permissions</h4>
         <div class="input-group">
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" id="checkpage">Go!</button>
             </span>
             <input type="url" class="form-control" id="url" name="url" placeholder="Page Url" />
         </div>
-        <div class="col-md-8">
-            <div id="editors"></div>
+        <div id="PageEditors"></div>
+        <p class="hidden" id="apppath">@Request.ApplicationPath</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Lookup user permissions</h4>
+        <div class="input-group">
+            <div class="input-group-btn">
+                <button type="button" id="searchinput" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Email<span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li id="menuitemuser"><a>Username</a></li>
+                    <li id="menuitememail"><a>Email Address</a></li>
+                </ul>
+            </div>
+            <input type="email" class="form-control" id="searchterm" name="emailAddress" placeholder="Email Address" />
+            <button class="btn btn-primary" id="lookupUser" type="submit">Go!</button>
         </div>
+        <div id="UserPermissions"></div>
         <p class="hidden" id="apppath">@Request.ApplicationPath</p>
     </div>
 </div>

@@ -367,6 +367,8 @@
     <Content Include="Scripts\tree\skin-win7\ui.fancytree.less" />
     <Content Include="Views\Tools\Index.cshtml" />
     <Content Include="Views\Tools\CheckPagePermissions.cshtml" />
+    <Content Include="Views\Tools\CheckPageError.cshtml" />
+    <Content Include="Views\Tools\CheckUserPermissions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

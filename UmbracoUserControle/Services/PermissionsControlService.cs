@@ -37,7 +37,7 @@ namespace UmbracoUserControl.Services
             try
             {
                 var modelList = umbracoService.GetContentRoot();
-                var pageCheckList = databaseService.CheckUserPermissions(contentModel);
+                var pageCheckList = databaseService.CheckUserPermissions(contentModel.UserId);
                 var permissionsModels = pageCheckList as IList<PermissionsModel> ?? pageCheckList.ToList();
 
                 foreach (var model in modelList)
@@ -73,7 +73,7 @@ namespace UmbracoUserControl.Services
             try
             {
                 var modelList = umbracoService.GetContentChild(contentModel.RootId);
-                var pageCheckList = databaseService.CheckUserPermissions(contentModel);
+                var pageCheckList = databaseService.CheckUserPermissions(contentModel.UserId);
                 var permissionsModels = pageCheckList as IList<PermissionsModel> ?? pageCheckList.ToList();
 
                 foreach (var model in modelList)
@@ -166,7 +166,7 @@ namespace UmbracoUserControl.Services
             }
         }
 
-        public bool CheckUserPermissions(int userId)
+        public bool SyncUserPermissions(int userId)
         {
             try
             {
@@ -197,7 +197,7 @@ namespace UmbracoUserControl.Services
 
                 if (!success) return false;
 
-                var successDbUpdate = CheckUserPermissions(model.TargetId);
+                var successDbUpdate = SyncUserPermissions(model.TargetId);
 
                 return successDbUpdate;
             }
@@ -219,7 +219,11 @@ namespace UmbracoUserControl.Services
 
                 var pageName = url.Substring(url.LastIndexOf("/", url.Length) + 1);
 
-                return databaseService.CheckPagePermissions(pageName);
+                var modelList = databaseService.CheckPagePermissions(pageName);
+
+                var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
+
+                return permissionsModels;
             }
             catch (Exception ex)
             {
@@ -229,6 +233,17 @@ namespace UmbracoUserControl.Services
 
                 throw;
             }
+        }
+
+        public IList<PermissionsModel> CheckUserPermissions(FindUserModel model)
+        {
+            var user = userControlService.LookupUsers(model);
+
+            var modelList = databaseService.CheckUserPermissions(user.First().UserId);
+
+            var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
+
+            return permissionsModels;
         }
     }
 }

@@ -61,10 +61,11 @@ $("#finduser").click(function () {
 });
 
 updateFields = function (data) {
-    if (data.length == 0) {
-        alert("Error finding user");
+    if (data == false) {
+        alert("Error - Unable to find user");
+    } else {
+        $(".result").append("<p id='targetId' class='" + data.UserId + "'>Id: " + data.UserId + "</p><p>Name: " + data.FullName + "</p><p>Email: " + data.EmailAddress + "</p><p>Username: " + data.UserName + "</p>");
     }
-    $(".result").append("<p id='targetId' class='" + data.UserId + "'>Id: " + data.UserId + "</p><p>Name: " + data.FullName + "</p><p>Email: " + data.EmailAddress + "</p><p>Username: " + data.UserName + "</p>");
 }
 
 $("#postAjax").click(function () {
@@ -82,9 +83,24 @@ $("#postAjax").click(function () {
 });
 
 $("#checkpage").click(function () {
-    alert("click");
-    var dest = $("#editors");
+    var dest = $("#PageEditors");
     $.get($("#apppath").html() + "/Tools/CheckPagePermissions/", { url: $("#url").val() }, function (data) {
         dest.replaceWith(data);
     });
+});
+
+$("#lookupUser").click(function () {
+    var dest = $("#UserPermissions");
+    if ($("#searchterm").prop("name") == "emailAddress") {
+        var email = $("#searchterm").val();
+        $.get($("#apppath").html() + "/Tools/CheckUserPermissions/", { EmailAddress: email }, function (data) {
+            dest.replaceWith(data);
+        });
+    }
+    else {
+        var user = $("#searchterm").val();
+        $.get($("#apppath").html() + "/Tools/CheckUserPermissions/", { UserName: user }, function (data) {
+            dest.replaceWith(data);
+        });
+    };
 });

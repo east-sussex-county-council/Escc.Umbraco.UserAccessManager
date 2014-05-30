@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using Castle.Core.Internal;
+using Microsoft.Ajax.Utilities;
+using System.Linq;
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
@@ -74,11 +76,11 @@ namespace UmbracoUserControl.Controllers
         [HttpGet]
         public ActionResult CheckPermissionsForUser(int id)
         {
-            var success = permissionsControlService.CheckUserPermissions(id);
+            var success = permissionsControlService.SyncUserPermissions(id);
 
             if (!success)
             {
-                ViewBag.Error = "An error has occured - Tree has not been updated";
+                TempData["Message"] = "An error has occured - Tree has not been updated";
             }
 
             return Index(id);
@@ -87,9 +89,14 @@ namespace UmbracoUserControl.Controllers
         [HttpGet]
         public JsonResult CheckDestinationUser(FindUserModel model)
         {
-            var user = userControlService.LookupUsers(model).First();
+            if (!userControlService.LookupUsers(model).IsNullOrEmpty())
+            {
+                var user = userControlService.LookupUsers(model).First();
 
-            return Json(user, JsonRequestBehavior.AllowGet);
+                return Json(user, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

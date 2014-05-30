@@ -1,21 +1,19 @@
 ﻿@using System.Configuration
 @model  IEnumerable<UmbracoUserControl.Models.PermissionsModel>
 
-<h4>People responsible for @Model.First().PageName - @Model.First().PageId</h4>
+<div id="editors">
+    <h4>People responsible for @Model.First().PageName - @Model.First().PageId</h4>
 
+    <ul class="list-group">
+        @foreach (var item in @Model)
+        {
+            <li class="list-group-item">
+                <ul>
+                    <li><p><a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)">@item.FullName</a></p></li>
+                    <li><p>@item.EmailAddress</p></li>
+                </ul>
+            </li>
+        }
+    </ul>
+</div> 
 
-<p></p>
-
-<ul class="list-group">
-    @foreach (var item in @Model)
-    {
-        <li class="list-group-item">
-            <ul>
-                <li><p><a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)">@item.FullName</a></p></li>
-                <li><p>@item.EmailAddress</p></li>
-            </ul>
-        </li>
-    }
-</ul>
-
-<div id="editors"></div>

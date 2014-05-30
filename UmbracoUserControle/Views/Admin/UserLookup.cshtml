@@ -20,7 +20,7 @@
             @Html.ActionLink("Reset Password", "InitiatePasswordReset", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress }, new { @class = "btn btn-success", @role = "button" })
 
             @{
-        if (@user.Lock != true)
+        if (@user.Lock != false)
         {
             @Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" })
         }
