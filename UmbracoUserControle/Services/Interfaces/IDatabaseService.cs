@@ -21,5 +21,9 @@ namespace UmbracoUserControl.Services.Interfaces
         void UpdateUserPermissions(int userId, IList<PermissionsModel> permissionsModelList);
 
         IEnumerable<PermissionsModel> CheckPagePermissions(string pageName);
+
+        IEnumerable<PermissionsModel> PageWithoutAuthor();
+
+        IEnumerable<EditorModel> Editors();
     }
 }

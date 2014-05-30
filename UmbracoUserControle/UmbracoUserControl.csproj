@@ -213,6 +213,7 @@
     <Compile Include="IOC\Installers\EmailServiceInstaller.cs" />
     <Compile Include="IOC\Installers\PermissionsServiceInstaller.cs" />
     <Compile Include="IOC\Installers\UmbracoServiceInstaller.cs" />
+    <Compile Include="Models\EditorModel.cs" />
     <Compile Include="Models\FindUserModel.cs" />
     <Compile Include="Models\PasswordResetModel.cs" />
     <Compile Include="Models\PermissionsModel.cs" />
@@ -369,6 +370,8 @@
     <Content Include="Views\Tools\CheckPagePermissions.cshtml" />
     <Content Include="Views\Tools\CheckPageError.cshtml" />
     <Content Include="Views\Tools\CheckUserPermissions.cshtml" />
+    <Content Include="Views\Tools\PagesWithoutAuthors.cshtml" />
+    <Content Include="Views\Tools\CheckUserError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -104,3 +104,10 @@ $("#lookupUser").click(function () {
         });
     };
 });
+
+$("#PagesWithoutAuthor").click(function () {
+    var dest = $("#UnauthordPermissions");
+    $.get($("#apppath").html() + "/Tools/CheckPageWithoutAuthor/", function (data) {
+        dest.replaceWith(data);
+    });
+});

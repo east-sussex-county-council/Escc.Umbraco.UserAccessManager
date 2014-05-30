@@ -37,9 +37,20 @@ namespace UmbracoUserControl.Controllers
 
         public ActionResult CheckUserPermissions(FindUserModel model)
         {
-            var permissionList = permissionsControlService.CheckUserPermissions(model);
+            var modelList = permissionsControlService.CheckUserPermissions(model);
 
-            return PartialView("CheckUserPermissions", permissionList);
+            return !modelList.IsNullOrEmpty()
+                ? PartialView("CheckUserPermissions", modelList)
+                : PartialView("CheckUserError");
+        }
+
+        public ActionResult CheckPageWithoutAuthor()
+        {
+            var modelList = permissionsControlService.PagesWithoutAuthor();
+
+            return !modelList.IsNullOrEmpty()
+                ? PartialView("PagesWithoutAuthors", modelList)
+                : PartialView("CheckPageError");
         }
     }
 }

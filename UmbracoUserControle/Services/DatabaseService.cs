@@ -80,5 +80,15 @@ namespace UmbracoUserControl.Services
         {
             return db.Query<PermissionsModel>("Where PageName = @0", pageName);
         }
+
+        public IEnumerable<PermissionsModel> PageWithoutAuthor()
+        {
+            return db.Query<PermissionsModel>("select PageId, PageName, UserId from(select PageId, PageName, UserId, COUNT(UserId) Over(partition by PageId) As Test3 from [UmbracoUserAdminTest].[dbo].[permissions]) As Test4 where test3 = 1");
+        }
+
+        public IEnumerable<EditorModel> Editors()
+        {
+            return db.Query<EditorModel>("");
+        }
     }
 }

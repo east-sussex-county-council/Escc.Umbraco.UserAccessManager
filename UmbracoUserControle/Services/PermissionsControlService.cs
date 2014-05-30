@@ -1,5 +1,6 @@
 ﻿using Castle.Core.Internal;
 using Castle.Core.Logging;
+using Microsoft.Ajax.Utilities;
 using Microsoft.ApplicationBlocks.ExceptionManagement;
 using System;
 using System.Collections.Generic;
@@ -239,11 +240,24 @@ namespace UmbracoUserControl.Services
         {
             var user = userControlService.LookupUsers(model);
 
+            if (user.IsNullOrEmpty()) return null;
+
             var modelList = databaseService.CheckUserPermissions(user.First().UserId);
 
             var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
 
             return permissionsModels;
+        }
+
+        public IEnumerable<PermissionsModel> PagesWithoutAuthor()
+        {
+            var permissionList = databaseService.PageWithoutAuthor();
+
+            var editorsList = databaseService.Editors();
+
+            var pagesWithoutAuthor = permissionList as PermissionsModel[] ?? permissionList.ToArray();
+
+            return editorsList.SelectMany(editor => pagesWithoutAuthor.Where(x => x.UserId == editor.UserId)).Select(source => new PermissionsModel { PageId = source.PageId, PageName = source.PageName }).ToList();
         }
     }
 }

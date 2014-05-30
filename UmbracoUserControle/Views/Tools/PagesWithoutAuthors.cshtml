@@ -1,7 +1,7 @@
-﻿@model System.Collections.Generic.IList<UmbracoUserControl.Models.PermissionsModel>
+﻿@model IEnumerable<UmbracoUserControl.Models.PermissionsModel>
 
-<div id="UserPermissions">
-    <h4>@Model.First().FullName is a web author for the following pages</h4>
+<div id="UnauthordPermissions">
+    <h4>Pages without web authors</h4>
 
     <ul class="list-group">
         @foreach (var page in @Model)

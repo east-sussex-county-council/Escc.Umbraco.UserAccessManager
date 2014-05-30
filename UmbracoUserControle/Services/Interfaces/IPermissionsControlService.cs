@@ -24,5 +24,7 @@ namespace UmbracoUserControl.Services.Interfaces
         IEnumerable<PermissionsModel> CheckPagePermissions(string url);
 
         IList<PermissionsModel> CheckUserPermissions(FindUserModel model);
+
+        IEnumerable<PermissionsModel> PagesWithoutAuthor();
     }
 }
