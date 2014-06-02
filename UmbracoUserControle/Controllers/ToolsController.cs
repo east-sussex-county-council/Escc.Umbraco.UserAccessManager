@@ -30,27 +30,32 @@ namespace UmbracoUserControl.Controllers
         {
             var modelList = permissionsControlService.CheckPagePermissions(url);
 
-            return !modelList.IsNullOrEmpty()
-                ? PartialView("CheckPagePermissions", modelList)
-                : PartialView("CheckPageError");
+            if (!modelList.IsNullOrEmpty()) return PartialView("CheckPagePermissions", modelList);
+            TempData["Message"] = "Either permissions have not been set for this page or page does not exist.";
+
+            return PartialView("ToolsError");
         }
 
         public ActionResult CheckUserPermissions(FindUserModel model)
         {
             var modelList = permissionsControlService.CheckUserPermissions(model);
 
-            return !modelList.IsNullOrEmpty()
-                ? PartialView("CheckUserPermissions", modelList)
-                : PartialView("CheckUserError");
+            if (!modelList.IsNullOrEmpty()) return PartialView("CheckUserPermissions", modelList);
+
+            TempData["Message"] = "Either user has no permissions setup or this user does not exist.";
+
+            return PartialView("ToolsError");
         }
 
         public ActionResult CheckPageWithoutAuthor()
         {
             var modelList = permissionsControlService.PagesWithoutAuthor();
 
-            return !modelList.IsNullOrEmpty()
-                ? PartialView("PagesWithoutAuthors", modelList)
-                : PartialView("CheckPageError");
+            if (!modelList.IsNullOrEmpty()) return PartialView("PagesWithoutAuthors", modelList);
+
+            TempData["Message"] = "Unable to find pages without authors.";
+
+            return PartialView("ToolsError");
         }
     }
 }
