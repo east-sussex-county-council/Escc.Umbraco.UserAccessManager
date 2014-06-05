@@ -4,9 +4,8 @@ using Microsoft.Ajax.Utilities;
 using Microsoft.ApplicationBlocks.ExceptionManagement;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Configuration;
 using System.Linq;
-using System.Web;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
 using UmbracoUserControl.ViewModel;
@@ -216,9 +215,16 @@ namespace UmbracoUserControl.Services
         {
             try
             {
-                if (!url.Contains("/")) return null;
+                if (url.IsNullOrWhiteSpace()) return null;
 
-                var pageName = url.Substring(url.LastIndexOf("/", url.Length) + 1);
+                var page = new Uri(url).AbsolutePath;
+
+                var pageName = page.Trim('/');
+
+                if (pageName.IsNullOrWhiteSpace())
+                {
+                    pageName = ConfigurationManager.AppSettings["HomePage"];
+                }
 
                 var modelList = databaseService.CheckPagePermissions(pageName);
 
@@ -253,11 +259,9 @@ namespace UmbracoUserControl.Services
         {
             var permissionList = databaseService.PageWithoutAuthor();
 
-            var editorsList = databaseService.Editors();
-
             var pagesWithoutAuthor = permissionList as PermissionsModel[] ?? permissionList.ToArray();
 
-            return editorsList.SelectMany(editor => pagesWithoutAuthor.Where(x => x.UserId == editor.UserId)).Select(source => new PermissionsModel { PageId = source.PageId, PageName = source.PageName }).ToList();
+            return !pagesWithoutAuthor.IsNullOrEmpty() ? pagesWithoutAuthor : null;
         }
     }
 }

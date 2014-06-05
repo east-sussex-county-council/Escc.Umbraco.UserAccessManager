@@ -370,7 +370,6 @@
     <Content Include="Views\Tools\CheckPagePermissions.cshtml" />
     <Content Include="Views\Tools\CheckUserPermissions.cshtml" />
     <Content Include="Views\Tools\PagesWithoutAuthors.cshtml" />
-    <Content Include="Views\Tools\CheckUserError.cshtml" />
     <Content Include="Views\Tools\ToolsError.cshtml" />
   </ItemGroup>
   <ItemGroup>

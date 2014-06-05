@@ -32,6 +32,7 @@ namespace UmbracoUserControl.Controllers
 
             if (!modelList.IsNullOrEmpty()) return PartialView("CheckPagePermissions", modelList);
             TempData["Message"] = "Either permissions have not been set for this page or page does not exist.";
+            TempData["InputString"] = url;
 
             return PartialView("ToolsError");
         }
@@ -43,6 +44,7 @@ namespace UmbracoUserControl.Controllers
             if (!modelList.IsNullOrEmpty()) return PartialView("CheckUserPermissions", modelList);
 
             TempData["Message"] = "Either user has no permissions setup or this user does not exist.";
+            TempData["InputString"] = model.EmailAddress + model.UserName;
 
             return PartialView("ToolsError");
         }

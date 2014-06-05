@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
-using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControl.Services
 {
@@ -83,12 +82,11 @@ namespace UmbracoUserControl.Services
 
         public IEnumerable<PermissionsModel> PageWithoutAuthor()
         {
-            return db.Query<PermissionsModel>("select PageId, PageName, UserId from(select PageId, PageName, UserId, COUNT(UserId) Over(partition by PageId) As Test3 from [UmbracoUserAdminTest].[dbo].[permissions]) As Test4 where test3 = 1");
-        }
-
-        public IEnumerable<EditorModel> Editors()
-        {
-            return db.Query<EditorModel>("");
+            return db.Query<PermissionsModel>("SELECT [PageId],[PageName] " +
+                                              "FROM [UmbracoUserAdminTest].[dbo].[permissions] as p " +
+                                              "left outer join [UmbracoUserAdminTest].[dbo].[Editors] as e on p.userid = e.userid " +
+                                              "group by [PageId],[PageName] " +
+                                              "having sum(case when e.userid is null then 1 else 0 end) = 0");
         }
     }
 }

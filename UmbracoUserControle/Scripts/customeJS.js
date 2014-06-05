@@ -60,6 +60,12 @@ $("#finduser").click(function () {
     };
 });
 
+$("#searchterm").keypress(function (e) {
+    if (e.which == 13) {
+        $("#finduser").trigger("click");
+    }
+});
+
 updateFields = function (data) {
     if (data == false) {
         alert("Error - Unable to find user");
@@ -85,7 +91,7 @@ $("#postAjax").click(function () {
 $("#checkpage").click(function () {
     var dest = $("#PageEditors");
     $.get($("#apppath").html() + "/Tools/CheckPagePermissions/", { url: $("#url").val() }, function (data) {
-        dest.replaceWith(data);
+        dest.html(data);
     });
 });
 
@@ -94,13 +100,13 @@ $("#lookupUser").click(function () {
     if ($("#searchterm").prop("name") == "emailAddress") {
         var email = $("#searchterm").val();
         $.get($("#apppath").html() + "/Tools/CheckUserPermissions/", { EmailAddress: email }, function (data) {
-            dest.replaceWith(data);
+            dest.html(data);
         });
     }
     else {
         var user = $("#searchterm").val();
         $.get($("#apppath").html() + "/Tools/CheckUserPermissions/", { UserName: user }, function (data) {
-            dest.replaceWith(data);
+            dest.html(data);
         });
     };
 });
@@ -108,6 +114,18 @@ $("#lookupUser").click(function () {
 $("#PagesWithoutAuthor").click(function () {
     var dest = $("#UnauthordPermissions");
     $.get($("#apppath").html() + "/Tools/CheckPageWithoutAuthor/", function (data) {
-        dest.replaceWith(data);
+        dest.html(data);
     });
+});
+
+$("#url").keypress(function(e) {
+    if (e.which == 13) {
+        $("#checkpage").trigger("click");
+    }
+});
+
+$("#searchterm").keypress(function (e) {
+    if (e.which == 13) {
+        $("#lookupUser").trigger("click");
+    }
 });
