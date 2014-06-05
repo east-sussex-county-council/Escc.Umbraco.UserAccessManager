@@ -1,7 +1,7 @@
 ﻿using Castle.Core.Internal;
 using Castle.Core.Logging;
+using Exceptionless;
 using Microsoft.Ajax.Utilities;
-using Microsoft.ApplicationBlocks.ExceptionManagement;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -60,9 +60,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Lookup content tree could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -96,9 +94,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Lookup content tree could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -130,9 +126,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Adding permissionns to database could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -158,9 +152,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Removing permissionns to database could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -179,9 +171,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Checking user permissionns could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -203,9 +193,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Cloning user permissionns could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -234,9 +222,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Cloning user permissionns could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -244,24 +230,42 @@ namespace UmbracoUserControl.Services
 
         public IList<PermissionsModel> CheckUserPermissions(FindUserModel model)
         {
-            var user = userControlService.LookupUsers(model);
+            try
+            {
+                var user = userControlService.LookupUsers(model);
 
-            if (user.IsNullOrEmpty()) return null;
+                if (user.IsNullOrEmpty()) return null;
 
-            var modelList = databaseService.CheckUserPermissions(user.First().UserId);
+                var modelList = databaseService.CheckUserPermissions(user.First().UserId);
 
-            var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
+                var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
 
-            return permissionsModels;
+                return permissionsModels;
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+
+                throw;
+            }
         }
 
         public IEnumerable<PermissionsModel> PagesWithoutAuthor()
         {
-            var permissionList = databaseService.PageWithoutAuthor();
+            try
+            {
+                var permissionList = databaseService.PageWithoutAuthor();
 
-            var pagesWithoutAuthor = permissionList as PermissionsModel[] ?? permissionList.ToArray();
+                var pagesWithoutAuthor = permissionList as PermissionsModel[] ?? permissionList.ToArray();
 
-            return !pagesWithoutAuthor.IsNullOrEmpty() ? pagesWithoutAuthor : null;
+                return !pagesWithoutAuthor.IsNullOrEmpty() ? pagesWithoutAuthor : null;
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+
+                throw;
+            }
         }
     }
 }

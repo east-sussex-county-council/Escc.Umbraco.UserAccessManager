@@ -60,12 +60,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>S:\_Reference DLLs\Microsoft Exception Management Application Block\EsccWebTeam.Exceptions.Publishers.dll</HintPath>
     </Reference>
+    <Reference Include="Exceptionless">
+      <HintPath>..\packages\Exceptionless.1.5.2064\lib\net45\Exceptionless.dll</HintPath>
+    </Reference>
+    <Reference Include="Exceptionless.Models">
+      <HintPath>..\packages\Exceptionless.1.5.2064\lib\net45\Exceptionless.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Exceptionless.Mvc">
+      <HintPath>..\packages\Exceptionless.Mvc.1.5.2064\lib\net45\Exceptionless.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.ExceptionManagement">
-      <HintPath>S:\_Reference DLLs\Microsoft Exception Management Application Block\Release strong-named .NET 2\Microsoft.ApplicationBlocks.ExceptionManagement.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="nunit.framework">
@@ -306,9 +312,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="log4net.config">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\customeJS.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Exceptionless;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
@@ -58,40 +59,28 @@ namespace UmbracoUserControl.Services
         {
             var response = GetMessage("GetAllUsersByEmail?emailaddress=" + emailaddress);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
-                return modelList;
-            }
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            throw ex;
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
+            return modelList;
         }
 
         public IList<UmbracoUserModel> GetAllUsersByUsername(string username)
         {
             var response = GetMessage("GetAllUsersByUsername?username=" + username);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
-                return modelList;
-            }
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            throw ex;
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
+            return modelList;
         }
 
         public ContentTreeViewModel GetAllUsersById(int id)
         {
             var response = GetMessage("GetUserById?id=" + id);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var model = response.Content.ReadAsAsync<ContentTreeViewModel>().Result;
+            if (!response.IsSuccessStatusCode) return null;
+            var model = response.Content.ReadAsAsync<ContentTreeViewModel>().Result;
 
-                return model;
-            }
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            throw ex;
+            return model;
         }
 
         /// <summary>
@@ -102,11 +91,9 @@ namespace UmbracoUserControl.Services
         {
             var response = PostMessage("PostNewUsers", model);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var ex = response.Content.ReadAsAsync<Exception>().Result;
-                throw ex;
-            }
+            if (response.IsSuccessStatusCode) return;
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
         }
 
         /// <summary>
@@ -117,11 +104,9 @@ namespace UmbracoUserControl.Services
         {
             var response = PostMessage("PostResetPassword", model);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var ex = response.Content.ReadAsAsync<Exception>().Result;
-                throw ex;
-            }
+            if (response.IsSuccessStatusCode) return;
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
         }
 
         /// <summary>
@@ -132,11 +117,9 @@ namespace UmbracoUserControl.Services
         {
             var response = PostMessage("PostDisableUser", model);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var ex = response.Content.ReadAsAsync<Exception>().Result;
-                throw ex;
-            }
+            if (response.IsSuccessStatusCode) return;
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
         }
 
         /// <summary>
@@ -147,80 +130,58 @@ namespace UmbracoUserControl.Services
         {
             var response = PostMessage("PostEnableUser", model);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var ex = response.Content.ReadAsAsync<Exception>().Result;
-                throw ex;
-            }
+            if (response.IsSuccessStatusCode) return;
+            var ex = response.Content.ReadAsAsync<Exception>().Result;
+            throw ex;
         }
 
         public IList<ContentTreeViewModel> GetContentRoot()
         {
             var response = GetMessage("GetContentRoot");
 
-            if (response.IsSuccessStatusCode)
-            {
-                var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
-                return modelList;
-            }
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            throw ex;
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
+            return modelList;
         }
 
         public IList<ContentTreeViewModel> GetContentChild(int id)
         {
             var response = GetMessage("GetContentChild?id=" + id);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
-                return modelList;
-            }
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            throw ex;
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
+            return modelList;
         }
 
         public bool SetContentPermissions(PermissionsModel model)
         {
             var response = PostMessage("PostSetPermissions", model);
 
-            if (response.IsSuccessStatusCode) return true;
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            throw ex;
+            return response.IsSuccessStatusCode;
         }
 
         public bool RemoveContentPermissions(PermissionsModel model)
         {
             var response = PostMessage("PostRemovePermissions", model);
 
-            if (response.IsSuccessStatusCode) return true;
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            throw ex;
+            return response.IsSuccessStatusCode;
         }
 
         public IList<PermissionsModel> CheckUserPremissions(int userId)
         {
             var response = GetMessage("GetCheckUserPermissions?userId=" + userId);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var model = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
+            if (!response.IsSuccessStatusCode) return null;
+            var model = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
 
-                return model;
-            }
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            throw ex;
+            return model;
         }
 
         public bool ClonePermissions(PermissionsModel model)
         {
             var response = PostMessage("PostCloneUserPermissions", model);
 
-            if (response.IsSuccessStatusCode) return true;
-
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-
-            throw ex;
+            return response.IsSuccessStatusCode;
         }
     }
 }

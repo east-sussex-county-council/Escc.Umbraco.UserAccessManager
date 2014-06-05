@@ -1,8 +1,5 @@
-﻿using Castle.Components.DictionaryAdapter.Xml;
-using Castle.Core.Logging;
-using Microsoft.Ajax.Utilities;
-using Microsoft.ApplicationBlocks.ExceptionManagement;
-using PagedList;
+﻿using Castle.Core.Logging;
+using Exceptionless;
 using System;
 using System.Collections.Generic;
 using UmbracoUserControl.Models;
@@ -47,9 +44,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} User lookup could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -66,7 +61,8 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} User lookup could not be actioned - error message {1} - Stack trace {2} - inner exception {3}", DateTime.Now, ex.Message, ex.StackTrace, ex.InnerException);
+                ex.ToExceptionless().Submit();
+
                 throw;
             }
         }
@@ -93,9 +89,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Password reset {1}, {2} could not be initiated - error message {3} - Stack trace {4} - inner exception {5}", DateTime.Now, model.UniqueResetId, model.UserId, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -127,9 +121,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} Password reset {1}, {2} could not be actioned - error message {3} - Stack trace {4} - inner exception {5}", DateTime.Now, model.UniqueResetId, model.UserId, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -153,9 +145,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} User creation {1}, {2} could not be actioned - error message {3} - Stack trace {4} - inner exception {5}", DateTime.Now, model.UserName, model.UserId, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
@@ -182,9 +172,7 @@ namespace UmbracoUserControl.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("{0} lock / unlock on user account {1}, {2} could not be actioned - error message {3} - Stack trace {4} - inner exception {5}", DateTime.Now, model.UserName, model.UserId, ex.Message, ex.StackTrace, ex.InnerException);
-
-                ExceptionManager.Publish(ex);
+                ex.ToExceptionless().Submit();
 
                 throw;
             }
