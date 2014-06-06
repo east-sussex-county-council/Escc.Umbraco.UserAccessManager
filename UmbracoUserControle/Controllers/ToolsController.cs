@@ -1,8 +1,4 @@
 ﻿using Castle.Core.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;

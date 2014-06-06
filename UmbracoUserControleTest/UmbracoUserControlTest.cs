@@ -86,7 +86,7 @@ namespace UmbracoUserControlTest
 
             databaseServiceMock.Setup(x => x.GetResetDetails(passWordResetModel))
                 .Returns(passWordResetModelOut);
-            databaseServiceMock.Setup(x => x.CheckUserPermissions(contentTreeViewModel))
+            databaseServiceMock.Setup(x => x.CheckUserPermissions(1))
                 .Returns(permissionsModelsListOut);
 
             mockDatabaseService = databaseServiceMock.Object;
@@ -221,8 +221,8 @@ namespace UmbracoUserControlTest
         }
 
         [Test]
-        [TestCase(1, 2, 2, "PageOne", 3, true)]
-        [TestCase(1, 2, 3, "PageOne", 4, false)]
+        [TestCase(1, 2, 2, "PageOne", 1, true)]
+        [TestCase(1, 2, 3, "PageOne", 2, false)]
         public void PermissionsControlService_GetContentRoot_ReturnContentTreeViewModel_WhenCalled(int id, int pageId, int pageIdRoot, string pageName, int userId, bool expected)
         {
             permissionsModel.PermissionId = id;
@@ -246,8 +246,8 @@ namespace UmbracoUserControlTest
         }
 
         [Test]
-        [TestCase(1, 2, 2, "PageOne", 1, 3, true)]
-        [TestCase(1, 2, 3, "PageOne", 1, 4, false)]
+        [TestCase(1, 1, 1, "PageOne", 1, 1, true)]
+        [TestCase(1, 2, 3, "PageOne", 1, 1, false)]
         public void PermissionsControlService_GetContentChild_ReturnContentTreeViewModel_WhenCalled(int id, int pageId, int pageIdRoot, string pageName, int rootId, int userId, bool expected)
         {
             permissionsModel.PermissionId = id;
@@ -260,6 +260,7 @@ namespace UmbracoUserControlTest
             contentTreeViewModel.RootId = rootId;
             contentTreeViewModel.PageId = pageIdRoot;
             contentTreeViewModel.PageName = pageName;
+            contentTreeViewModel.UserId = userId;
 
             contentTreeViewModelListOut.Add(contentTreeViewModel);
 
