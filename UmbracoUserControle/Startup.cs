@@ -1,7 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using UmbracoUserControl;
 
-[assembly: OwinStartupAttribute(typeof(UmbracoUserControl.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
+
 namespace UmbracoUserControl
 {
     public partial class Startup

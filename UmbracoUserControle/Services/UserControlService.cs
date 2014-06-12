@@ -1,4 +1,5 @@
-﻿using Castle.Core.Logging;
+﻿using Castle.Core.Internal;
+using Castle.Core.Logging;
 using Exceptionless;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,6 @@ namespace UmbracoUserControl.Services
         private readonly IUmbracoService umbracoService;
         private readonly IDatabaseService databaseService;
         private readonly IEmailService emailService;
-
-        private ILogger Logger { get; set; }
 
         public UserControlService(IDatabaseService databaseService, IUmbracoService umbracoService, IEmailService emailService)
         {
@@ -56,6 +55,8 @@ namespace UmbracoUserControl.Services
             try
             {
                 var model = umbracoService.GetAllUsersById(id);
+
+                model.isEditor = IsEditor(id);
 
                 return model;
             }
@@ -169,6 +170,22 @@ namespace UmbracoUserControl.Services
                     umbracoService.EnableUser(model);
                 }
                 return true;
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+
+                throw;
+            }
+        }
+
+        private bool IsEditor(int userId)
+        {
+            try
+            {
+                var editors = databaseService.IsEditor(userId);
+
+                return !editors.IsNullOrEmpty();
             }
             catch (Exception ex)
             {

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using PetaPoco;
 
 namespace UmbracoUserControl.Models
 {
-    [PetaPoco.TableName("editors")]
+    [TableName("editors")]
     public class EditorModel
     {
         public int UserId { get; set; }
+
+        public string FullName { get; set; }
     }
 }

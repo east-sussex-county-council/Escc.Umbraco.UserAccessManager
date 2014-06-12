@@ -75,10 +75,11 @@ updateFields = function (data) {
 }
 
 $("#postAjax").click(function () {
+    var token = $('[name=__RequestVerificationToken]').val();
     $.ajax({
         url: $("#apppath").html() + "/Permissions/CopyPermissionsForUser",
         type: "POST",
-        data: { sourceId: $("#userId").html(), targetId: $("#targetId").prop("class") },
+        data: { __RequestVerificationToken: token, sourceId: $("#userId").html(), targetId: $("#targetId").prop("class") },
         dataType: "json",
         success: function (json) {
             if (json.isRedirect) {
@@ -118,7 +119,7 @@ $("#PagesWithoutAuthor").click(function () {
     });
 });
 
-$("#url").keypress(function(e) {
+$("#url").keypress(function (e) {
     if (e.which == 13) {
         $("#checkpage").trigger("click");
     }

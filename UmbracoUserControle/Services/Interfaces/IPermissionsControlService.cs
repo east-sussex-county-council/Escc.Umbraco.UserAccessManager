@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.ViewModel;
 
@@ -26,5 +23,7 @@ namespace UmbracoUserControl.Services.Interfaces
         IList<PermissionsModel> CheckUserPermissions(FindUserModel model);
 
         IEnumerable<PermissionsModel> PagesWithoutAuthor();
+
+        void ToggleEditor(ContentTreeViewModel model);
     }
 }

@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using UmbracoUserControl.Models;
-using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControl.Services.Interfaces
 {
     public interface IDatabaseService
     {
-        void DeleteResetDetails(UmbracoUserControl.Models.PasswordResetModel model);
+        void DeleteResetDetails(PasswordResetModel model);
 
-        UmbracoUserControl.Models.PasswordResetModel GetResetDetails(UmbracoUserControl.Models.PasswordResetModel model);
+        PasswordResetModel GetResetDetails(PasswordResetModel model);
 
-        void SetResetDetails(UmbracoUserControl.Models.PasswordResetModel model);
+        void SetResetDetails(PasswordResetModel model);
 
         IEnumerable<PermissionsModel> CheckUserPermissions(int userId);
 
@@ -23,5 +22,11 @@ namespace UmbracoUserControl.Services.Interfaces
         IEnumerable<PermissionsModel> CheckPagePermissions(string pageName);
 
         IEnumerable<PermissionsModel> PageWithoutAuthor();
+
+        IEnumerable<EditorModel> IsEditor(int userId);
+
+        void SetEditor(EditorModel model);
+
+        void DeleteEditor(EditorModel model);
     }
 }

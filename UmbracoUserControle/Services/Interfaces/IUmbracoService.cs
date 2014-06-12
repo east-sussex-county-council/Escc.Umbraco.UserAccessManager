@@ -6,19 +6,19 @@ namespace UmbracoUserControl.Services.Interfaces
 {
     public interface IUmbracoService
     {
-        void CreateNewUser(UmbracoUserControl.Models.UmbracoUserModel model);
+        void CreateNewUser(UmbracoUserModel model);
 
-        System.Collections.Generic.IList<UmbracoUserControl.Models.UmbracoUserModel> GetAllUsersByEmail(string emailaddress);
+        IList<UmbracoUserModel> GetAllUsersByEmail(string emailaddress);
 
-        System.Collections.Generic.IList<UmbracoUserControl.Models.UmbracoUserModel> GetAllUsersByUsername(string username);
+        IList<UmbracoUserModel> GetAllUsersByUsername(string username);
 
         ContentTreeViewModel GetAllUsersById(int id);
 
-        void ResetPassword(UmbracoUserControl.Models.PasswordResetModel model);
+        void ResetPassword(PasswordResetModel model);
 
-        void DisableUser(Models.UmbracoUserModel model);
+        void DisableUser(UmbracoUserModel model);
 
-        void EnableUser(Models.UmbracoUserModel model);
+        void EnableUser(UmbracoUserModel model);
 
         IList<ContentTreeViewModel> GetContentRoot();
 

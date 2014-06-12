@@ -1,10 +1,7 @@
-﻿using Castle.Core.Logging;
-using PagedList;
+﻿using PagedList;
 using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
-using UmbracoUserControl.Services;
 using UmbracoUserControl.Services.Interfaces;
 
 namespace UmbracoUserControl.Controllers
@@ -19,6 +16,7 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult LookUpUser(FindUserModel model)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
@@ -62,6 +60,7 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ResetPassword(PasswordResetModel model)
         {
             if (!ModelState.IsValid) return View("PasswordResetVerification", model);
@@ -85,6 +84,7 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CreateUser(UmbracoUserModel model)
         {
             if (!ModelState.IsValid)

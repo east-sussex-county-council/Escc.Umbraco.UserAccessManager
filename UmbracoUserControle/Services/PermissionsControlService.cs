@@ -18,8 +18,6 @@ namespace UmbracoUserControl.Services
         private readonly IDatabaseService databaseService;
         private readonly IUserControlService userControlService;
 
-        private ILogger Logger { get; set; }
-
         public PermissionsControlService(IDatabaseService databaseService, IUmbracoService umbracoService, IUserControlService userControlService)
         {
             this.databaseService = databaseService;
@@ -259,6 +257,26 @@ namespace UmbracoUserControl.Services
                 var pagesWithoutAuthor = permissionList as PermissionsModel[] ?? permissionList.ToArray();
 
                 return !pagesWithoutAuthor.IsNullOrEmpty() ? pagesWithoutAuthor : null;
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+
+                throw;
+            }
+        }
+
+        public void ToggleEditor(ContentTreeViewModel model)
+        {
+            try
+            {
+                var editermodel = new EditorModel { UserId = model.UserId, FullName = model.FullName };
+                if (model.isEditor)
+                {
+                    databaseService.DeleteEditor(editermodel);
+                    return;
+                }
+                databaseService.SetEditor(editermodel);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,4 @@
 ﻿@model FindUserModel
-@using System.Activities.Expressions
-@using System.ComponentModel.DataAnnotations
 @using PagedList.Mvc;
 @using UmbracoUserControl.Models
 @{
@@ -20,16 +18,9 @@
             @Html.ActionLink("Reset Password", "InitiatePasswordReset", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress }, new { @class = "btn btn-success", @role = "button" })
 
             @{
-        if (@user.Lock != false)
-        {
-            @Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" })
-        }
-        else
-        {
-            @Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-warning", @role = "button" })
-        }
+                @(@user.Lock != false ? Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" }) : Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-warning", @role = "button" }))
 
-        @Html.ActionLink("User Permissions", "Index", "Permissions", new { id = @user.UserId }, new { @class = "btn btn-info", @role = "button" })
+                @Html.ActionLink("User Permissions", "Index", "Permissions", new { id = @user.UserId }, new { @class = "btn btn-info", @role = "button" })
             }
         </div>
     }

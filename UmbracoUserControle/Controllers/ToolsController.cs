@@ -8,20 +8,20 @@ namespace UmbracoUserControl.Controllers
     public class ToolsController : Controller
     {
         private readonly IPermissionsControlService permissionsControlService;
-        private readonly IUserControlService userControlService;
 
-        public ToolsController(IPermissionsControlService permissionsControlService, IUserControlService userControlService)
+        public ToolsController(IPermissionsControlService permissionsControlService)
         {
             this.permissionsControlService = permissionsControlService;
-            this.userControlService = userControlService;
         }
 
         // GET: Tools
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult CheckPagePermissions(string url)
         {
             var modelList = permissionsControlService.CheckPagePermissions(url);
@@ -33,6 +33,7 @@ namespace UmbracoUserControl.Controllers
             return PartialView("ToolsError");
         }
 
+        [HttpGet]
         public ActionResult CheckUserPermissions(FindUserModel model)
         {
             var modelList = permissionsControlService.CheckUserPermissions(model);
@@ -45,6 +46,7 @@ namespace UmbracoUserControl.Controllers
             return PartialView("ToolsError");
         }
 
+        [HttpGet]
         public ActionResult CheckPageWithoutAuthor()
         {
             var modelList = permissionsControlService.PagesWithoutAuthor();

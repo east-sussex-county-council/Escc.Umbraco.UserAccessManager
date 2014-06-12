@@ -1,5 +1,5 @@
-﻿using Castle.Core.Internal;
-using Microsoft.Ajax.Utilities;
+﻿using Antlr.Runtime.Misc;
+using Castle.Core.Internal;
 using System.Linq;
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
@@ -33,6 +33,7 @@ namespace UmbracoUserControl.Controllers
             return PartialView("ContentTree", model);
         }
 
+        [HttpGet]
         public JsonResult PopTreeRootResult(ContentTreeViewModel model)
         {
             var modelList = permissionsControlService.GetContentRoot(model);
@@ -89,17 +90,15 @@ namespace UmbracoUserControl.Controllers
         [HttpGet]
         public JsonResult CheckDestinationUser(FindUserModel model)
         {
-            if (!userControlService.LookupUsers(model).IsNullOrEmpty())
-            {
-                var user = userControlService.LookupUsers(model).First();
+            if (userControlService.LookupUsers(model).IsNullOrEmpty()) return Json(false, JsonRequestBehavior.AllowGet);
 
-                return Json(user, JsonRequestBehavior.AllowGet);
-            }
+            var user = userControlService.LookupUsers(model).First();
 
-            return Json(false, JsonRequestBehavior.AllowGet);
+            return Json(user, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult CopyPermissionsForUser(int sourceId, int targetId)
         {
             var isRedirect = permissionsControlService.ClonePermissions(sourceId, targetId);
@@ -109,6 +108,14 @@ namespace UmbracoUserControl.Controllers
                 redirectUrl = Url.Action("Index", targetId),
                 isRedirect
             });
+        }
+
+        [HttpGet]
+        public ActionResult ToggleEditor(ContentTreeViewModel model)
+        {
+            permissionsControlService.ToggleEditor(model);
+
+            return Index(model.UserId);
         }
     }
 }

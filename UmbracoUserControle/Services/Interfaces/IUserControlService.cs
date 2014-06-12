@@ -10,12 +10,12 @@ namespace UmbracoUserControl.Services.Interfaces
 
         ContentTreeViewModel LookupUserById(int id);
 
-        bool InitiatePasswordReset(UmbracoUserControl.Models.PasswordResetModel model, string url);
+        bool InitiatePasswordReset(PasswordResetModel model, string url);
 
-        bool ResetPassword(UmbracoUserControl.Models.PasswordResetModel model);
+        bool ResetPassword(PasswordResetModel model);
 
-        bool CreateUser(UmbracoUserControl.Models.UmbracoUserModel model);
+        bool CreateUser(UmbracoUserModel model);
 
-        bool ToggleLock(Models.UmbracoUserModel umbracoUserModel);
+        bool ToggleLock(UmbracoUserModel umbracoUserModel);
     }
 }

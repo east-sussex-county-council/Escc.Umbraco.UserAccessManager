@@ -2,6 +2,7 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using log4net.Config;
 
 namespace UmbracoUserControl.IOC.Installers
 {
@@ -12,7 +13,7 @@ namespace UmbracoUserControl.IOC.Installers
             //container.AddFacility<LoggingFacility>(f => f.UseLog4Net("log4net.config"));
             container.AddFacility<LoggingFacility>(f => f.UseLog4Net());
             //container.AddFacility<LoggingFacility>(f => f.UseLog4Net());
-            log4net.Config.XmlConfigurator.Configure();
+            XmlConfigurator.Configure();
         }
     }
 }

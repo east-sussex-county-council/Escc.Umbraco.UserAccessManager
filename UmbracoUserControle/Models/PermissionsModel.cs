@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using PetaPoco;
+using System;
 
 namespace UmbracoUserControl.Models
 {
-    [PetaPoco.TableName("permissions")]
-    [PetaPoco.PrimaryKey("PermissionId")]
+    [TableName("permissions")]
+    [PrimaryKey("PermissionId")]
     public class PermissionsModel
     {
         public int PermissionId { get; set; }
@@ -17,7 +15,7 @@ namespace UmbracoUserControl.Models
 
         public DateTime? Created { get; set; }
 
-        [PetaPoco.Ignore]
+        [Ignore]
         public int TargetId { get; set; }
 
         public string PageName { get; set; }

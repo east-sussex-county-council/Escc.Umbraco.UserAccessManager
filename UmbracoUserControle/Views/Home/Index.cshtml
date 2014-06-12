@@ -9,6 +9,7 @@
         <p>@TempData["Message"]</p>
         @using (Html.BeginForm("LookUpUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
         {
+            @Html.AntiForgeryToken()
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-btn">
@@ -19,7 +20,7 @@
                         </ul>
                     </div>
                     <input type="email" class="form-control" id="searchterm" name="emailAddress" placeholder="Email Address" />
-                        <button class="btn btn-primary" type="submit">Go!</button>
+                    <button class="btn btn-primary" type="submit">Go!</button>
                 </div>
             </div>
         }

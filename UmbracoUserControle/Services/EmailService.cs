@@ -1,11 +1,7 @@
-﻿using Castle.MicroKernel.Registration;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
-using System.Linq;
 using System.Net.Mail;
 using UmbracoUserControl.Models;
-using UmbracoUserControl.Services;
 using UmbracoUserControl.Services.Interfaces;
 
 namespace Umbraco7._0._0.Services

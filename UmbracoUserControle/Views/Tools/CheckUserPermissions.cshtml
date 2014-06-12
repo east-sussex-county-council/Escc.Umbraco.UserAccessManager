@@ -1,19 +1,19 @@
-﻿@model System.Collections.Generic.IList<UmbracoUserControl.Models.PermissionsModel>
+﻿@model IList<UmbracoUserControl.Models.PermissionsModel>
 
-    <h4>@Model.First().FullName is a web author for the following pages</h4>
+<h4>@Model.First().FullName is a web author for the following pages</h4>
 
-    <ul class="list-group">
-        @foreach (var page in @Model)
+<ul class="list-group">
+    @foreach (var page in @Model)
         {
-            <li class="list-group-item">
-                <ul>
-                    <li>
-                        <p>@page.PageId</p>
-                    </li>
-                    <li>
-                        <p>@page.PageName</p>
-                    </li>
-                </ul>
-            </li>
+        <li class="list-group-item">
+            <ul>
+                <li>
+                    <p>@page.PageId</p>
+                </li>
+                <li>
+                    <p>@page.PageName</p>
+                </li>
+            </ul>
+        </li>
         }
-    </ul>
+</ul>

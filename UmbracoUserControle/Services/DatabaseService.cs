@@ -1,6 +1,8 @@
-﻿using System;
+﻿using PetaPoco;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.DynamicData;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
 
@@ -8,11 +10,11 @@ namespace UmbracoUserControl.Services
 {
     public class DatabaseService : IDatabaseService
     {
-        private readonly PetaPoco.Database db;
+        private readonly Database db;
 
         public DatabaseService()
         {
-            db = new PetaPoco.Database("DefaultConnection");
+            db = new Database("DefaultConnection");
         }
 
         /// <summary>
@@ -87,6 +89,21 @@ namespace UmbracoUserControl.Services
                                               "left outer join [UmbracoUserAdminTest].[dbo].[Editors] as e on p.userid = e.userid " +
                                               "group by [PageId],[PageName] " +
                                               "having sum(case when e.userid is null then 1 else 0 end) = 0");
+        }
+
+        public IEnumerable<EditorModel> IsEditor(int userId)
+        {
+            return db.Query<EditorModel>("Where UserId = @0", userId);
+        }
+
+        public void SetEditor(EditorModel model)
+        {
+            db.Insert(model);
+        }
+
+        public void DeleteEditor(EditorModel model)
+        {
+            db.Delete<EditorModel>("WHERE UserId = @0", model.UserId);
         }
     }
 }
