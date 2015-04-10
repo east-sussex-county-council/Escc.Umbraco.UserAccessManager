@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <p>@TempData["Message"]</p>
+        <p class="highlight">@TempData["Message"]</p>
         @using (Html.BeginForm("LookUpUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
         {
             @Html.AntiForgeryToken()

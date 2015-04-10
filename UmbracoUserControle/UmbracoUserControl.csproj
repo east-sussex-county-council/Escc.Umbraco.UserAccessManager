@@ -144,6 +144,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Umbraco.Core, Version=1.0.5462.37503, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Umbraco.Core.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -238,6 +242,8 @@
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\UmbracoService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\functions.cs" />
+    <Compile Include="Utility\PostMessageError.cs" />
     <Compile Include="ViewModel\ContentTreeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -313,7 +319,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\customeJS.js" />
+    <Content Include="Scripts\customJS.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

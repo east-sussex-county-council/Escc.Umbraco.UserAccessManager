@@ -22,14 +22,22 @@ namespace UmbracoUserControl.Services.Interfaces
 
         IList<ContentTreeViewModel> GetContentRoot();
 
+        IList<ContentTreeViewModel> GetContentRoot(int uid);
+
         IList<ContentTreeViewModel> GetContentChild(int id);
+
+        IList<ContentTreeViewModel> GetContentChild(int id, int uid);
 
         bool SetContentPermissions(PermissionsModel model);
 
         bool RemoveContentPermissions(PermissionsModel model);
 
-        IList<PermissionsModel> CheckUserPremissions(int userId);
+        IList<PermissionsModel> CheckUserPermissions(int userId);
+
+        IList<PermissionsModel> CheckPagesWithoutAuthor();
 
         bool ClonePermissions(PermissionsModel model);
+
+        IList<PermissionsModel> CheckPagePermissions(string url);
     }
 }

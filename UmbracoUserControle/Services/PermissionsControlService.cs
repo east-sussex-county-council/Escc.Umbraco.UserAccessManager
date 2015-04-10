@@ -1,11 +1,10 @@
-﻿using Castle.Core.Internal;
-using Castle.Core.Logging;
-using Exceptionless;
-using Microsoft.Ajax.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using Castle.Core.Internal;
+using Exceptionless;
+using Microsoft.Ajax.Utilities;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
 using UmbracoUserControl.ViewModel;
@@ -14,29 +13,25 @@ namespace UmbracoUserControl.Services
 {
     public class PermissionsControlService : IPermissionsControlService
     {
-        private readonly IUmbracoService umbracoService;
-        private readonly IDatabaseService databaseService;
-        private readonly IUserControlService userControlService;
+        private readonly IUmbracoService _umbracoService;
+        private readonly IDatabaseService _databaseService;
+        private readonly IUserControlService _userControlService;
 
         public PermissionsControlService(IDatabaseService databaseService, IUmbracoService umbracoService, IUserControlService userControlService)
         {
-            this.databaseService = databaseService;
-            this.umbracoService = umbracoService;
-            this.userControlService = userControlService;
-        }
-
-        private static bool UserHasPermissions(IEnumerable<PermissionsModel> modelList, int pageId)
-        {
-            return modelList.Any(model => model.PageId == pageId);
+            _databaseService = databaseService;
+            _umbracoService = umbracoService;
+            _userControlService = userControlService;
         }
 
         public IList<ContentTreeViewModel> GetContentRoot(ContentTreeViewModel contentModel)
         {
             try
             {
-                var modelList = umbracoService.GetContentRoot();
-                var pageCheckList = databaseService.CheckUserPermissions(contentModel.UserId);
-                var permissionsModels = pageCheckList as IList<PermissionsModel> ?? pageCheckList.ToList();
+                var modelList = _umbracoService.GetContentRoot(contentModel.UserId);
+                //var modelList = _umbracoService.GetContentRoot();
+                //var pageCheckList = _databaseService.CheckUserPermissions(contentModel.UserId);
+                //var permissionsModels = pageCheckList as IList<PermissionsModel> ?? pageCheckList.ToList();
 
                 foreach (var model in modelList)
                 {
@@ -46,12 +41,21 @@ namespace UmbracoUserControl.Services
                     model.lazy = true;
                     model.UserId = contentModel.UserId;
 
-                    if (permissionsModels.IsNullOrEmpty()) continue;
-
-                    if (UserHasPermissions(permissionsModels, model.PageId))
+                    // GS Start
+                    // if no permissions at all, then there will be only one element which will contain a "-"
+                    // If only the default permission then there will only be one element which will contain "F" (Browse Node)
+                    if (model.UserPermissions.Count() > 1 || (model.UserPermissions.ElementAt(0)[0] != "-" && model.UserPermissions.ElementAt(0)[0] != "F"))
                     {
                         model.selected = true;
                     }
+                    // GS End
+
+                    //if (permissionsModels.IsNullOrEmpty()) continue;
+
+                    //if (UserHasPermissions(permissionsModels, model.PageId))
+                    //{
+                    //    model.selected = true;
+                    //}
                 }
 
                 return modelList;
@@ -64,13 +68,47 @@ namespace UmbracoUserControl.Services
             }
         }
 
+        //public IList<ContentTreeViewModel> GetChildNodes(ContentTreeViewModel contentModel)
+        //{
+        //    try
+        //    {
+        //        var modelList = _umbracoService.GetContentChild(contentModel.PageId);
+        //        var pageCheckList = _databaseService.CheckUserPermissions(contentModel.UserId);
+        //        var permissionsModels = pageCheckList as IList<PermissionsModel> ?? pageCheckList.ToList();
+
+        //        foreach (var model in modelList)
+        //        {
+        //            model.key = model.PageId;
+        //            model.title = model.PageName;
+        //            model.folder = false;
+        //            model.lazy = false;
+        //            model.UserId = contentModel.UserId;
+
+        //            if (permissionsModels.IsNullOrEmpty()) continue;
+
+        //            if (UserHasPermissions(permissionsModels, model.PageId))
+        //            {
+        //                model.selected = true;
+        //            }
+        //        }
+
+        //        return modelList;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.ToExceptionless().Submit();
+
+        //        throw;
+        //    }
+        //}
+
         public IList<ContentTreeViewModel> GetContentChild(ContentTreeViewModel contentModel)
         {
             try
             {
-                var modelList = umbracoService.GetContentChild(contentModel.RootId);
-                var pageCheckList = databaseService.CheckUserPermissions(contentModel.UserId);
-                var permissionsModels = pageCheckList as IList<PermissionsModel> ?? pageCheckList.ToList();
+                var modelList = _umbracoService.GetContentChild(contentModel.RootId, contentModel.UserId);
+                //var pageCheckList = _databaseService.CheckUserPermissions(contentModel.UserId);
+                //var permissionsModels = pageCheckList as IList<PermissionsModel> ?? pageCheckList.ToList();
 
                 foreach (var model in modelList)
                 {
@@ -80,12 +118,21 @@ namespace UmbracoUserControl.Services
                     model.lazy = true;
                     model.UserId = contentModel.UserId;
 
-                    if (permissionsModels.IsNullOrEmpty()) continue;
-
-                    if (UserHasPermissions(permissionsModels, model.PageId))
+                    // GS Start
+                    // if no permissions at all, then there will be only one element which will contain a "-"
+                    // If only the default permission then there will only be one element which will contain "F" (Browse Node)
+                    if (model.UserPermissions.Count() > 1 || (model.UserPermissions.ElementAt(0)[0] != "-" && model.UserPermissions.ElementAt(0)[0] != "F"))
                     {
                         model.selected = true;
                     }
+                    // GS End
+
+                    //if (permissionsModels.IsNullOrEmpty()) continue;
+
+                    //if (UserHasPermissions(permissionsModels, model.PageId))
+                    //{
+                    //    model.selected = true;
+                    //}
                 }
 
                 return modelList;
@@ -102,7 +149,7 @@ namespace UmbracoUserControl.Services
         {
             try
             {
-                var user = userControlService.LookupUserById(model.UserId);
+                var user = _userControlService.LookupUserById(model.UserId);
 
                 var permissionsModel = new PermissionsModel
                 {
@@ -114,11 +161,11 @@ namespace UmbracoUserControl.Services
                     EmailAddress = user.EmailAddress
                 };
 
-                var success = umbracoService.SetContentPermissions(permissionsModel);
+                var success = _umbracoService.SetContentPermissions(permissionsModel);
 
                 if (!success) return false;
 
-                databaseService.AddUserPermissions(permissionsModel);
+                //_databaseService.AddUserPermissions(permissionsModel);
 
                 return true;
             }
@@ -140,11 +187,11 @@ namespace UmbracoUserControl.Services
                     UserId = model.UserId,
                 };
 
-                var success = umbracoService.RemoveContentPermissions(permissionsModel);
+                var success = _umbracoService.RemoveContentPermissions(permissionsModel);
 
                 if (!success) return false;
 
-                databaseService.RemoveUserPermissions(permissionsModel);
+                //_databaseService.RemoveUserPermissions(permissionsModel);
 
                 return true;
             }
@@ -156,24 +203,24 @@ namespace UmbracoUserControl.Services
             }
         }
 
-        public bool SyncUserPermissions(int userId)
-        {
-            try
-            {
-                var permissionsModels = umbracoService.CheckUserPremissions(userId);
+        //public bool SyncUserPermissions(int userId)
+        //{
+        //    try
+        //    {
+        //        var permissionsModels = _umbracoService.CheckUserPermissions(userId);
 
-                if (permissionsModels.IsNullOrEmpty()) return false;
+        //        //if (permissionsModels.IsNullOrEmpty()) return false;
 
-                databaseService.UpdateUserPermissions(userId, permissionsModels);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
+        //        _databaseService.UpdateUserPermissions(userId, permissionsModels);
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.ToExceptionless().Submit();
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
         public bool ClonePermissions(int sourceId, int targetId)
         {
@@ -181,13 +228,13 @@ namespace UmbracoUserControl.Services
             {
                 var model = new PermissionsModel { UserId = sourceId, TargetId = targetId };
 
-                var success = umbracoService.ClonePermissions(model);
+                return _umbracoService.ClonePermissions(model);
 
-                if (!success) return false;
+                //if (!success) return false;
 
-                var successDbUpdate = SyncUserPermissions(model.TargetId);
+                //var successDbUpdate = SyncUserPermissions(model.TargetId);
 
-                return successDbUpdate;
+                //return successDbUpdate;
             }
             catch (Exception ex)
             {
@@ -197,24 +244,32 @@ namespace UmbracoUserControl.Services
             }
         }
 
+        /// <summary>
+        /// Get assigned permissions for a specific page
+        /// </summary>
+        /// <param name="url">URL of page to check</param>
+        /// <returns>List of users with permissions to the supplied page</returns>
         public IEnumerable<PermissionsModel> CheckPagePermissions(string url)
         {
             try
             {
-                if (url.IsNullOrWhiteSpace()) return null;
+                if (string.IsNullOrEmpty(url)) return null;
+
+                if (!url.Contains("http")) return null;
 
                 var page = new Uri(url).AbsolutePath;
 
-                var pageName = page.Trim('/');
+                //var pageName = page.Trim('/');
 
-                if (pageName.IsNullOrWhiteSpace())
-                {
-                    pageName = ConfigurationManager.AppSettings["HomePage"];
-                }
+                //if (pageName.IsNullOrWhiteSpace())
+                //{
+                //    pageName = ConfigurationManager.AppSettings["HomePage"];
+                //}
 
-                var modelList = databaseService.CheckPagePermissions(pageName);
+                //var modelList = _databaseService.CheckPagePermissions(pageName);
 
-                var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
+                //var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
+                var permissionsModels = _umbracoService.CheckPagePermissions(url);
 
                 return permissionsModels;
             }
@@ -226,17 +281,23 @@ namespace UmbracoUserControl.Services
             }
         }
 
+        /// <summary>
+        /// Get permisions for supplied user
+        /// </summary>
+        /// <param name="model">user details</param>
+        /// <returns>List of pages</returns>
         public IList<PermissionsModel> CheckUserPermissions(FindUserModel model)
         {
             try
             {
-                var user = userControlService.LookupUsers(model);
+                var user = _userControlService.LookupUsers(model);
 
                 if (user.IsNullOrEmpty()) return null;
 
-                var modelList = databaseService.CheckUserPermissions(user.First().UserId);
+                //var modelList = _databaseService.CheckUserPermissions(user.First().UserId);
 
-                var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
+                //var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
+                var permissionsModels = _umbracoService.CheckUserPermissions(user.First().UserId);
 
                 return permissionsModels;
             }
@@ -252,11 +313,9 @@ namespace UmbracoUserControl.Services
         {
             try
             {
-                var permissionList = databaseService.PageWithoutAuthor();
+                var permissionsModels = _umbracoService.CheckPagesWithoutAuthor();
 
-                var pagesWithoutAuthor = permissionList as PermissionsModel[] ?? permissionList.ToArray();
-
-                return !pagesWithoutAuthor.IsNullOrEmpty() ? pagesWithoutAuthor : null;
+                return permissionsModels;
             }
             catch (Exception ex)
             {
@@ -266,24 +325,24 @@ namespace UmbracoUserControl.Services
             }
         }
 
-        public void ToggleEditor(ContentTreeViewModel model)
-        {
-            try
-            {
-                var editermodel = new EditorModel { UserId = model.UserId, FullName = model.FullName };
-                if (model.isEditor)
-                {
-                    databaseService.DeleteEditor(editermodel);
-                    return;
-                }
-                databaseService.SetEditor(editermodel);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
+        //public void ToggleEditor(ContentTreeViewModel model)
+        //{
+        //    try
+        //    {
+        //        var editermodel = new EditorModel { UserId = model.UserId, FullName = model.FullName };
+        //        if (model.isEditor)
+        //        {
+        //            _databaseService.DeleteEditor(editermodel);
+        //            return;
+        //        }
+        //        _databaseService.SetEditor(editermodel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.ToExceptionless().Submit();
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
     }
 }

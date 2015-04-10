@@ -8,11 +8,11 @@ namespace UmbracoUserControl.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IUserControlService userControlService;
+        private readonly IUserControlService _userControlService;
 
         public AdminController(IUserControlService userControlService)
         {
-            this.userControlService = userControlService;
+            _userControlService = userControlService;
         }
 
         [HttpPost]
@@ -20,6 +20,12 @@ namespace UmbracoUserControl.Controllers
         public ActionResult LookUpUser(FindUserModel model)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
+
+            // Either an email address or user name must be supplied
+            if (string.IsNullOrEmpty(model.EmailAddress) && string.IsNullOrEmpty(model.UserName))
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             return DisplayResults(model);
         }
@@ -31,7 +37,7 @@ namespace UmbracoUserControl.Controllers
 
             var pageIndex = model.Page ?? 1;
 
-            model.SearchResult = userControlService.LookupUsers(model).ToPagedList(pageIndex, 10);
+            model.SearchResult = _userControlService.LookupUsers(model).ToPagedList(pageIndex, 10);
 
             return View("UserLookup", model);
         }
@@ -43,14 +49,15 @@ namespace UmbracoUserControl.Controllers
 
             var url = String.Format("http://{0}:{1}{2}", Request.Url.Host, Request.Url.Port, Request.ApplicationPath);
 
-            var success = userControlService.InitiatePasswordReset(model, url);
+            var success = _userControlService.InitiatePasswordReset(model, url);
 
             if (success)
             {
-                TempData["Message"] = "Password reset proccess initiated, user will be emailed";
+                TempData["Message"] = "Password reset proccess initiated, user has been emailed";
             }
 
-            return RedirectToAction("Index", "Home");
+            return DisplayResults(new FindUserModel { EmailAddress = model.EmailAddress });
+            //return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -65,14 +72,14 @@ namespace UmbracoUserControl.Controllers
         {
             if (!ModelState.IsValid) return View("PasswordResetVerification", model);
 
-            var success = userControlService.ResetPassword(model);
+            var success = _userControlService.ResetPassword(model);
 
             if (success)
             {
                 return RedirectToAction("DisplaySuccess", "Admin");
             }
 
-            TempData["Message"] = "24-hour reset windows has elapsed, please contact ICT Service Desk to try again";
+            TempData["Message"] = "This link is no longer valid, please contact ICT Service Desk to try again";
 
             return RedirectToAction("PasswordResetVerification", "Admin", model);
         }
@@ -92,7 +99,26 @@ namespace UmbracoUserControl.Controllers
                 return View("CreateUser", model);
             }
 
-            var success = userControlService.CreateUser(model);
+            // Check that User does not already exist
+            FindUserModel find = new FindUserModel {EmailAddress = model.EmailAddress, UserName = null};
+            var user = _userControlService.LookupUsers(find);
+            if (user.Count > 0)
+            {
+                TempData["Message"] = "Email address already being used";
+                return View();
+            }
+
+            find.EmailAddress = null;
+            find.UserName = model.UserName;
+            user = _userControlService.LookupUsers(find);
+            if (user.Count > 0)
+            {
+                TempData["Message"] = "Logon ID already being used";
+                return View();
+            }
+
+
+            var success = _userControlService.CreateUser(model);
 
             return success ? RedirectToAction("InitiatePasswordReset", "Admin", model) : RedirectToAction("Index", "Home");
         }
@@ -100,11 +126,11 @@ namespace UmbracoUserControl.Controllers
         [HttpGet]
         public ActionResult DisableUser(UmbracoUserModel model)
         {
-            var success = userControlService.ToggleLock(model);
+            var success = _userControlService.ToggleLock(model);
 
             if (success)
             {
-                return RedirectToAction("Index", "Home");
+                return DisplayResults(new FindUserModel {EmailAddress = model.EmailAddress});
             }
 
             var findUserModel = new FindUserModel { EmailAddress = model.EmailAddress, UserName = model.UserName };

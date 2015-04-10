@@ -5,6 +5,8 @@
 
 <h2>Create new user</h2>
 
+<p class="highlight">@TempData["Message"]</p>
+
 <div class="row">
     <div class="col-md-6">
         @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
@@ -12,26 +14,25 @@
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
             <div class="form-group">
-                <label class="col-md-2 control-label" for="userName">Username</label>
+                @Html.Label("userName", "Logon ID", new {@class="col-md-3 control-label"})
                 <div class="col-md-4">
-                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Username" />
+                    @Html.TextBox("userName", "", new {@class = "form-control", @id = "userName", @placeholder = "Logon ID"})
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-2 control-label" for="fullName">Full Name</label>
+                @Html.Label("fullName", "Full Name", new { @class = "col-md-3 control-label" })
                 <div class="col-md-4">
-                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Full Name" />
+                    @Html.TextBox("fullName", "", new { @class="form-control", @id="fullName", @placeholder="Full Name"})
                 </div>
             </div>
             <div class="form-group">
-
-                <label class="col-md-2 control-label" for="emailAddress">Email Address</label>
+                @Html.Label("emailAddress", "Email Address", new { @class = "col-md-3 control-label" })
                 <div class="col-md-4">
-                    <input type="email" class="form-control" id="emailAddress" name="emailAddress" placeholder="Email Address" />
+                    @Html.TextBox("emailAddress", "", new { @class = "form-control", @id = "emailAddress", @placeholder = "Email Address" })
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-4">
+                <div class="col-md-offset-3 col-md-4">
                     <button class="btn btn-primary" type="submit">Go!</button>
                 </div>
             </div>

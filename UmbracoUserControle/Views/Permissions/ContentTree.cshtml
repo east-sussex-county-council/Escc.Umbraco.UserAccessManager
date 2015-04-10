@@ -2,16 +2,16 @@
 
 @Html.AntiForgeryToken()
 <div class="btn-group">
-    @Html.ActionLink("Sync user permissions", "CheckPermissionsForUser", "Permissions", new { id = @Model.UserId }, new { @class = "btn btn-info", @role = "button" })
-
     <!-- Button trigger modal -->
     <button class="btn btn-success" data-toggle="modal" data-target="#myModal">
-        Copy User Permissions
+        Copy user permissions
     </button>
 
-    @(Model.isEditor
-                            ? Html.ActionLink("Delete editor", "ToggleEditor", "Permissions", new { FullName = Model.FullName, UserId = Model.UserId, isEditor = Model.isEditor }, new { @class = "btn btn-danger", @role = "button" })
-                                    : Html.ActionLink("Set editor", "ToggleEditor", "Permissions", new { FullName = Model.FullName, UserId = Model.UserId, isEditor = Model.isEditor }, new { @class = "btn btn-primary", @role = "button" }))
+    @*Html.ActionLink("Sync user permissions", "CheckPermissionsForUser", "Permissions", new { id = @Model.UserId }, new { @class = "btn btn-info", @role = "button", title = "Synchronise permissions with website" })*@
+
+    @*@(Model.isEditor
+        ? Html.ActionLink("Delete editor", "ToggleEditor", "Permissions", new {Model.FullName, Model.UserId, Model.isEditor }, new { @class = "btn btn-danger", @role = "button" })
+        : Html.ActionLink("Set editor", "ToggleEditor", "Permissions", new {Model.FullName, Model.UserId, Model.isEditor }, new { @class = "btn btn-primary", @role = "button" }))*@
 </div>
 
 <!-- Modal -->
@@ -23,13 +23,13 @@
                 <h4 class="modal-title" id="myModalLabel">Copy Permissions</h4>
             </div>
             <div class="modal-body" id="lesspadding">
-                <p>Find the user you want to give permissions to</p>
+                <p>Find the user you want to copy permissions from</p>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-btn">
                             <button type="button" id="searchinput" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Email<span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li id="menuiftemuser"><a>Username</a></li>
+                                <li id="menuitemuser"><a>Username</a></li>
                                 <li id="menuitememail"><a>Email Address</a></li>
                             </ul>
                         </div>
@@ -37,12 +37,12 @@
                         <button class="btn btn-primary" type="button" id="finduser">Find User!</button>
                     </div>
                 </div>
-                <div class="result">
+                <div id="result">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="postAjax">Copy</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="myModalClose">Close</button>
+                <button type="button" class="btn btn-primary" id="copyPerms" disabled="disabled">Copy</button>
             </div>
         </div>
     </div>
@@ -52,4 +52,4 @@
 </div>
 
 <p class="hidden" id="userId">@Model.UserId</p>
-<p class="hidden" id="apppath">@Request.ApplicationPath</p>
+<p class="hidden" id="apppath">@Html.Raw(Request.ApplicationPath + ".")</p>

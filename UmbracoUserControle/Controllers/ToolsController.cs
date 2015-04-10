@@ -7,11 +7,11 @@ namespace UmbracoUserControl.Controllers
 {
     public class ToolsController : Controller
     {
-        private readonly IPermissionsControlService permissionsControlService;
+        private readonly IPermissionsControlService _permissionsControlService;
 
         public ToolsController(IPermissionsControlService permissionsControlService)
         {
-            this.permissionsControlService = permissionsControlService;
+            _permissionsControlService = permissionsControlService;
         }
 
         // GET: Tools
@@ -24,9 +24,10 @@ namespace UmbracoUserControl.Controllers
         [HttpGet]
         public ActionResult CheckPagePermissions(string url)
         {
-            var modelList = permissionsControlService.CheckPagePermissions(url);
+            var modelList = _permissionsControlService.CheckPagePermissions(url);
 
             if (!modelList.IsNullOrEmpty()) return PartialView("CheckPagePermissions", modelList);
+
             TempData["Message"] = "Either permissions have not been set for this page or page does not exist.";
             TempData["InputString"] = url;
 
@@ -36,7 +37,7 @@ namespace UmbracoUserControl.Controllers
         [HttpGet]
         public ActionResult CheckUserPermissions(FindUserModel model)
         {
-            var modelList = permissionsControlService.CheckUserPermissions(model);
+            var modelList = _permissionsControlService.CheckUserPermissions(model);
 
             if (!modelList.IsNullOrEmpty()) return PartialView("CheckUserPermissions", modelList);
 
@@ -47,9 +48,9 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpGet]
-        public ActionResult CheckPageWithoutAuthor()
+        public ActionResult CheckPagesWithoutAuthor()
         {
-            var modelList = permissionsControlService.PagesWithoutAuthor();
+            var modelList = _permissionsControlService.PagesWithoutAuthor();
 
             if (!modelList.IsNullOrEmpty()) return PartialView("PagesWithoutAuthors", modelList);
 

@@ -1,7 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Umbraco7._0._0.Services;
+using UmbracoUserControl.Services;
 using UmbracoUserControl.Services.Interfaces;
 
 namespace UmbracoUserControl.IOC.Installers

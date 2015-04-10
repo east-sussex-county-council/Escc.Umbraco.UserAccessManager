@@ -23,5 +23,8 @@ namespace UmbracoUserControl.Models
         public string FullName { get; set; }
 
         public string EmailAddress { get; set; }
+
+        [Ignore]
+        public string PagePath { get; set; }
     }
 }

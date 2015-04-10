@@ -1,7 +1,7 @@
-﻿using Antlr.Runtime.Misc;
-using Castle.Core.Internal;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Castle.Core.Internal;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
 using UmbracoUserControl.ViewModel;
@@ -10,19 +10,30 @@ namespace UmbracoUserControl.Controllers
 {
     public class PermissionsController : Controller
     {
-        private readonly IUserControlService userControlService;
-        private readonly IPermissionsControlService permissionsControlService;
+        private readonly IUserControlService _userControlService;
+        private readonly IPermissionsControlService _permissionsControlService;
 
         public PermissionsController(IUserControlService userControlService, IPermissionsControlService permissionsControlService)
         {
-            this.userControlService = userControlService;
-            this.permissionsControlService = permissionsControlService;
+            _userControlService = userControlService;
+            _permissionsControlService = permissionsControlService;
         }
 
         [HttpGet]
         public ActionResult Index(int id)
         {
-            var model = userControlService.LookupUserById(id);
+            var model = _userControlService.LookupUserById(id);
+
+            // Synchronise permissions when page loads
+            //var success = _permissionsControlService.SyncUserPermissions(id);
+            //if (success)
+            //{
+            //    TempData["Message"] = "Permissions synchronised with website";
+            //}
+            //else
+            //{
+            //    TempData["Message"] = "An error has occured - Tree has not been updated";
+            //}
 
             return View("Index", model);
         }
@@ -36,7 +47,7 @@ namespace UmbracoUserControl.Controllers
         [HttpGet]
         public JsonResult PopTreeRootResult(ContentTreeViewModel model)
         {
-            var modelList = permissionsControlService.GetContentRoot(model);
+            var modelList = _permissionsControlService.GetContentRoot(model);
 
             return Json(modelList, JsonRequestBehavior.AllowGet);
         }
@@ -44,7 +55,7 @@ namespace UmbracoUserControl.Controllers
         [HttpGet]
         public JsonResult PopTreeChildResult(ContentTreeViewModel model)
         {
-            var modelList = permissionsControlService.GetContentChild(model);
+            IList<ContentTreeViewModel> modelList = _permissionsControlService.GetContentChild(model);
 
             return Json(modelList, JsonRequestBehavior.AllowGet);
         }
@@ -54,7 +65,7 @@ namespace UmbracoUserControl.Controllers
         {
             if (model.selected)
             {
-                var success = permissionsControlService.SetContentPermissions(model);
+                var success = _permissionsControlService.SetContentPermissions(model);
 
                 if (success)
                 {
@@ -63,7 +74,7 @@ namespace UmbracoUserControl.Controllers
             }
             else
             {
-                var success = permissionsControlService.RemoveContentPermissions(model);
+                var success = _permissionsControlService.RemoveContentPermissions(model);
 
                 if (success)
                 {
@@ -74,25 +85,25 @@ namespace UmbracoUserControl.Controllers
             return Json(false, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public ActionResult CheckPermissionsForUser(int id)
-        {
-            var success = permissionsControlService.SyncUserPermissions(id);
+        //[HttpGet]
+        //public ActionResult CheckPermissionsForUser(int id)
+        //{
+        //    var success = _permissionsControlService.SyncUserPermissions(id);
 
-            if (!success)
-            {
-                TempData["Message"] = "An error has occured - Tree has not been updated";
-            }
-            //this needs to be looked at on failour
-            return Index(id);
-        }
+        //    if (!success)
+        //    {
+        //        TempData["Message"] = "An error has occured - Tree has not been updated";
+        //    }
+        //    //this needs to be looked at on failure
+        //    return Index(id);
+        //}
 
         [HttpGet]
         public JsonResult CheckDestinationUser(FindUserModel model)
         {
-            if (userControlService.LookupUsers(model).IsNullOrEmpty()) return Json(false, JsonRequestBehavior.AllowGet);
+            if (_userControlService.LookupUsers(model).IsNullOrEmpty()) return Json(false, JsonRequestBehavior.AllowGet);
 
-            var user = userControlService.LookupUsers(model).First();
+            var user = _userControlService.LookupUsers(model).First();
 
             return Json(user, JsonRequestBehavior.AllowGet);
         }
@@ -101,7 +112,7 @@ namespace UmbracoUserControl.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult CopyPermissionsForUser(int sourceId, int targetId)
         {
-            var isRedirect = permissionsControlService.ClonePermissions(sourceId, targetId);
+            var isRedirect = _permissionsControlService.ClonePermissions(sourceId, targetId);
 
             return Json(new
             {
@@ -110,12 +121,12 @@ namespace UmbracoUserControl.Controllers
             });
         }
 
-        [HttpGet]
-        public ActionResult ToggleEditor(ContentTreeViewModel model)
-        {
-            permissionsControlService.ToggleEditor(model);
+        //[HttpGet]
+        //public ActionResult ToggleEditor(ContentTreeViewModel model)
+        //{
+        //    _permissionsControlService.ToggleEditor(model);
 
-            return Index(model.UserId);
-        }
+        //    return Index(model.UserId);
+        //}
     }
 }

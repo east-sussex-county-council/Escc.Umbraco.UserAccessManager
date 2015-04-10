@@ -85,8 +85,8 @@ namespace UmbracoUserControlTest
 
             databaseServiceMock.Setup(x => x.GetResetDetails(passWordResetModel))
                 .Returns(passWordResetModelOut);
-            databaseServiceMock.Setup(x => x.CheckUserPermissions(1))
-                .Returns(permissionsModelsListOut);
+            //databaseServiceMock.Setup(x => x.CheckUserPermissions(1))
+            //    .Returns(permissionsModelsListOut);
 
             mockDatabaseService = databaseServiceMock.Object;
 

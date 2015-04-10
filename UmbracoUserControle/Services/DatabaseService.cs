@@ -1,8 +1,7 @@
-﻿using PetaPoco;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.DynamicData;
+using PetaPoco;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
 
@@ -10,11 +9,11 @@ namespace UmbracoUserControl.Services
 {
     public class DatabaseService : IDatabaseService
     {
-        private readonly Database db;
+        private readonly Database _db;
 
         public DatabaseService()
         {
-            db = new Database("DefaultConnection");
+            _db = new Database("DefaultConnection");
         }
 
         /// <summary>
@@ -23,7 +22,7 @@ namespace UmbracoUserControl.Services
         /// <param name="model">PasswordResetModel - UniqueResetId, TimeLimit and EmailAddress</param>
         public void SetResetDetails(PasswordResetModel model)
         {
-            db.Execute("EXEC SetResetDetails @UniqueResetId, @TimeLimit, @UserId, @EmailAddress", new { model.UniqueResetId, model.TimeLimit, model.UserId, model.EmailAddress });
+            _db.Execute("EXEC SetResetDetails @UniqueResetId, @TimeLimit, @UserId, @EmailAddress", new { model.UniqueResetId, model.TimeLimit, model.UserId, model.EmailAddress });
         }
 
         /// <summary>
@@ -33,7 +32,7 @@ namespace UmbracoUserControl.Services
         /// <returns>Updated model - TimeLimit and EmailAddress</returns>
         public PasswordResetModel GetResetDetails(PasswordResetModel model)
         {
-            return db.Query<PasswordResetModel>("SELECT [TimeLimit],[EmailAddress] FROM passwordReset WHERE [ResetId] = @0 and [UserId] = @1", model.UniqueResetId, model.UserId).FirstOrDefault();
+            return _db.Query<PasswordResetModel>("SELECT [TimeLimit],[EmailAddress] FROM passwordReset WHERE [ResetId] = @0 and [UserId] = @1", model.UniqueResetId, model.UserId).FirstOrDefault();
         }
 
         /// <summary>
@@ -42,68 +41,68 @@ namespace UmbracoUserControl.Services
         /// <param name="model">PasswordResetModel - UniqueResetId and UserId</param>
         public void DeleteResetDetails(PasswordResetModel model)
         {
-            db.Execute("Exec DeleteResetDetails @UniqueResetId, @UserId", new { model.UniqueResetId, model.UserId });
+            _db.Execute("Exec DeleteResetDetails @UniqueResetId, @UserId", new { model.UniqueResetId, model.UserId });
         }
 
-        public IEnumerable<PermissionsModel> CheckUserPermissions(int userId)
-        {
-            return db.Query<PermissionsModel>("SELECT * FROM [UmbracoUserAdminTest].[dbo].[permissions] where [UserId] = @0", userId);
-        }
+        //public IEnumerable<PermissionsModel> CheckUserPermissions(int userId)
+        //{
+        //    return _db.Query<PermissionsModel>("SELECT * FROM permissions where [UserId] = @0", userId);
+        //}
 
-        public void AddUserPermissions(PermissionsModel model)
-        {
-            db.Insert(model);
-        }
+        //public void AddUserPermissions(PermissionsModel model)
+        //{
+        //    _db.Insert(model);
+        //}
 
-        public void RemoveUserPermissions(PermissionsModel model)
-        {
-            db.Delete<PermissionsModel>("WHERE PageId = @0 and UserId = @1", model.PageId, model.UserId);
-        }
+        //public void RemoveUserPermissions(PermissionsModel model)
+        //{
+        //    _db.Delete<PermissionsModel>("WHERE PageId = @0 and UserId = @1", model.PageId, model.UserId);
+        //}
 
-        public void UpdateUserPermissions(int userId, IList<PermissionsModel> permissionsModelList)
-        {
-            using (var transaction = db.GetTransaction())
-            {
-                db.Delete<PermissionsModel>("WHERE UserId = @0", userId);
+        //public void UpdateUserPermissions(int userId, IList<PermissionsModel> permissionsModelList)
+        //{
+        //    using (var transaction = _db.GetTransaction())
+        //    {
+        //        _db.Delete<PermissionsModel>("WHERE UserId = @0", userId);
 
-                foreach (var permission in permissionsModelList)
-                {
-                    permission.Created = DateTime.Now;
+        //        foreach (var permission in permissionsModelList)
+        //        {
+        //            permission.Created = DateTime.Now;
 
-                    db.Insert(permission);
-                }
+        //            _db.Insert(permission);
+        //        }
 
-                transaction.Complete();
-            }
-        }
+        //        transaction.Complete();
+        //    }
+        //}
 
-        public IEnumerable<PermissionsModel> CheckPagePermissions(string pageName)
-        {
-            return db.Query<PermissionsModel>("Where PageName = @0", pageName);
-        }
+        //public IEnumerable<PermissionsModel> CheckPagePermissions(string pageName)
+        //{
+        //    return _db.Query<PermissionsModel>("Where PageName = @0", pageName);
+        //}
 
         public IEnumerable<PermissionsModel> PageWithoutAuthor()
         {
-            return db.Query<PermissionsModel>("SELECT [PageId],[PageName] " +
-                                              "FROM [UmbracoUserAdminTest].[dbo].[permissions] as p " +
-                                              "left outer join [UmbracoUserAdminTest].[dbo].[Editors] as e on p.userid = e.userid " +
+            return _db.Query<PermissionsModel>("SELECT [PageId],[PageName] " +
+                                              "FROM permissions as p " +
+                                              "left outer join Editors as e on p.userid = e.userid " +
                                               "group by [PageId],[PageName] " +
                                               "having sum(case when e.userid is null then 1 else 0 end) = 0");
         }
 
         public IEnumerable<EditorModel> IsEditor(int userId)
         {
-            return db.Query<EditorModel>("Where UserId = @0", userId);
+            return _db.Query<EditorModel>("Where UserId = @0", userId);
         }
 
         public void SetEditor(EditorModel model)
         {
-            db.Insert(model);
+            _db.Insert(model);
         }
 
         public void DeleteEditor(EditorModel model)
         {
-            db.Delete<EditorModel>("WHERE UserId = @0", model.UserId);
+            _db.Delete<EditorModel>("WHERE UserId = @0", model.UserId);
         }
     }
 }

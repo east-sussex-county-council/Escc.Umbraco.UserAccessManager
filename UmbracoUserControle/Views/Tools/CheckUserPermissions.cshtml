@@ -2,18 +2,13 @@
 
 <h4>@Model.First().FullName is a web author for the following pages</h4>
 
-<ul class="list-group">
+<ul class="list-group-x">
     @foreach (var page in @Model)
         {
-        <li class="list-group-item">
-            <ul>
-                <li>
-                    <p>@page.PageId</p>
-                </li>
-                <li>
-                    <p>@page.PageName</p>
-                </li>
-            </ul>
+        <li class="list-group-item-x">
+            <p>                
+                @page.PagePath@page.PageName (@page.PageId)
+            </p>
         </li>
         }
 </ul>

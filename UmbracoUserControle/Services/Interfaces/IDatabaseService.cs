@@ -11,22 +11,22 @@ namespace UmbracoUserControl.Services.Interfaces
 
         void SetResetDetails(PasswordResetModel model);
 
-        IEnumerable<PermissionsModel> CheckUserPermissions(int userId);
+        //IEnumerable<PermissionsModel> CheckUserPermissions(int userId);
 
-        void AddUserPermissions(PermissionsModel model);
+        //void AddUserPermissions(PermissionsModel model);
 
-        void RemoveUserPermissions(PermissionsModel databaseModel);
+        //void RemoveUserPermissions(PermissionsModel databaseModel);
 
-        void UpdateUserPermissions(int userId, IList<PermissionsModel> permissionsModelList);
+        //void UpdateUserPermissions(int userId, IList<PermissionsModel> permissionsModelList);
 
-        IEnumerable<PermissionsModel> CheckPagePermissions(string pageName);
+        //IEnumerable<PermissionsModel> CheckPagePermissions(string pageName);
 
-        IEnumerable<PermissionsModel> PageWithoutAuthor();
+        //IEnumerable<PermissionsModel> PageWithoutAuthor();
 
-        IEnumerable<EditorModel> IsEditor(int userId);
+        //IEnumerable<EditorModel> IsEditor(int userId);
 
-        void SetEditor(EditorModel model);
+        //void SetEditor(EditorModel model);
 
-        void DeleteEditor(EditorModel model);
+        //void DeleteEditor(EditorModel model);
     }
 }

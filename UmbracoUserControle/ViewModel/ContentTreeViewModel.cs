@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Umbraco.Core.Models.Membership;
 
 namespace UmbracoUserControl.ViewModel
 {
@@ -27,6 +29,8 @@ namespace UmbracoUserControl.ViewModel
         public bool Published { get; set; }
 
         public DateTime PublishedDate { get; set; }
+
+        public IEnumerable<string[]> UserPermissions { get; set; }
 
         /// Info for the User
 

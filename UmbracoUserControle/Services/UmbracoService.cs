@@ -11,7 +11,7 @@ namespace UmbracoUserControl.Services
 {
     public class UmbracoService : IUmbracoService
     {
-        private readonly HttpClient client;
+        private readonly HttpClient _client;
 
         public UmbracoService()
         {
@@ -23,7 +23,7 @@ namespace UmbracoUserControl.Services
                     new NetworkCredential(ConfigurationManager.AppSettings["apiuser"],
                         ConfigurationManager.AppSettings["apikey"])
             };
-            client = new HttpClient(handler) { BaseAddress = new Uri(siteUri) };
+            _client = new HttpClient(handler) { BaseAddress = new Uri(siteUri) };
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace UmbracoUserControl.Services
         /// <returns> Response code - Ok or BadGateway</returns>
         private HttpResponseMessage GetMessage(string uriPath)
         {
-            var response = client.GetAsync(uriPath).Result;
+            var response = _client.GetAsync(uriPath).Result;
             return response;
         }
 
@@ -41,18 +41,20 @@ namespace UmbracoUserControl.Services
         /// Sends a Post request to a web API wit the given URL
         /// </summary>
         /// <typeparam name="T model">Custom model dependong on method invoked</typeparam>
+        /// <typeparam name="T">Return Type</typeparam>
         /// <param name="uriPath"> of the web API method</param>
+        /// <param name="model">request info</param>
         /// <returns>List of items that matches the given model</returns>
         private HttpResponseMessage PostMessage<T>(string uriPath, T model)
         {
-            var response = client.PostAsJsonAsync(uriPath, model).Result;
+            var response = _client.PostAsJsonAsync(uriPath, model).Result;
             return response;
         }
 
         /// <summary>
         /// Get request to Umbraco web service and retun a list of users with matching emailaddress
         /// </summary>
-        /// <param name="emailaddress"></param>
+        /// <param name="emailaddress">Email address to search for</param>
         /// <returns>List of Umbraco User</returns>
         public IList<UmbracoUserModel> GetAllUsersByEmail(string emailaddress)
         {
@@ -88,10 +90,11 @@ namespace UmbracoUserControl.Services
         /// <param name="model">UmbracoUserModel - UserName, FullName and EmailAddress</param>
         public void CreateNewUser(UmbracoUserModel model)
         {
-            var response = PostMessage("PostNewUsers", model);
+            var response = PostMessage("PostCreateUser", model);
 
             if (response.IsSuccessStatusCode) return;
             var ex = response.Content.ReadAsAsync<Exception>().Result;
+            //var ex = response.Content.ReadAsAsync<PostMessageError>().Result;
             throw ex;
         }
 
@@ -143,9 +146,27 @@ namespace UmbracoUserControl.Services
             return modelList;
         }
 
+        public IList<ContentTreeViewModel> GetContentRoot(int uid)
+        {
+            var response = GetMessage("GetContentRootUserPerms?userId=" + uid);
+
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
+            return modelList;
+        }
+
         public IList<ContentTreeViewModel> GetContentChild(int id)
         {
             var response = GetMessage("GetContentChild?id=" + id);
+
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
+            return modelList;
+        }
+
+        public IList<ContentTreeViewModel> GetContentChild(int id, int uid)
+        {
+            var response = GetMessage("GetContentChildUserPerms?id=" + id + "&userId=" + uid);
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
@@ -166,7 +187,7 @@ namespace UmbracoUserControl.Services
             return response.IsSuccessStatusCode;
         }
 
-        public IList<PermissionsModel> CheckUserPremissions(int userId)
+        public IList<PermissionsModel> CheckUserPermissions(int userId)
         {
             var response = GetMessage("GetCheckUserPermissions?userId=" + userId);
 
@@ -174,6 +195,24 @@ namespace UmbracoUserControl.Services
             var model = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
 
             return model;
+        }
+
+        public IList<PermissionsModel> CheckPagePermissions(string url)
+        {
+            var response = GetMessage("GetPagePermissions?url=" + url);
+
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
+            return modelList;
+        }
+
+        public IList<PermissionsModel> CheckPagesWithoutAuthor()
+        {
+            var response = GetMessage("GetPagesWithoutAuthor");
+
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
+            return modelList;
         }
 
         public bool ClonePermissions(PermissionsModel model)

@@ -14,7 +14,7 @@ namespace UmbracoUserControl.Services.Interfaces
 
         bool RemoveContentPermissions(ContentTreeViewModel model);
 
-        bool SyncUserPermissions(int userId);
+        //bool SyncUserPermissions(int userId);
 
         bool ClonePermissions(int sourceId, int targetId);
 
@@ -24,6 +24,6 @@ namespace UmbracoUserControl.Services.Interfaces
 
         IEnumerable<PermissionsModel> PagesWithoutAuthor();
 
-        void ToggleEditor(ContentTreeViewModel model);
+        //void ToggleEditor(ContentTreeViewModel model);
     }
 }

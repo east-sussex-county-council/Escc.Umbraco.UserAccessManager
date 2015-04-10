@@ -1,8 +1,7 @@
-﻿using Castle.Core.Internal;
-using Castle.Core.Logging;
-using Exceptionless;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Castle.Core.Internal;
+using Exceptionless;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
 using UmbracoUserControl.ViewModel;
@@ -11,15 +10,15 @@ namespace UmbracoUserControl.Services
 {
     public class UserControlService : IUserControlService
     {
-        private readonly IUmbracoService umbracoService;
-        private readonly IDatabaseService databaseService;
-        private readonly IEmailService emailService;
+        private readonly IUmbracoService _umbracoService;
+        private readonly IDatabaseService _databaseService;
+        private readonly IEmailService _emailService;
 
         public UserControlService(IDatabaseService databaseService, IUmbracoService umbracoService, IEmailService emailService)
         {
-            this.databaseService = databaseService;
-            this.umbracoService = umbracoService;
-            this.emailService = emailService;
+            _databaseService = databaseService;
+            _umbracoService = umbracoService;
+            _emailService = emailService;
         }
 
         public IList<UmbracoUserModel> LookupUsers(FindUserModel model)
@@ -30,13 +29,13 @@ namespace UmbracoUserControl.Services
             {
                 if (model.IsEmailRequest)
                 {
-                    var modelList = umbracoService.GetAllUsersByEmail(model.EmailAddress);
+                    var modelList = _umbracoService.GetAllUsersByEmail(model.EmailAddress);
 
                     return modelList;
                 }
                 if (model.IsUserRequest)
                 {
-                    var modelList = umbracoService.GetAllUsersByUsername(model.UserName);
+                    var modelList = _umbracoService.GetAllUsersByUsername(model.UserName);
 
                     return modelList;
                 }
@@ -54,9 +53,9 @@ namespace UmbracoUserControl.Services
         {
             try
             {
-                var model = umbracoService.GetAllUsersById(id);
+                var model = _umbracoService.GetAllUsersById(id);
 
-                model.isEditor = IsEditor(id);
+                //model.isEditor = IsEditor(id);
 
                 return model;
             }
@@ -82,9 +81,9 @@ namespace UmbracoUserControl.Services
 
             try
             {
-                databaseService.SetResetDetails(model);
+                _databaseService.SetResetDetails(model);
 
-                emailService.PasswordResetEmail(model, url);
+                _emailService.PasswordResetEmail(model, url);
 
                 return true;
             }
@@ -105,17 +104,17 @@ namespace UmbracoUserControl.Services
         {
             try
             {
-                var validRequests = databaseService.GetResetDetails(model);
+                var validRequests = _databaseService.GetResetDetails(model);
 
                 model.EmailAddress = validRequests.EmailAddress;
 
                 if (DateTime.Now.AddSeconds(-5) <= validRequests.TimeLimit.AddDays(1))
                 {
-                    umbracoService.ResetPassword(model);
+                    _umbracoService.ResetPassword(model);
 
-                    databaseService.DeleteResetDetails(model);
+                    _databaseService.DeleteResetDetails(model);
 
-                    emailService.PasswordResetConfirmationEmail(model);
+                    _emailService.PasswordResetConfirmationEmail(model);
 
                     return true;
                 }
@@ -138,9 +137,9 @@ namespace UmbracoUserControl.Services
         {
             try
             {
-                umbracoService.CreateNewUser(model);
+                _umbracoService.CreateNewUser(model);
 
-                emailService.CreateNewUserEmail(model);
+                _emailService.CreateNewUserEmail(model);
 
                 return true;
             }
@@ -161,13 +160,13 @@ namespace UmbracoUserControl.Services
         {
             try
             {
-                if (model.Lock != false)
+                if (model.Lock)
                 {
-                    umbracoService.DisableUser(model);
+                    _umbracoService.DisableUser(model);
                 }
                 else
                 {
-                    umbracoService.EnableUser(model);
+                    _umbracoService.EnableUser(model);
                 }
                 return true;
             }
@@ -179,20 +178,20 @@ namespace UmbracoUserControl.Services
             }
         }
 
-        private bool IsEditor(int userId)
-        {
-            try
-            {
-                var editors = databaseService.IsEditor(userId);
+        //private bool IsEditor(int userId)
+        //{
+        //    try
+        //    {
+        //        var editors = _databaseService.IsEditor(userId);
 
-                return !editors.IsNullOrEmpty();
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
+        //        return !editors.IsNullOrEmpty();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.ToExceptionless().Submit();
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
     }
 }

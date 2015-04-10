@@ -1,24 +1,26 @@
 ﻿@model FindUserModel
+@using NUnit.Framework.Constraints
 @using PagedList.Mvc;
 @using UmbracoUserControl.Models
 @{
-    ViewBag.Title = "UsersByEmail";
+    ViewBag.Title = "Users By Email";
 }
 
 <h2>User Lookup</h2>
+<p class="highlight">@TempData["Message"]</p>
 
 @if (Model.SearchResult.Any())
 {
     foreach (var user in Model.SearchResult)
     {
-        <p>@user.FullName</p>
-        <p>@user.UserName</p>
-        <p>@user.EmailAddress</p>
+        <p><strong>Full name:</strong> @user.FullName</p>
+        <p><strong>Logon ID:</strong> @user.UserName</p>
+        <p><strong>Email Address:</strong> @user.EmailAddress</p>
         <div class="btn-group">
             @Html.ActionLink("Reset Password", "InitiatePasswordReset", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress }, new { @class = "btn btn-success", @role = "button" })
 
             @{
-                @(@user.Lock != false ? Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" }) : Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, Lock = @user.Lock }, new { @class = "btn btn-warning", @role = "button" }))
+                @(@user.Lock != false ? Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" }) : Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress, Lock = @user.Lock }, new { @class = "btn btn-warning", @role = "button" }))
 
                 @Html.ActionLink("User Permissions", "Index", "Permissions", new { id = @user.UserId }, new { @class = "btn btn-info", @role = "button" })
             }
@@ -27,7 +29,14 @@
 }
 else
 {
-    <p>No user has been found with that email address</p>
+    if (Model.IsEmailRequest)
+    {
+        <p>No user has been found with that email address</p>
+    }
+    else
+    {
+        <p>No user has been found with that username</p>
+    }
     @Html.ActionLink("Create new user", "InitiateUserCreation", null, new { @class = "btn btn-info", @role = "button" })
 }
 
