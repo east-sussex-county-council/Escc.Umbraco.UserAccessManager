@@ -4,10 +4,12 @@ using System.Web.Mvc;
 using Castle.Core.Internal;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
+using UmbracoUserControl.Utility;
 using UmbracoUserControl.ViewModel;
 
 namespace UmbracoUserControl.Controllers
 {
+    [AuthorizeRedirect(Roles = SystemRole.WebServices)]
     public class PermissionsController : Controller
     {
         private readonly IUserControlService _userControlService;
@@ -23,18 +25,6 @@ namespace UmbracoUserControl.Controllers
         public ActionResult Index(int id)
         {
             var model = _userControlService.LookupUserById(id);
-
-            // Synchronise permissions when page loads
-            //var success = _permissionsControlService.SyncUserPermissions(id);
-            //if (success)
-            //{
-            //    TempData["Message"] = "Permissions synchronised with website";
-            //}
-            //else
-            //{
-            //    TempData["Message"] = "An error has occured - Tree has not been updated";
-            //}
-
             return View("Index", model);
         }
 
@@ -85,19 +75,6 @@ namespace UmbracoUserControl.Controllers
             return Json(false, JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpGet]
-        //public ActionResult CheckPermissionsForUser(int id)
-        //{
-        //    var success = _permissionsControlService.SyncUserPermissions(id);
-
-        //    if (!success)
-        //    {
-        //        TempData["Message"] = "An error has occured - Tree has not been updated";
-        //    }
-        //    //this needs to be looked at on failure
-        //    return Index(id);
-        //}
-
         [HttpGet]
         public JsonResult CheckDestinationUser(FindUserModel model)
         {
@@ -120,13 +97,5 @@ namespace UmbracoUserControl.Controllers
                 isRedirect
             });
         }
-
-        //[HttpGet]
-        //public ActionResult ToggleEditor(ContentTreeViewModel model)
-        //{
-        //    _permissionsControlService.ToggleEditor(model);
-
-        //    return Index(model.UserId);
-        //}
     }
 }

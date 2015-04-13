@@ -2,9 +2,11 @@
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
+using UmbracoUserControl.Utility;
 
 namespace UmbracoUserControl.Controllers
 {
+    [AuthorizeRedirect(Roles = SystemRole.WebServices)]
     public class ToolsController : Controller
     {
         private readonly IPermissionsControlService _permissionsControlService;

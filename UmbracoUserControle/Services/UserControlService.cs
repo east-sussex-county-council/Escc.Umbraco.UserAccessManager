@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Castle.Core.Internal;
 using Exceptionless;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
@@ -96,6 +95,21 @@ namespace UmbracoUserControl.Services
         }
 
         /// <summary>
+        /// Check Password Reset request is valid
+        /// </summary>
+        /// <param name="model">Password reset parameters</param>
+        /// <returns>True if request is valid</returns>
+        public bool CheckResetDetails(PasswordResetModel model)
+        {
+            var m = _databaseService.GetResetDetails(model);
+
+            // If no record found in the database, then the request is not valid
+            if (m == null) return false;
+
+            return DateTime.Now.AddSeconds(-5) <= m.TimeLimit.AddDays(1);
+        }
+
+        /// <summary>
         /// Given a valid model, validate agaist database then reset password
         /// </summary>
         /// <param name="model">PasswordResetModel - UniqueResetId, UserId, NewPassword</param>
@@ -105,6 +119,9 @@ namespace UmbracoUserControl.Services
             try
             {
                 var validRequests = _databaseService.GetResetDetails(model);
+
+                // If no record found in the database, then the request is not valid
+                if (validRequests == null) return false;
 
                 model.EmailAddress = validRequests.EmailAddress;
 

@@ -1,7 +1,7 @@
-﻿@model FindUserModel
-@using NUnit.Framework.Constraints
-@using PagedList.Mvc;
-@using UmbracoUserControl.Models
+﻿@using System.Web.Mvc.Html
+@using PagedList.Mvc
+@using UmbracoUserControl.Utility
+@model UmbracoUserControl.Models.FindUserModel
 @{
     ViewBag.Title = "Users By Email";
 }
@@ -17,11 +17,19 @@
         <p><strong>Logon ID:</strong> @user.UserName</p>
         <p><strong>Email Address:</strong> @user.EmailAddress</p>
         <div class="btn-group-x">
-            @Html.ActionLink("User Permissions", "Index", "Permissions", new { id = @user.UserId }, new { @class = "btn btn-primary", @role = "button" })
+            @{
+                if (User.IsInRole(SystemRole.WebServices))
+                {
+                    @Html.ActionLink("User Permissions", "Index", "Permissions", new {id = @user.UserId}, new {@class = "btn btn-primary", @role = "button"})
+                }
+            }
 
-            @Html.ActionLink("Reset Password", "InitiatePasswordReset", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress }, new { @class = "btn btn-warning", @role = "button" })
+            @Html.ActionLink("Reset Password", "InitiatePasswordReset", new {@user.UserId, @user.EmailAddress}, new {@class = "btn btn-warning", @role = "button"})
 
-            @(@user.Lock != false ? Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" }) : Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress, Lock = @user.Lock }, new { @class = "btn btn-danger active", @role = "button" }))
+            @if (User.IsInRole(SystemRole.WebServices))
+            {
+                @(@user.Lock ? Html.ActionLink("Lock Account", "DisableUser", new {@user.UserId, @user.EmailAddress, @user.Lock }, new { @class = "btn btn-danger", @role = "button" }) : Html.ActionLink("Unlock Account", "DisableUser", new {@user.UserId, @user.EmailAddress, @user.Lock }, new { @class = "btn btn-danger active", @role = "button" }))
+            }
         </div>
     }
 }
@@ -35,7 +43,11 @@ else
     {
         <p>No user has been found with that username</p>
     }
-    @Html.ActionLink("Create new user", "InitiateUserCreation", null, new { @class = "btn btn-primary", @role = "button" })
+    
+    if (User.IsInRole(SystemRole.WebServices))
+    {
+        @Html.ActionLink("Create new user", "InitiateUserCreation", null, new { @class = "btn btn-primary", @role = "button" })
+    }
 }
 
 <div>

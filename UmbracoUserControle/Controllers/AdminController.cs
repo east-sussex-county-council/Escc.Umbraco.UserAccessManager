@@ -3,9 +3,11 @@ using System;
 using System.Web.Mvc;
 using UmbracoUserControl.Models;
 using UmbracoUserControl.Services.Interfaces;
+using UmbracoUserControl.Utility;
 
 namespace UmbracoUserControl.Controllers
 {
+    [AuthorizeRedirect(Roles = SystemRole.WebServices)]
     public class AdminController : Controller
     {
         private readonly IUserControlService _userControlService;
@@ -17,6 +19,7 @@ namespace UmbracoUserControl.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRedirect(Roles = SystemRole.AllAuthorised)]
         public ActionResult LookUpUser(FindUserModel model)
         {
             if (!ModelState.IsValid) return RedirectToAction("Index", "Home");
@@ -31,6 +34,7 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpGet]
+        [AuthorizeRedirect(Roles = SystemRole.AllAuthorised)]
         public ActionResult DisplayResults(FindUserModel model)
         {
             if (model == null) return RedirectToAction("Index", "Home");
@@ -43,6 +47,7 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpGet]
+        [AuthorizeRedirect(Roles = SystemRole.AllAuthorised)]
         public ActionResult InitiatePasswordReset(PasswordResetModel model)
         {
             if (Request.Url == null) return RedirectToAction("Index", "Home");
@@ -61,13 +66,25 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult PasswordResetVerification(PasswordResetModel model)
         {
-            return View("PasswordResetVerification", model);
+            // Check if this is a valid link
+            var validRequests = _userControlService.CheckResetDetails(model);
+
+            if (validRequests)
+            {
+                return View("PasswordResetVerification", model);
+            }
+
+            TempData["Message"] = "This link is no longer valid, please contact ICT Service Desk to try again";
+
+            return View("PasswordResetError", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult ResetPassword(PasswordResetModel model)
         {
             if (!ModelState.IsValid) return View("PasswordResetVerification", model);
@@ -82,6 +99,13 @@ namespace UmbracoUserControl.Controllers
             TempData["Message"] = "This link is no longer valid, please contact ICT Service Desk to try again";
 
             return RedirectToAction("PasswordResetVerification", "Admin", model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult DisplaySuccess()
+        {
+            return View("Success");
         }
 
         [HttpGet]
@@ -136,12 +160,6 @@ namespace UmbracoUserControl.Controllers
             var findUserModel = new FindUserModel { EmailAddress = model.EmailAddress, UserName = model.UserName };
 
             return LookUpUser(findUserModel);
-        }
-
-        [HttpGet]
-        public ActionResult DisplaySuccess()
-        {
-            return View("Success");
         }
     }
 }

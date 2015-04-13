@@ -242,8 +242,10 @@
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\UmbracoService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\AuthorizeRedirect.cs" />
     <Compile Include="Utility\functions.cs" />
     <Compile Include="Utility\PostMessageError.cs" />
+    <Compile Include="Utility\SystemRole.cs" />
     <Compile Include="ViewModel\ContentTreeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -380,6 +382,8 @@
     <Content Include="Views\Tools\CheckUserPermissions.cshtml" />
     <Content Include="Views\Tools\PagesWithoutAuthors.cshtml" />
     <Content Include="Views\Tools\ToolsError.cshtml" />
+    <Content Include="Views\Admin\PasswordResetError.cshtml" />
+    <Content Include="Views\Home\Unauthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

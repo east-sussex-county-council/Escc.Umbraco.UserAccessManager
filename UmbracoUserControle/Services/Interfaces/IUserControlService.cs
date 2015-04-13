@@ -12,6 +12,8 @@ namespace UmbracoUserControl.Services.Interfaces
 
         bool InitiatePasswordReset(PasswordResetModel model, string url);
 
+        bool CheckResetDetails(PasswordResetModel model);
+
         bool ResetPassword(PasswordResetModel model);
 
         bool CreateUser(UmbracoUserModel model);
