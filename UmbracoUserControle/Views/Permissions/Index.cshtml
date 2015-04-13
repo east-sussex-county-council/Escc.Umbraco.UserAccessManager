@@ -5,11 +5,11 @@
 }
 
 <div class="row">
-
-    <p class="highlight">@TempData["Message"]</p>
-    <h1>Content Tree for @Model.FullName</h1>
-
-    @{
-        Html.RenderAction("LookupContentTree", "Permissions", new { model = @Model });
-    }
+    <div class="col-sm-12">
+        <p class="highlight">@TempData["Message"]</p>
+        <h1>Content Tree for @Model.FullName</h1>
+    </div>
 </div>
+@{
+    Html.RenderAction("LookupContentTree", "Permissions", new { model = @Model });
+}

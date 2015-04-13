@@ -49,3 +49,7 @@ input[type="checkbox"].input-validation-error {
 .loaderimg {
     margin: 10px;
 }
+
+#tree {
+    padding-top: 15px;
+}

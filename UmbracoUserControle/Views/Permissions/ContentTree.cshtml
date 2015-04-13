@@ -1,17 +1,21 @@
 ﻿@model UmbracoUserControl.ViewModel.ContentTreeViewModel
 
 @Html.AntiForgeryToken()
-<div class="btn-group">
-    <!-- Button trigger modal -->
-    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-        Copy user permissions
-    </button>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="btn-group">
+            <!-- Button trigger modal -->
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Copy user permissions
+            </button>
 
-    @*Html.ActionLink("Sync user permissions", "CheckPermissionsForUser", "Permissions", new { id = @Model.UserId }, new { @class = "btn btn-info", @role = "button", title = "Synchronise permissions with website" })*@
+            @*Html.ActionLink("Sync user permissions", "CheckPermissionsForUser", "Permissions", new { id = @Model.UserId }, new { @class = "btn btn-info", @role = "button", title = "Synchronise permissions with website" })*@
 
-    @*@(Model.isEditor
-        ? Html.ActionLink("Delete editor", "ToggleEditor", "Permissions", new {Model.FullName, Model.UserId, Model.isEditor }, new { @class = "btn btn-danger", @role = "button" })
-        : Html.ActionLink("Set editor", "ToggleEditor", "Permissions", new {Model.FullName, Model.UserId, Model.isEditor }, new { @class = "btn btn-primary", @role = "button" }))*@
+            @*@(Model.isEditor
+            ? Html.ActionLink("Delete editor", "ToggleEditor", "Permissions", new {Model.FullName, Model.UserId, Model.isEditor }, new { @class = "btn btn-danger", @role = "button" })
+            : Html.ActionLink("Set editor", "ToggleEditor", "Permissions", new {Model.FullName, Model.UserId, Model.isEditor }, new { @class = "btn btn-primary", @role = "button" }))*@
+        </div>        
+    </div>
 </div>
 
 <!-- Modal -->
@@ -48,8 +52,10 @@
     </div>
 </div>
 
-<div id="tree" class="col-md-4">
+<div class="row">
+    <div id="tree" class="col-sm-12">
+    </div>
 </div>
 
-<p class="hidden" id="userId">@Model.UserId</p>
-<p class="hidden" id="apppath">@Html.Raw(Request.ApplicationPath + ".")</p>
+    <p class="hidden" id="userId">@Model.UserId</p>
+    <p class="hidden" id="apppath">@Html.Raw(Request.ApplicationPath + ".")</p>
