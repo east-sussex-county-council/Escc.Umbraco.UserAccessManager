@@ -16,14 +16,12 @@
         <p><strong>Full name:</strong> @user.FullName</p>
         <p><strong>Logon ID:</strong> @user.UserName</p>
         <p><strong>Email Address:</strong> @user.EmailAddress</p>
-        <div class="btn-group">
-            @Html.ActionLink("Reset Password", "InitiatePasswordReset", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress }, new { @class = "btn btn-success", @role = "button" })
+        <div class="btn-group-x">
+            @Html.ActionLink("User Permissions", "Index", "Permissions", new { id = @user.UserId }, new { @class = "btn btn-primary", @role = "button" })
 
-            @{
-                @(@user.Lock != false ? Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" }) : Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress, Lock = @user.Lock }, new { @class = "btn btn-warning", @role = "button" }))
+            @Html.ActionLink("Reset Password", "InitiatePasswordReset", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress }, new { @class = "btn btn-warning", @role = "button" })
 
-                @Html.ActionLink("User Permissions", "Index", "Permissions", new { id = @user.UserId }, new { @class = "btn btn-info", @role = "button" })
-            }
+            @(@user.Lock != false ? Html.ActionLink("Lock Account", "DisableUser", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress, Lock = @user.Lock }, new { @class = "btn btn-danger", @role = "button" }) : Html.ActionLink("Unlock Account", "DisableUser", new { UserId = @user.UserId, EmailAddress = @user.EmailAddress, Lock = @user.Lock }, new { @class = "btn btn-danger active", @role = "button" }))
         </div>
     }
 }
@@ -37,7 +35,7 @@ else
     {
         <p>No user has been found with that username</p>
     }
-    @Html.ActionLink("Create new user", "InitiateUserCreation", null, new { @class = "btn btn-info", @role = "button" })
+    @Html.ActionLink("Create new user", "InitiateUserCreation", null, new { @class = "btn btn-primary", @role = "button" })
 }
 
 <div>

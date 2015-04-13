@@ -6,9 +6,7 @@
     @foreach (var page in @Model)
         {
         <li class="list-group-item-x">
-            <p>                
-                @page.PagePath@page.PageName (@page.PageId)
-            </p>
+            @page.PagePath@page.PageName (@page.PageId)
         </li>
         }
 </ul>

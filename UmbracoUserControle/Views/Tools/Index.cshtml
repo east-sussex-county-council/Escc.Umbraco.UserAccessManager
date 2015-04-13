@@ -2,21 +2,8 @@
     ViewBag.Title = "Tools";
 }
 
-@*<div class="row">
-    <div class="col-md-6">
-        <h4>Lookup page permissions</h4>
-        <div class="input-group">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="button" id="checkpage">Go!</button>
-            </span>
-            <input type="url" class="form-control" id="url" name="url" placeholder="Full Page Url" />
-        </div>
-        <div id="PageEditors"></div>
-    </div>
-</div>*@
-
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <h4>Lookup permissions</h4>
         <div class="input-group">
             <div class="input-group-btn">
@@ -28,7 +15,7 @@
                 </ul>
             </div>
             <input type="email" class="form-control" id="searchterm" name="emailAddress" placeholder="Email Address" />
-            <button class="btn btn-primary" id="lookupPermissions" type="submit">Go!</button>
+            <button class="btn btn-primary" id="lookupPermissions" type="submit">Find</button>
         </div>
         <div id="PermissionsResults"></div>
         <p class="hidden" id="apppath">@Html.Raw(Request.ApplicationPath + ".")</p>
@@ -36,9 +23,9 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <h4>Lookup pages without web authors</h4>
-            <button class="btn btn-primary" id="PagesWithoutAuthor" type="submit">Go!</button>
+            <button class="btn btn-primary" id="PagesWithoutAuthor" type="submit">Find</button>
         <div id="UnauthordPermissions"></div>
     </div>
 </div>

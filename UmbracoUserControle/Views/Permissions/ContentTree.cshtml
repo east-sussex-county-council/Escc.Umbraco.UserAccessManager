@@ -3,7 +3,7 @@
 @Html.AntiForgeryToken()
 <div class="btn-group">
     <!-- Button trigger modal -->
-    <button class="btn btn-success" data-toggle="modal" data-target="#myModal">
+    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Copy user permissions
     </button>
 
@@ -34,7 +34,7 @@
                             </ul>
                         </div>
                         <input type="email" class="form-control" id="searchterm" name="emailAddress" placeholder="Email Address" />
-                        <button class="btn btn-primary" type="button" id="finduser">Find User!</button>
+                        <button class="btn btn-primary" type="button" id="finduser">Find User</button>
                     </div>
                 </div>
                 <div id="result">
@@ -42,7 +42,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="myModalClose">Close</button>
-                <button type="button" class="btn btn-primary" id="copyPerms" disabled="disabled">Copy</button>
+                <button type="button" class="btn btn-success" id="copyPerms" disabled="disabled">Copy</button>
             </div>
         </div>
     </div>

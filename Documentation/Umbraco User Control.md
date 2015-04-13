@@ -41,13 +41,15 @@ What is this for?
 **Note**: There does not appear to be a reason for this button / function, so I have hidden it.
 
 ## Tools
-There is a tools folder with the following pages / options:
+There is a tools folder (/tools/) with the following pages / options:
 
-Check Page Permissions
+### Lookup permissions
 
-Check User Permissions
+Check which pages a user has access to, using either email address or username. Alternatively, you can check which users have permissions for a specific page.
 
-Pages without Authors
+### Lookup pages without web authors
+
+Search the entire site and list pages that do not have any web authors assigned.
 
 ## Questions
 
