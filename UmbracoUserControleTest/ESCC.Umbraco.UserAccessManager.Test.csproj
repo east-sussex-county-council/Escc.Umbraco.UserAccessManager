@@ -96,9 +96,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UmbracoUserControle\UmbracoUserControl.csproj">
+    <ProjectReference Include="..\UmbracoUserControle\ESCC.Umbraco.UserAccessManager.csproj">
       <Project>{6c04ee92-2296-4f63-951b-32a2c7fbde7b}</Project>
-      <Name>UmbracoUserControl</Name>
+      <Name>ESCC.Umbraco.UserAccessManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
