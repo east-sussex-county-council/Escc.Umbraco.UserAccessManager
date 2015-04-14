@@ -1,0 +1,15 @@
+﻿@model ESCC.Umbraco.UserAccessManager.ViewModel.ContentTreeViewModel
+
+@{
+    ViewBag.Title = "User Permissions";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <p class="highlight">@TempData["Message"]</p>
+        <h1>Content Tree for @Model.FullName</h1>
+    </div>
+</div>
+@{
+    Html.RenderAction("LookupContentTree", "Permissions", new { model = @Model });
+}
