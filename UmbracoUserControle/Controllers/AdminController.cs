@@ -116,6 +116,7 @@ namespace UmbracoUserControl.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRedirect(Roles = SystemRole.WebServices)]
         public ActionResult CreateUser(UmbracoUserModel model)
         {
             if (!ModelState.IsValid)
@@ -148,6 +149,7 @@ namespace UmbracoUserControl.Controllers
         }
 
         [HttpGet]
+        [AuthorizeRedirect(Roles = SystemRole.WebServices)]
         public ActionResult DisableUser(UmbracoUserModel model)
         {
             var success = _userControlService.ToggleLock(model);

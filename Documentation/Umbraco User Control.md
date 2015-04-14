@@ -51,6 +51,22 @@ Check which pages a user has access to, using either email address or username. 
 
 Search the entire site and list pages that do not have any web authors assigned.
 
+## IIS / Server Setup
+
+Ensure Windows Authentication is installed: 
+
+Control Panel -> Programs and Features -> Turn Windows features on and off -> IIS -> WWW Services -> Security -> Windows Authentication
+
+Disable Anonymous Authentication for the website in IIS, enable Windows Authentication.
+
+## Permission levels
+
+Permission levels are assigned to Active Directory groups named in `web.config`.
+
+**WebServices**: Has full permission to the entire application.
+
+**ServiceDesk**: Has permission to lookup a user and initiate a password reset.
+
 ## Questions
 
 1.	How will this application be used and protected from unauthorised use?
