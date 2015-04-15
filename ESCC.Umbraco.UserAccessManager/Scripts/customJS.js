@@ -118,7 +118,7 @@ $("#lookupPermissions").click(function () {
     var btn = $(this);
     btn.prop("disabled", true);
     var dest = $("#PermissionsResults");
-    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" />");
+    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
     var searchTerm = $("#searchterm").prop("name");
 
     switch (searchTerm) {
@@ -155,7 +155,7 @@ $("#PagesWithoutAuthor").click(function () {
     var btn = $(this);
     btn.prop("disabled", true);
     var dest = $("#UnauthordPermissions");
-    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" />");
+    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
     $.get($("#apppath").html() + "/Tools/CheckPagesWithoutAuthor/", function (data) {
         dest.html(data);
         btn.prop("disabled", false);
