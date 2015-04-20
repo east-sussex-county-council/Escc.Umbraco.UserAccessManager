@@ -30,6 +30,15 @@ _ReSharper*/
 *.scc
 .vs/*
 
+# Office temp files
+*.tmp
+# Word temporary
+~$*.doc*
+# Excel temporary
+~$*.xls*
+# Excel Backup File
+*.xlk
+
 # Umbraco files
 [Uu]mbraco/
 [Uu]mbraco_Client/
