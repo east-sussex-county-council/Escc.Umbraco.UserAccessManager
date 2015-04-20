@@ -137,6 +137,10 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             throw ex;
         }
 
+        /// <summary>
+        /// Get details from content root node(s)
+        /// </summary>
+        /// <returns>Details from content root node(s)</returns>
         public IList<ContentTreeViewModel> GetContentRoot()
         {
             var response = GetMessage("GetContentRoot");
@@ -146,6 +150,11 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             return modelList;
         }
 
+        /// <summary>
+        /// Get details, including permissions for the supplied user, from content root node(s)
+        /// </summary>
+        /// <param name="uid">User Id whose permissions should be retrieved</param>
+        /// <returns>Details from content root node(s), including permissions for supplied user</returns>
         public IList<ContentTreeViewModel> GetContentRoot(int uid)
         {
             var response = GetMessage("GetContentRootUserPerms?userId=" + uid);
@@ -155,6 +164,11 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             return modelList;
         }
 
+        /// <summary>
+        /// Get details from all child nodes of the supplied parent node id.
+        /// </summary>
+        /// <param name="id">Id of parent node</param>
+        /// <returns>List of child nodes</returns>
         public IList<ContentTreeViewModel> GetContentChild(int id)
         {
             var response = GetMessage("GetContentChild?id=" + id);
@@ -164,6 +178,12 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             return modelList;
         }
 
+        /// <summary>
+        /// Get details from all child nodes of the supplied parent node id, along with permissions for supplied user.
+        /// </summary>
+        /// <param name="id">Id of parent node</param>
+        /// <param name="uid">User Id</param>
+        /// <returns>List of child nodes with permissions for supplied user</returns>
         public IList<ContentTreeViewModel> GetContentChild(int id, int uid)
         {
             var response = GetMessage("GetContentChildUserPerms?id=" + id + "&userId=" + uid);
@@ -173,6 +193,11 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             return modelList;
         }
 
+        /// <summary>
+        /// Set permissions on content node
+        /// </summary>
+        /// <param name="model">Details of node, user and permissions</param>
+        /// <returns>True if successful</returns>
         public bool SetContentPermissions(PermissionsModel model)
         {
             var response = PostMessage("PostSetPermissions", model);
@@ -186,6 +211,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
             return response.IsSuccessStatusCode;
         }
+
 
         public IList<PermissionsModel> CheckUserPermissions(int userId)
         {

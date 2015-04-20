@@ -9,6 +9,8 @@ If the user exists, their details will be displayed along with the following opt
 *	Lock (unlock) account
 *	User permissions
 
+This will only allow changes to be made to users whose type is Web Author (as defined in the `WebAuthorUserType` key in the API `web.config` file).
+
 ## Note
 Umbraco does not apply default permissions to all nodes. A user is assigned to a single User Type, which has a default set of permissions. That default set is returned whenever permissions for a node are requested via the API. Only if the permissions have been altered for a specific node, are they returned instead.
 

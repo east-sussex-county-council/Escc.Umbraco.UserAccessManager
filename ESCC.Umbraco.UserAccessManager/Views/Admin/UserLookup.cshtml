@@ -15,6 +15,13 @@
         <p><strong>Full name:</strong> @user.FullName</p>
         <p><strong>Logon ID:</strong> @user.UserName</p>
         <p><strong>Email Address:</strong> @user.EmailAddress</p>
+
+        if (!user.IsWebAuthor)
+        {
+            <p class="highlight">This user is not a Web Author</p>
+            continue;
+        }
+
         <div class="btn-group-x">
             @if (User.IsInRole(SystemRole.WebServices))
             {
@@ -34,11 +41,11 @@ else
 {
     if (Model.IsEmailRequest)
     {
-        <p>No user has been found with that email address</p>
+        <p>No user has been found with the email address <strong>@Model.EmailAddress</strong></p>
     }
     else
     {
-        <p>No user has been found with that username</p>
+        <p>No user has been found with the username <strong>@Model.UserName</strong></p>
     }
 
     if (User.IsInRole(SystemRole.WebServices))
