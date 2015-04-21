@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Umbraco User Control</title>
+    <title>@ViewBag.Title - User Access Manager</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -21,7 +21,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul>
-                    <li class="navbar-text pull-right">Hello, @User.Identity.Name!</li>
+                    <li class="navbar-text pull-right">@User.Identity.Name</li>
                 </ul>
             </div>
         </div>
@@ -30,7 +30,14 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - East Sussex County Council</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; @DateTime.Now.Year - East Sussex County Council</p>
+                </div>
+                <div class="col-md-6">
+                    <p></p>
+                </div>
+            </div>
         </footer>
     </div>
 

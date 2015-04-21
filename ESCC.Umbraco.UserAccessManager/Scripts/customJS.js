@@ -114,6 +114,18 @@ $("#myModalClose").click(function () {
 //    });
 //});
 
+$("#PagesWithoutAuthor").click(function () {
+    var btn = $(this);
+    btn.prop("disabled", true);
+    var dest = $("#UnauthordPermissions");
+    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    $.get($("#apppath").html() + "/Tools/CheckPagesWithoutAuthor/", function (data) {
+        dest.html(data);
+        btn.prop("disabled", false);
+    });
+    return false;
+});
+
 $("#lookupPermissions").click(function () {
     var btn = $(this);
     btn.prop("disabled", true);
@@ -148,18 +160,9 @@ $("#lookupPermissions").click(function () {
         default:
             dest.html("");
             btn.prop("disabled", false);
+            break;
     }
-});
-
-$("#PagesWithoutAuthor").click(function () {
-    var btn = $(this);
-    btn.prop("disabled", true);
-    var dest = $("#UnauthordPermissions");
-    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
-    $.get($("#apppath").html() + "/Tools/CheckPagesWithoutAuthor/", function (data) {
-        dest.html(data);
-        btn.prop("disabled", false);
-    });
+    return false;
 });
 
 $("#url").keypress(function (e) {

@@ -14,19 +14,19 @@
             @Html.ValidationSummary(true)
             <div class="form-group">
                 @Html.Label("userName", "Logon ID", new {@class="col-sm-2 control-label"})
-                <div class="col-sm-10">
-                    @Html.TextBox("userName", "", new {@class = "form-control", @id = "userName", @placeholder = "Logon ID"})
+                <div class="col-sm-10 col-md-6">
+                    @Html.TextBox("userName", "", new { @class = "form-control", @id = "userName", @placeholder = "Logon ID" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.Label("fullName", "Full Name", new { @class = "col-sm-2 control-label" })
-                <div class="col-sm-10">
-                    @Html.TextBox("fullName", "", new { @class="form-control", @id="fullName", @placeholder="Full Name"})
+                <div class="col-sm-10 col-md-6">
+                    @Html.TextBox("fullName", "", new { @class = "form-control", @id = "fullName", @placeholder = "Full Name" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.Label("emailAddress", "Email Address", new { @class = "col-sm-2 control-label" })
-                <div class="col-sm-10">
+                <div class="col-sm-10 col-md-6">
                     @Html.TextBox("emailAddress", "", new { @class = "form-control", @id = "emailAddress", @placeholder = "Email Address" })
                 </div>
             </div>

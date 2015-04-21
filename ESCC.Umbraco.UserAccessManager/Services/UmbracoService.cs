@@ -23,6 +23,17 @@ namespace ESCC.Umbraco.UserAccessManager.Services
                     new NetworkCredential(ConfigurationManager.AppSettings["apiuser"],
                         ConfigurationManager.AppSettings["apikey"])
             };
+
+            //// Use a proxy server, if one is defined
+            //var proxyServer = ConfigurationManager.AppSettings["ProxyServer"];
+            //if (!String.IsNullOrEmpty(proxyServer))
+            //{
+            //    handler.UseDefaultCredentials = true;
+            //    handler.Proxy = new WebProxy(proxyServer, false);
+            //    handler.Proxy.Credentials = System.Net.CredentialCache.DefaultCredentials;
+            //    handler.UseProxy = true;
+            //}
+
             _client = new HttpClient(handler) { BaseAddress = new Uri(siteUri) };
         }
 
