@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ESCC.Umbraco.UserAccessManager.Utility
 {
@@ -10,6 +11,24 @@ namespace ESCC.Umbraco.UserAccessManager.Utility
             {
                 collection.Add(cur);
             }
+        }
+
+        public static string GetAppPath(string appPath)
+        {
+            if (String.IsNullOrEmpty(appPath))
+            {
+                appPath = "/.";
+            }
+            else if (appPath.Length == 1)
+            {
+                appPath += ".";
+            }
+            else if (!appPath.EndsWith("/"))
+            {
+                appPath += "/";
+            }
+
+            return appPath;
         }
     }
 }

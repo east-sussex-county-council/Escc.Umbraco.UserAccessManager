@@ -1,4 +1,5 @@
-﻿@{
+﻿@using ESCC.Umbraco.UserAccessManager.Utility
+@{
     ViewBag.Title = "Tools";
 }
 
@@ -20,7 +21,7 @@
             </span>
         </div>
         <div id="PermissionsResults"></div>
-        <p class="hidden" id="apppath">@Html.Raw(Request.ApplicationPath + ".")</p>
+        <p class="hidden" id="apppath">@Functions.GetAppPath(Request.ApplicationPath)</p>
     </div>
 </div>
 

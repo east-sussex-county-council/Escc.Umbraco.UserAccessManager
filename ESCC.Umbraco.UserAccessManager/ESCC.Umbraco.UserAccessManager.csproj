@@ -249,6 +249,8 @@
     <Compile Include="ViewModel\ContentTreeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\icons.gif" />
+    <Content Include="Content\loading.gif" />
     <Content Include="Content\ajax-loader.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -345,6 +347,20 @@
     <Content Include="Scripts\tree\skin-win7\loading.gif" />
     <Content Include="Scripts\tree\skin-win7\ui.fancytree.css" />
     <Content Include="Scripts\tree\skin-win7\vista_colors.txt" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.childcounter.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.clones.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.columnview.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.debug.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.dnd.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.edit.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.filter.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.glyph.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.gridnav.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.menu.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.persist.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.table.js" />
+    <Content Include="Scripts\tree\src\jquery.fancytree.themeroller.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

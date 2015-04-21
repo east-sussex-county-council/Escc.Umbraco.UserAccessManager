@@ -1,4 +1,5 @@
-﻿@model ESCC.Umbraco.UserAccessManager.ViewModel.ContentTreeViewModel
+﻿@using ESCC.Umbraco.UserAccessManager.Utility
+@model ESCC.Umbraco.UserAccessManager.ViewModel.ContentTreeViewModel
 
 @Html.AntiForgeryToken()
 <div class="row">
@@ -59,5 +60,5 @@
     </div>
 </div>
 
-    <p class="hidden" id="userId">@Model.UserId</p>
-    <p class="hidden" id="apppath">@Html.Raw(Request.ApplicationPath + ".")</p>
+<p class="hidden" id="userId">@Model.UserId</p>
+    <p class="hidden" id="apppath">@Functions.GetAppPath(Request.ApplicationPath)</p>
