@@ -4,6 +4,7 @@ namespace ESCC.Umbraco.UserAccessManager.Utility
 {
     /// <summary>
     /// Derived from http://www.squarewidget.com/authorizationattribute-with-windows-authentication-in-mvc-4
+    /// Define the individual roles here and combine into groups as required.
     /// </summary>
     public static class SystemRole
     {

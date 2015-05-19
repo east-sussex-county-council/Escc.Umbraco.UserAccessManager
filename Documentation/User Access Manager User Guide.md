@@ -6,7 +6,7 @@
 
 Search for user either by email or user name.
 
-If the user exists, their details will be displayed along with the following options:
+**If the user exists**, their details will be displayed along with the following options:
 
 *	Reset password
 *	Lock (unlock) account
@@ -15,6 +15,15 @@ If the user exists, their details will be displayed along with the following opt
 This application will only allow changes to be made to Web Authors.
 
 ![](user-details.png)
+
+If the user does not exist, you will be given the option to create a new user:
+
+![](user-not-found.png)
+![](create-user.png)
+
+Logon ID = Active directory logon ID
+
+Once the new user has been created, an email will be sent to the user inviting them to change their password. (Same as “Reset Password” option)
 
 ## User permissions
 
@@ -28,7 +37,7 @@ Ticking and clearing the checkbox against each page updates the permissions imme
 
 ## Copy user permissions
 
-Replace permissions for the current user with those from another user.
+Copy specifically assigned permissions (not default group permissions) from a selected user to the current user. This does not remove any currently assigned permissions.
 
 ![](copy-permissions.png) 
 
@@ -39,7 +48,7 @@ Clicking the button will send the email immediately.
 
 ## Lock (unlock) account
 
-Immediately lock or enable the user account.
+Immediately lock the user account, which will disallow logon to the Umbraco admin site. Unlock will allow the user to sign on again.
  
 ## Tools
 

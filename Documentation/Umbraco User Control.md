@@ -68,8 +68,3 @@ Permission levels are assigned to Active Directory groups named in `web.config`.
 **WebServices**: Has full permission to the entire application.
 
 **ServiceDesk**: Has permission to lookup a user and initiate a password reset.
-
-## Questions
-
-1.	How will this application be used and protected from unauthorised use?
-2.	Is there any format requirements for login ID, e.g. email address?

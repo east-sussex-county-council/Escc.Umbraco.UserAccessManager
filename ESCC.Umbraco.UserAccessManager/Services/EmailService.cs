@@ -46,7 +46,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         {
             var link = String.Format("<p>Click this link, or paste into a browser to reset your password:</p><p>{0}/Admin/PasswordResetVerification?userId={1}&uniqueResetId={2}</p>", url, model.UserId, model.UniqueResetId);
 
-            SmtpSendEmail(model.EmailAddress, "Reset your password", link);
+            SmtpSendEmail(model.EmailAddress, "Reset your Web Author password", link);
         }
 
         /// <summary>
@@ -64,9 +64,9 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// <param name="model">UmbracoUserModel - FullName, UserName and EmailAddress</param>
         public void CreateNewUserEmail(UmbracoUserModel model)
         {
-            var subject = string.Format("New account created for {0}", model.FullName);
+            var subject = string.Format("New Web Author account created for {0}", model.FullName);
 
-            var body = string.Format("<p>A new account has been created for {0}:</P><p>Logon ID: {1}<br/>Email address: {2}</p><p>Please contact the user and setup appropriate permissions.</p>", model.FullName, model.UserName, model.EmailAddress);
+            var body = string.Format("<p>A new web author account has been created for {0}:</P><p>Logon ID: {1}<br/>Email address: {2}</p><p>Please contact the user and setup appropriate permissions.</p>", model.FullName, model.UserName, model.EmailAddress);
 
             var emailTo = ConfigurationManager.AppSettings["EmailTo"];
 
