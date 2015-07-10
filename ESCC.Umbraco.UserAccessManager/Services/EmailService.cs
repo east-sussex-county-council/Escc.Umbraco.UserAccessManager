@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Net.Mail;
 using System.Text;
 using ESCC.Umbraco.UserAccessManager.Models;
@@ -24,6 +23,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             _mail.To.Add(emailTo);
             //mail.From = new MailAddress(ConfigurationManager.AppSettings["EmailFrom"]);
             _mail.Subject = emailSubject;
+            _mail.BodyEncoding = Encoding.UTF8;
             _mail.Body = emailBody;
             _mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient()
