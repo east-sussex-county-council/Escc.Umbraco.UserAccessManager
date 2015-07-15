@@ -51,9 +51,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             var body = new StringBuilder();
 
             body.AppendLine("<p>Hello,</p>");
-            body.AppendLine("<p>Here are your web author account details for using the ESCC website content management system.</p>");
-            body.AppendLine("<p>Please note, this is a temporary password and you will need to change your password on the first screen.</p>");
-            body.AppendLine("<p>Click the link below, or copy and paste it into your website browser.</p>");
+            body.AppendLine("<p>This link takes you to the screen where you can set or change your password for the ESCC website content management system. Please note, this link will expire in 24 hours.</p>");
             body.AppendFormatLine("<p>{0}/Admin/PasswordResetVerification?userId={1}&uniqueResetId={2}</p>", url, model.UserId.ToString(), model.UniqueResetId);
             body.AppendLine("<p>If you need any help using the system, please refer to the user guides on the intranet.</p>");
             body.AppendLine("<p>Kind regards,<br/>Digital Services</p>");
