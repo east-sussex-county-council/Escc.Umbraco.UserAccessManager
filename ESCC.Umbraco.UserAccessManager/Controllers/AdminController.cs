@@ -52,7 +52,22 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         {
             if (Request.Url == null) return RedirectToAction("Index", "Home");
 
-            var url = String.Format("http://{0}:{1}{2}", Request.Url.Host, Request.Url.Port, Request.ApplicationPath);
+            var urlScheme = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Host);
+            var urlPort = Request.Url.Port;
+
+            // Add port number if it is non-standard
+            if (urlPort != 80 && urlPort != 443)
+            {
+                urlScheme = string.Format("{0}:{1}", urlScheme, Request.Url.Port);
+            }
+
+            var url = urlScheme;
+
+            // Check that application path is not just "/"
+            if (Request.ApplicationPath != "/")
+            {
+                url = String.Format("{0}{1}", url, Request.ApplicationPath);
+            }
 
             var success = _userControlService.InitiatePasswordReset(model, url);
 
