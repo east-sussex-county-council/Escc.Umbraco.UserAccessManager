@@ -1,6 +1,10 @@
 
+The Umbraco user type which is managed by this tool is identified by the user type alias in web.config:
 
-"NewUser" User Type has default permissions of "Browse" only.
+    <add key="WebAuthorUserType" value="NewUser" />
+
+The "NewUser" User Type has default permissions of "Browse" only. If this is not set, the permissions tree fails to load with an "IndexOutOfRangeException".
+
 UmbracoUserControl sets / clears permissions. Permission set defined in web.config (appSettings -> defaultUserPermissions)
 
 
