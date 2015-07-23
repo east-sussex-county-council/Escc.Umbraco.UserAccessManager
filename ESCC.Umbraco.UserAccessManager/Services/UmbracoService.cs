@@ -258,5 +258,14 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public IList<ExpiringPageModel> GetExpiringPages(int noOfDaysFrom)
+        {
+            var response = GetMessage("CheckForExpiringNodes?noofdaysfrom=" + noOfDaysFrom);
+
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<ExpiringPageModel>>().Result;
+            return modelList;
+        }
     }
 }
