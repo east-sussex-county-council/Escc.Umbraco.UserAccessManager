@@ -4,34 +4,33 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Mail;
-using System.Web;
 using System.Web.Http;
 using System.Web.WebPages;
 using ESCC.Umbraco.UserAccessManager.Models;
 using ESCC.Umbraco.UserAccessManager.Services;
 using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
-using Umbraco.Core.Models;
-using Umbraco.Core.Services;
-using Umbraco.Web.WebApi;
 
 namespace ESCC.Umbraco.UserAccessManager.Controllers
 {
     public class ExpiringPagesApiController : ApiController
     {
         private IUmbracoService _umbracoService;
+        private IEmailService _emailService;
+
+        private string _webStaffEmail;
         private string _forceSendTo;
-        private string _webAuthorUserType;
         private int _noOfDaysFrom;
+        private int _emailWebStaffAtDays;
 
         public ExpiringPagesApiController()
         {
             
         }
 
-        public ExpiringPagesApiController(IUmbracoService umbracoService)
+        public ExpiringPagesApiController(IUmbracoService umbracoService, IEmailService emailService)
         {
             _umbracoService = umbracoService;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -40,6 +39,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             GetConfigSettings();
 
             _umbracoService = new UmbracoService();
+            _emailService = new EmailService();
 
             IList<ExpiringPageModel> expiringNodes = _umbracoService.GetExpiringPages(_noOfDaysFrom);
 
@@ -47,8 +47,25 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             foreach (var expiringNode in expiringNodes)
             {
                 //   Email Web Authors
-                //   if no Web Authors, or only 1 day left
-                //      Email WebStaff
+                if (expiringNode.PageUsers.Any())
+                {
+                    foreach (var pageuser in expiringNode.PageUsers)
+                    {
+                        SendEmail(pageuser.EmailAddress, expiringNode, pageuser);
+                    }
+
+                    //   if only "n" day(s) left
+                    var daysLeft = (expiringNode.ExpiryDate - DateTime.Now).Days;
+                    if (daysLeft == _emailWebStaffAtDays)
+                    {
+                        SendEmail(_webStaffEmail, expiringNode);
+                    }
+                }
+                else
+                {
+                    // no Web Authors assigned, so email WebStaff
+                    SendEmail(_webStaffEmail, expiringNode);
+                }
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
@@ -57,44 +74,33 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         private void GetConfigSettings()
         {
             _noOfDaysFrom = ConfigurationManager.AppSettings["NoOfDaysFrom"].AsInt(14);
-            _webAuthorUserType = ConfigurationManager.AppSettings["WebAuthorUserType"];
+            _emailWebStaffAtDays = ConfigurationManager.AppSettings["EmailWebStaffAtDays"].AsInt(3);
+            _webStaffEmail = ConfigurationManager.AppSettings["WebStaffEmail"];
             _forceSendTo = ConfigurationManager.AppSettings["ForceSendTo"];
         }
 
 
-        private void SendEmail(string emailTo, IContent contentNode)
+        private void SendEmail(string emailTo, ExpiringPageModel contentNode)
         {
-            var subject = string.Format("Page expiry - {0}", contentNode.Name);
-            var body = "page about to expire";
+            // Construct a minimal UmbracouserModel
+            var webStaff = new UmbracoUserModel
+            {
+                FullName = "Web Staff", 
+                EmailAddress = _webStaffEmail
+            };
 
+            SendEmail(emailTo, contentNode, webStaff);
+        }
+
+        private void SendEmail(string emailTo, ExpiringPageModel contentNode, UmbracoUserModel pageUser)
+        {
             // If "ForceEmailTo" is set, send all emails there instead (for Testing)
             if (!string.IsNullOrEmpty(_forceSendTo))
             {
                 emailTo = _forceSendTo;
             }
 
-            using (var client = new SmtpClient())
-            {
-                using (var message = new MailMessage())
-                {
-                    message.To.Add(emailTo);
-                    message.IsBodyHtml = true;
-                    message.Subject = subject;
-                    message.Body = body.ToString();
-
-                    try
-                    {
-                        // send the email
-                        client.Send(message);
-                    }
-                    catch (SmtpException exception)
-                    {
-                        throw;
-                        //exception.ToExceptionless().Submit();
-                    }
-                }
-            }
-
+            _emailService.PageExpiryWarningEmail(emailTo, contentNode, pageUser);
         }
     }
 }

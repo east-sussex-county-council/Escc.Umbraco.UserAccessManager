@@ -3,14 +3,13 @@ using System.Net.Mail;
 using System.Text;
 using ESCC.Umbraco.UserAccessManager.Models;
 using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
+using Exceptionless;
 using Exceptionless.Extensions;
 
 namespace ESCC.Umbraco.UserAccessManager.Services
 {
     public class EmailService : IEmailService
     {
-        private MailMessage _mail;
-
         /// <summary>
         /// Sends and email to the given address
         /// </summary>
@@ -19,24 +18,30 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// <param name="emailBody">Body text of email</param>
         private void SmtpSendEmail(string emailTo, string emailSubject, string emailBody)
         {
-            _mail = new MailMessage();
-            _mail.To.Add(emailTo);
-            //mail.From = new MailAddress(ConfigurationManager.AppSettings["EmailFrom"]);
-            _mail.Subject = emailSubject;
-            _mail.BodyEncoding = Encoding.UTF8;
-            _mail.Body = emailBody;
-            _mail.IsBodyHtml = true;
-            SmtpClient smtp = new SmtpClient()
+            using (var client = new SmtpClient
             {
-                //Added mailSettings section to web.config, so this is not needed
-                //Host = ConfigurationManager.AppSettings["EmailHost"],
-                //Port = int.Parse(ConfigurationManager.AppSettings["EmailPort"]),
                 UseDefaultCredentials = true
-            };
-            //smtp.Credentials = new NetworkCredential("user", "pass");
-            //smtp.Credentials = new System.Net.NetworkCredential();
-            //smtp.EnableSsl = true;
-            smtp.Send(_mail);
+            })
+            {
+                using (var message = new MailMessage())
+                {
+                    message.To.Add(emailTo);
+                    message.IsBodyHtml = true;
+                    message.BodyEncoding = Encoding.UTF8;
+                    message.Subject = emailSubject;
+                    message.Body = emailBody;
+
+                    try
+                    {
+                        // send the email
+                        client.Send(message);
+                    }
+                    catch (SmtpException exception)
+                    {
+                        exception.ToExceptionless().Submit();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -100,6 +105,19 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             body.AppendLine("<p>You can now go to the User Access Manager to set up the pages that this web author will be responsible for.</p>");
 
             var emailTo = ConfigurationManager.AppSettings["EmailTo"];
+
+            SmtpSendEmail(emailTo, subject, body.ToString());
+        }
+
+        public void PageExpiryWarningEmail(string emailTo, ExpiringPageModel contentNode, UmbracoUserModel pageUser)
+        {
+            var subject = string.Format("Page expiry - {0}", contentNode.PageName);
+            var body = new StringBuilder();
+
+            var expiryDate = contentNode.ExpiryDate;
+
+            body.AppendFormatLine("<p>Hello {0},</p>", pageUser.FullName);
+            body.AppendFormatLine("<p>Page {0} is due to expire on {1} at {2}</p>", contentNode.PageName, expiryDate.ToShortDateString(), expiryDate.ToShortTimeString());
 
             SmtpSendEmail(emailTo, subject, body.ToString());
         }

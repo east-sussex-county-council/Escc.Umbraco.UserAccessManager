@@ -11,7 +11,7 @@ namespace ESCC.Umbraco.UserAccessManager.Models
 
         public string PagePath { get; set; }
 
-        public DateTime? ExpiryDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
 
         public IList<UmbracoUserModel> PageUsers { get; set; }
     }

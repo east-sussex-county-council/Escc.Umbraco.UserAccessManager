@@ -9,5 +9,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
         void PasswordResetEmail(PasswordResetModel model, string url);
 
         void CreateNewUserEmail(UmbracoUserModel model);
+
+        void PageExpiryWarningEmail(string emailTo, ExpiringPageModel contentNode, UmbracoUserModel pageUser);
     }
 }
