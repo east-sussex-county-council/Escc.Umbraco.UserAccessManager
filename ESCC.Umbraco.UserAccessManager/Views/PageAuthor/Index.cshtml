@@ -1,0 +1,25 @@
+﻿@using ESCC.Umbraco.UserAccessManager.Utility
+@{
+    Layout = "~/Views/Shared/_SimpleLayout.cshtml";
+    ViewBag.Title = "Page Authors";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <fieldset>
+            <h4>Find Page Authors</h4>
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchterm" name="pageUrl" placeholder="Page URL"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" id="lookupPagePermissions" type="submit">Find</button>
+                </span>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="PermissionsResults"></div>
+        <p class="hidden" id="apppath">@Functions.GetAppPath(Request.ApplicationPath)</p>
+    </div>
+</div>

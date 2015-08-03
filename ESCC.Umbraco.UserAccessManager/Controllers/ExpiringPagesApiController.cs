@@ -34,6 +34,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public HttpResponseMessage CheckForExpiringNodes()
         {
             GetConfigSettings();
@@ -69,6 +70,63 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage CheckForExpiringNodesByUser()
+        {
+            GetConfigSettings();
+
+            _umbracoService = new UmbracoService();
+            _emailService = new EmailService();
+
+            IList<UserPagesModel> users = _umbracoService.GetExpiringPagesByUser(_noOfDaysFrom);
+
+            // For each user:
+            foreach (var user in users)
+            {
+                if (user.Pages.Any())
+                {
+                    SendEmail(user);
+                }
+
+                //   Email Web Authors
+                //if (user.PageUsers.Any())
+                //{
+                //    foreach (var pageuser in user.PageUsers)
+                //    {
+                //        SendEmail(pageuser.EmailAddress, user, pageuser);
+                //    }
+
+                //    //   if only "n" day(s) left
+                //    var daysLeft = (user.ExpiryDate - DateTime.Now).Days;
+                //    if (daysLeft == _emailWebStaffAtDays)
+                //    {
+                //        SendEmail(_webStaffEmail, user);
+                //    }
+                //}
+                //else
+                //{
+                    // no Web Authors assigned, so email WebStaff
+                    //SendEmail(user);
+            //    }
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        private void SendEmail(UserPagesModel userPages)
+        {
+            var emailTo = userPages.User.EmailAddress;
+
+            // If "ForceEmailTo" is set, send all emails there instead (for Testing)
+            if (!string.IsNullOrEmpty(_forceSendTo))
+            {
+                emailTo = _forceSendTo;
+            }
+
+            _emailService.UserPageExpiryEmail(emailTo, userPages);
         }
 
         private void GetConfigSettings()

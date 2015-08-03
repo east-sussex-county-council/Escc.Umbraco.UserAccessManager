@@ -8,7 +8,7 @@ namespace ESCC.Umbraco.UserAccessManager
         {
             configuration.Routes.MapHttpRoute(
                 "API Default", 
-                "api/{controller}/{id}",
+                "api/{controller}/{action}/{id}",
                 new { id = RouteParameter.Optional }
             );
         }

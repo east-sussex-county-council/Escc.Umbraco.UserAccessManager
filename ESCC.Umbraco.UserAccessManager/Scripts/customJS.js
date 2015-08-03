@@ -169,6 +169,23 @@ $("#lookupPermissions").click(function () {
     return false;
 });
 
+$("#lookupPagePermissions").click(function () {
+    var btn = $(this);
+    btn.prop("disabled", true);
+    var dest = $("#PermissionsResults");
+    var otherdest = $("#UnauthordPermissions");
+    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    otherdest.html("");
+
+    var url = $("#searchterm").val();
+    $.get($("#apppath").html() + "/PageAuthor/CheckPagePermissions/", { url: url }, function (data) {
+        dest.html(data);
+        btn.prop("disabled", false);
+    });
+
+    return false;
+});
+
 $("#url").keypress(function (e) {
     if (e.which == 13) {
         $("#checkpage").trigger("click");

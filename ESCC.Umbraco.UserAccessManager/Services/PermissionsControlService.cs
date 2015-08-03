@@ -253,9 +253,9 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             {
                 if (string.IsNullOrEmpty(url)) return null;
 
-                if (!url.Contains("http")) return null;
+                //if (!url.Contains("http")) return null;
 
-                var page = new Uri(url).AbsolutePath;
+                //var page = new Uri(url).AbsolutePath;
 
                 //var pageName = page.Trim('/');
 

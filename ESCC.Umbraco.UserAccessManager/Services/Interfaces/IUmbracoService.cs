@@ -41,5 +41,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
         IList<PermissionsModel> CheckPagePermissions(string url);
 
         IList<ExpiringPageModel> GetExpiringPages(int noOfDaysFrom);
+
+        IList<UserPagesModel> GetExpiringPagesByUser(int noOfDaysFrom);
     }
 }

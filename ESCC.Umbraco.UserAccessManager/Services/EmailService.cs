@@ -121,5 +121,35 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
             SmtpSendEmail(emailTo, subject, body.ToString());
         }
+
+        public void UserPageExpiryEmail(string emailTo, UserPagesModel userPages)
+        {
+            var siteUri = ConfigurationManager.AppSettings["SiteUri"];
+
+            const string subject = "ACTION: Your website pages expire in under 14 days";
+            var body = new StringBuilder();
+
+            body.AppendLine("<p>Your website pages will expire within the next two weeks. After this they will no longer be available to the public. The dates for each page are given below.</p>");
+            body.AppendLine("<p>You need to:</p>");
+            body.AppendLine("<ul>");
+            body.AppendLine("<li>check they are up to date</li>");
+            body.AppendLine("<li>check the information is still needed</li>");
+            body.AppendLine("<li>set a new expiry date, then click 'Save and publish'.</li>");
+            body.AppendLine("</ul>");
+            body.AppendLine("<p>For details on updating your pages, see <a href=\"" + ConfigurationManager.AppSettings["WebAuthorsGuidanceUrl"] + "\">Guidance for web authors</a>.</p>");
+
+            body.AppendLine("<ol>");
+            foreach (var page in userPages.Pages)
+            {
+                var linkUrl = string.Format("{0}#/content/content/edit/{1}", siteUri, page.PageId);
+                body.Append("<li>");
+                body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.ToLongDateString(), page.ExpiryDate.ToShortTimeString());
+                body.AppendFormat(" {0}", page.PageUrl);
+                body.Append("<li>");
+            }
+            body.AppendLine("</ol>");
+
+            SmtpSendEmail(emailTo, subject, body.ToString());
+        }
     }
 }

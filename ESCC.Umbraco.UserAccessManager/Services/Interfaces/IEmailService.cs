@@ -11,5 +11,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
         void CreateNewUserEmail(UmbracoUserModel model);
 
         void PageExpiryWarningEmail(string emailTo, ExpiringPageModel contentNode, UmbracoUserModel pageUser);
+        
+        void UserPageExpiryEmail(string emailTo, UserPagesModel userPages);
     }
 }

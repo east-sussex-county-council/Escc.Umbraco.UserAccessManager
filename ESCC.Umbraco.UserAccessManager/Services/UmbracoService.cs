@@ -17,6 +17,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         {
             var siteUri = ConfigurationManager.AppSettings["SiteUri"];
 
+            siteUri = string.Format("{0}Api/UmbracoUserApi/", siteUri);
             var handler = new HttpClientHandler
             {
                 Credentials =
@@ -265,6 +266,15 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<ExpiringPageModel>>().Result;
+            return modelList;
+        }
+
+        public IList<UserPagesModel> GetExpiringPagesByUser(int noOfDaysFrom)
+        {
+            var response = GetMessage("CheckForExpiringNodesByUser?noofdaysfrom=" + noOfDaysFrom);
+
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<UserPagesModel>>().Result;
             return modelList;
         }
     }
