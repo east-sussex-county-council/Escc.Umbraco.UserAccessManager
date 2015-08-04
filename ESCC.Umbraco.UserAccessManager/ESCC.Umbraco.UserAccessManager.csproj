@@ -270,6 +270,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\bin\Dependencies\log4net.1.2.11.0.dll" />
+    <Content Include="bin\Dependencies\log4net.1.2.11.0.dll" />
     <Content Include="bin\log4net.dll" />
     <Content Include="Content\icons.gif" />
     <Content Include="Content\loading.gif" />
