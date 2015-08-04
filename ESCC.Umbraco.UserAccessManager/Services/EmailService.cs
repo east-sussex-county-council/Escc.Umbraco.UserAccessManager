@@ -1,4 +1,7 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using ESCC.Umbraco.UserAccessManager.Models;
@@ -109,19 +112,15 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             SmtpSendEmail(emailTo, subject, body.ToString());
         }
 
-        public void PageExpiryWarningEmail(string emailTo, ExpiringPageModel contentNode, UmbracoUserModel pageUser)
-        {
-            var subject = string.Format("Page expiry - {0}", contentNode.PageName);
-            var body = new StringBuilder();
-
-            var expiryDate = contentNode.ExpiryDate;
-
-            body.AppendFormatLine("<p>Hello {0},</p>", pageUser.FullName);
-            body.AppendFormatLine("<p>Page {0} is due to expire on {1} at {2}</p>", contentNode.PageName, expiryDate.ToShortDateString(), expiryDate.ToShortTimeString());
-
-            SmtpSendEmail(emailTo, subject, body.ToString());
-        }
-
+        /// <summary>
+        /// Send expiry warning emails to users (Web Authors) of pages about to expire
+        /// </summary>
+        /// <param name="emailTo">
+        /// who to send the email to
+        /// </param>
+        /// <param name="userPages">
+        /// User details and list of expiring pages for this user
+        /// </param>
         public void UserPageExpiryEmail(string emailTo, UserPagesModel userPages)
         {
             var siteUri = ConfigurationManager.AppSettings["SiteUri"];
@@ -138,18 +137,89 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             body.AppendLine("</ul>");
             body.AppendLine("<p>For details on updating your pages, see <a href=\"" + ConfigurationManager.AppSettings["WebAuthorsGuidanceUrl"] + "\">Guidance for web authors</a>.</p>");
 
+            var otherTitle = "Expiring Pages:";
+            var warningDate = DateTime.Now.AddDays(2);
+            var lastWarningPages = userPages.Pages.Where(d => d.ExpiryDate <= warningDate).ToList();
+            if (lastWarningPages.Any())
+            {
+                body.AppendLine("<strong>Pages Expiring Tomorrow:</strong>");
+                body.AppendLine("<ol>");
+                foreach (var page in lastWarningPages)
+                {
+                    var linkUrl = string.Format("{0}#/content/content/edit/{1}", siteUri, page.PageId);
+                    body.Append("<li>");
+                    body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.ToLongDateString(), page.ExpiryDate.ToShortTimeString());
+                    body.AppendFormat("<br/>{0}", page.PageUrl);
+                    body.Append("</li>");
+                }
+                body.AppendLine("</ol>");
+
+                otherTitle = "Other Pages:";
+            }
+
+            // Process remaining pages
+            var nonWarningPages = userPages.Pages.Where(d => d.ExpiryDate > warningDate).ToList();
+            if (nonWarningPages.Any())
+            {
+                body.AppendFormatLine("<strong>{0}</strong>", otherTitle);
+                body.AppendLine("<ol>");
+                foreach (var page in nonWarningPages)
+                {
+                    var linkUrl = string.Format("{0}#/content/content/edit/{1}", siteUri, page.PageId);
+                    body.Append("<li>");
+                    body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.ToLongDateString(), page.ExpiryDate.ToShortTimeString());
+                    body.AppendFormat("<br/>{0}", page.PageUrl);
+                    body.Append("</li>");
+                }
+                body.AppendLine("</ol>");
+            }
+
+            SmtpSendEmail(emailTo, subject, body.ToString());
+        }
+
+        /// <summary>
+        /// Send email to WebStaff highlighting pages that will expire very soon (period set in web.config)
+        /// </summary>
+        /// <param name="emailTo">
+        /// Web Staff email address
+        /// </param>
+        /// <param name="userPages">
+        /// List of pages that will expire soon
+        /// </param>
+        /// <param name="emailWebStaffAtDays">
+        /// Number of days before page expiry
+        /// </param>
+        public void UserPageLastWarningEmail(string emailTo, List<UserPageModel> userPages, int emailWebStaffAtDays)
+        {
+            var siteUri = ConfigurationManager.AppSettings["SiteUri"];
+
+            var subject = string.Format("ACTION: The following website pages expire in under {0} days", emailWebStaffAtDays);
+            var body = new StringBuilder();
+
+            body.AppendFormatLine("<p>These website pages will expire within the next {0} days. After this they will no longer be available to the public.</p>", emailWebStaffAtDays.ToString());
+            body.AppendLine("<p>You need to:</p>");
+            body.AppendLine("<ul>");
+            body.AppendLine("<li>check they are up to date</li>");
+            body.AppendLine("<li>check the information is still needed</li>");
+            body.AppendLine("<li>set a new expiry date, then click 'Save and publish'.</li>");
+            body.AppendLine("</ul>");
+            body.AppendLine("<p>For details on updating your pages, see <a href=\"" + ConfigurationManager.AppSettings["WebAuthorsGuidanceUrl"] + "\">Guidance for web authors</a>.</p>");
+
+            // Process remaining pages
+            body.AppendLine("<strong>Expiring Pages:</strong>");
             body.AppendLine("<ol>");
-            foreach (var page in userPages.Pages)
+            foreach (var page in userPages)
             {
                 var linkUrl = string.Format("{0}#/content/content/edit/{1}", siteUri, page.PageId);
                 body.Append("<li>");
                 body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.ToLongDateString(), page.ExpiryDate.ToShortTimeString());
-                body.AppendFormat(" {0}", page.PageUrl);
-                body.Append("<li>");
+                body.AppendFormat("<br/>{0}", page.PageUrl);
+                body.Append("</li>");
             }
             body.AppendLine("</ol>");
 
             SmtpSendEmail(emailTo, subject, body.ToString());
         }
+
     }
 }

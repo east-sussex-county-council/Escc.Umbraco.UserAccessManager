@@ -1,4 +1,5 @@
-﻿using ESCC.Umbraco.UserAccessManager.Models;
+﻿using System.Collections.Generic;
+using ESCC.Umbraco.UserAccessManager.Models;
 
 namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
 {
@@ -9,9 +10,9 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
         void PasswordResetEmail(PasswordResetModel model, string url);
 
         void CreateNewUserEmail(UmbracoUserModel model);
-
-        void PageExpiryWarningEmail(string emailTo, ExpiringPageModel contentNode, UmbracoUserModel pageUser);
         
         void UserPageExpiryEmail(string emailTo, UserPagesModel userPages);
+
+        void UserPageLastWarningEmail(string emailTo, List<UserPageModel> userPages, int emailWebStaffAtDays);
     }
 }

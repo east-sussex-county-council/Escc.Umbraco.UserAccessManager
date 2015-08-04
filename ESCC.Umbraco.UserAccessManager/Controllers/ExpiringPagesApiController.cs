@@ -35,45 +35,6 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public HttpResponseMessage CheckForExpiringNodes()
-        {
-            GetConfigSettings();
-
-            _umbracoService = new UmbracoService();
-            _emailService = new EmailService();
-
-            IList<ExpiringPageModel> expiringNodes = _umbracoService.GetExpiringPages(_noOfDaysFrom);
-
-            // For each page:
-            foreach (var expiringNode in expiringNodes)
-            {
-                //   Email Web Authors
-                if (expiringNode.PageUsers.Any())
-                {
-                    foreach (var pageuser in expiringNode.PageUsers)
-                    {
-                        SendEmail(pageuser.EmailAddress, expiringNode, pageuser);
-                    }
-
-                    //   if only "n" day(s) left
-                    var daysLeft = (expiringNode.ExpiryDate - DateTime.Now).Days;
-                    if (daysLeft == _emailWebStaffAtDays)
-                    {
-                        SendEmail(_webStaffEmail, expiringNode);
-                    }
-                }
-                else
-                {
-                    // no Web Authors assigned, so email WebStaff
-                    SendEmail(_webStaffEmail, expiringNode);
-                }
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
         public HttpResponseMessage CheckForExpiringNodesByUser()
         {
             GetConfigSettings();
@@ -90,32 +51,36 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
                 {
                     SendEmail(user);
                 }
-
-                //   Email Web Authors
-                //if (user.PageUsers.Any())
-                //{
-                //    foreach (var pageuser in user.PageUsers)
-                //    {
-                //        SendEmail(pageuser.EmailAddress, user, pageuser);
-                //    }
-
-                //    //   if only "n" day(s) left
-                //    var daysLeft = (user.ExpiryDate - DateTime.Now).Days;
-                //    if (daysLeft == _emailWebStaffAtDays)
-                //    {
-                //        SendEmail(_webStaffEmail, user);
-                //    }
-                //}
-                //else
-                //{
-                    // no Web Authors assigned, so email WebStaff
-                    //SendEmail(user);
-            //    }
             }
 
+            // Check for pages expiring soon and email Web Staff
+            var warningList = new List<UserPageModel>();
+
+            var expiringSoon = users.Where(u => u.Pages.Any(p => p.ExpiryDate <= DateTime.Now.AddDays(_emailWebStaffAtDays + 1)));
+            foreach (var expiring in expiringSoon)
+            {
+                foreach (var expiringPage in expiring.Pages)
+                {
+                    // Check we haven't already added this page to the list
+                    if (warningList.All(n => n.PageId != expiringPage.PageId))
+                    {
+                        warningList.Add(expiringPage);
+                    }
+                }
+            }
+            if (warningList.Any())
+            {
+                SendWarningEmail(warningList);
+            }
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        /// <summary>
+        /// Send page Expiry email, one per Web Author, listing all expiring pages
+        /// </summary>
+        /// <param name="userPages">
+        /// Array of expiring pages
+        /// </param>
         private void SendEmail(UserPagesModel userPages)
         {
             var emailTo = userPages.User.EmailAddress;
@@ -129,36 +94,31 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             _emailService.UserPageExpiryEmail(emailTo, userPages);
         }
 
-        private void GetConfigSettings()
+        /// <summary>
+        /// Send warning email to Web Staff listing pages that will expire within the defined period (web.config)
+        /// </summary>
+        /// <param name="warningPages">
+        /// List of pages due to expire
+        /// </param>
+        private void SendWarningEmail(List<UserPageModel> warningPages)
         {
-            _noOfDaysFrom = ConfigurationManager.AppSettings["NoOfDaysFrom"].AsInt(14);
-            _emailWebStaffAtDays = ConfigurationManager.AppSettings["EmailWebStaffAtDays"].AsInt(3);
-            _webStaffEmail = ConfigurationManager.AppSettings["WebStaffEmail"];
-            _forceSendTo = ConfigurationManager.AppSettings["ForceSendTo"];
-        }
+            var emailTo = _webStaffEmail;
 
-
-        private void SendEmail(string emailTo, ExpiringPageModel contentNode)
-        {
-            // Construct a minimal UmbracouserModel
-            var webStaff = new UmbracoUserModel
-            {
-                FullName = "Web Staff", 
-                EmailAddress = _webStaffEmail
-            };
-
-            SendEmail(emailTo, contentNode, webStaff);
-        }
-
-        private void SendEmail(string emailTo, ExpiringPageModel contentNode, UmbracoUserModel pageUser)
-        {
             // If "ForceEmailTo" is set, send all emails there instead (for Testing)
             if (!string.IsNullOrEmpty(_forceSendTo))
             {
                 emailTo = _forceSendTo;
             }
 
-            _emailService.PageExpiryWarningEmail(emailTo, contentNode, pageUser);
+            _emailService.UserPageLastWarningEmail(emailTo, warningPages, _emailWebStaffAtDays);            
+        }
+
+        private void GetConfigSettings()
+        {
+            _noOfDaysFrom = ConfigurationManager.AppSettings["NoOfDaysFrom"].AsInt(14);
+            _emailWebStaffAtDays = ConfigurationManager.AppSettings["EmailWebStaffAtDays"].AsInt(3);
+            _webStaffEmail = ConfigurationManager.AppSettings["WebStaffEmail"];
+            _forceSendTo = ConfigurationManager.AppSettings["ForceSendTo"];
         }
     }
 }
