@@ -269,6 +269,8 @@
     <Compile Include="ViewModel\ContentTreeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\bin\Dependencies\log4net.1.2.11.0.dll" />
+    <Content Include="bin\log4net.dll" />
     <Content Include="Content\icons.gif" />
     <Content Include="Content\loading.gif" />
     <Content Include="Content\ajax-loader.gif" />
@@ -337,9 +339,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
-    <None Include="bin\Dependencies\log4net.1.2.11.0.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

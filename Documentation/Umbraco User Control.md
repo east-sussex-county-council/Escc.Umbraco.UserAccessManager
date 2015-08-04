@@ -68,3 +68,11 @@ Permission levels are assigned to Active Directory groups named in `web.config`.
 **WebServices**: Has full permission to the entire application.
 
 **ServiceDesk**: Has permission to lookup a user and initiate a password reset.
+
+## Page Expiry Email System
+
+A scheduled job that looks for pages that will expire within a set number of days, the number of days is set in `web.config` (`NoOfDaysFrom`).
+
+It is an API call with no user interface. The address is:
+ 
+	https://hostname/api/ExpiringPagesApi/CheckForExpiringNodesByUser/
