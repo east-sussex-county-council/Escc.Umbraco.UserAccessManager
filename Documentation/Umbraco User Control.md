@@ -69,6 +69,12 @@ Permission levels are assigned to Active Directory groups named in `web.config`.
 
 **ServiceDesk**: Has permission to lookup a user and initiate a password reset.
 
+## Lookup Web Page Authors
+
+Allow users to find out who is responsible for any page.
+
+	https://hostname/pageauthor
+
 ## Page Expiry Email System
 
 A scheduled job that looks for pages that will expire within a set number of days, the number of days is set in `web.config` (`NoOfDaysFrom`).

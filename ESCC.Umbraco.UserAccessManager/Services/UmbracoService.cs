@@ -100,14 +100,14 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// Post request to Umbraco web service to create a new user
         /// </summary>
         /// <param name="model">UmbracoUserModel - UserName, FullName and EmailAddress</param>
-        public void CreateNewUser(UmbracoUserModel model)
+        public UmbracoUserModel CreateNewUser(UmbracoUserModel model)
         {
             var response = PostMessage("PostCreateUser", model);
 
-            if (response.IsSuccessStatusCode) return;
-            var ex = response.Content.ReadAsAsync<Exception>().Result;
-            //var ex = response.Content.ReadAsAsync<PostMessageError>().Result;
-            throw ex;
+            if (!response.IsSuccessStatusCode) return null;
+            model = response.Content.ReadAsAsync<UmbracoUserModel>().Result;
+
+            return model;
         }
 
         /// <summary>

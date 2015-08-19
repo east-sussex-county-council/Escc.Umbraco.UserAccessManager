@@ -16,7 +16,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
 
         bool ResetPassword(PasswordResetModel model);
 
-        bool CreateUser(UmbracoUserModel model);
+        UmbracoUserModel CreateUser(UmbracoUserModel model);
 
         bool ToggleLock(UmbracoUserModel umbracoUserModel);
     }

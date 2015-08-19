@@ -157,10 +157,9 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
                 return View();
             }
 
+            var newUser = _userControlService.CreateUser(model);
 
-            var success = _userControlService.CreateUser(model);
-
-            return success ? RedirectToAction("InitiatePasswordReset", "Admin", model) : RedirectToAction("Index", "Home");
+            return (newUser != null) ? RedirectToAction("InitiatePasswordReset", "Admin", newUser) : RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

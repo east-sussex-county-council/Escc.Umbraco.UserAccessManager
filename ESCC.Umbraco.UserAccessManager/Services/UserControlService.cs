@@ -118,6 +118,9 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         {
             try
             {
+                // Ensure the User Id is not 0 which is the main Umbraco Admin user!
+                if (model.UserId == 0) return false;
+
                 var validRequests = _databaseService.GetResetDetails(model);
 
                 // If no record found in the database, then the request is not valid
@@ -150,15 +153,15 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// </summary>
         /// <param name="model">UmbracoUserModel - UserName, FullName, EmailAddress</param>
         /// <returns>success bool - all operations complete without error</returns>
-        public bool CreateUser(UmbracoUserModel model)
+        public UmbracoUserModel CreateUser(UmbracoUserModel model)
         {
             try
             {
-                _umbracoService.CreateNewUser(model);
+                var newUser = _umbracoService.CreateNewUser(model);
 
-                _emailService.CreateNewUserEmail(model);
+                _emailService.CreateNewUserEmail(newUser);
 
-                return true;
+                return newUser;
             }
             catch (Exception ex)
             {
