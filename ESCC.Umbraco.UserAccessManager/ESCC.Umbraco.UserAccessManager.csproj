@@ -230,6 +230,7 @@
     <Compile Include="Controllers\PageAuthorController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
+    <Compile Include="Controllers\WebEditorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -385,6 +386,9 @@
     <Content Include="Scripts\tree\src\jquery.fancytree.table.js" />
     <Content Include="Scripts\tree\src\jquery.fancytree.themeroller.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Shared\_WebEditors.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

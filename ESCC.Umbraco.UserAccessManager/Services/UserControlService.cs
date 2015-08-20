@@ -66,6 +66,11 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             }
         }
 
+        public IList<UmbracoUserModel> GetWebEditors()
+        {
+            return _umbracoService.GetWebEditors();
+        } 
+
         /// <summary>
         /// Creates database record and emails user to start reset process
         /// </summary>

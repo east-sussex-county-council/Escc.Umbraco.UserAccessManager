@@ -280,7 +280,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         }
 
         /// <summary>
-        /// Get permisions for supplied user
+        /// Get permissions for supplied user
         /// </summary>
         /// <param name="model">user details</param>
         /// <returns>List of pages</returns>

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
-using Castle.Core.Internal;
 using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
 
 namespace ESCC.Umbraco.UserAccessManager.Controllers
@@ -28,12 +24,26 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         {
             var modelList = _permissionsControlService.CheckPagePermissions(url);
 
-            if (!modelList.IsNullOrEmpty()) return PartialView("CheckPagePermissions", modelList);
+            // If nodelList is null then the page does not exist in Umbraco
+            if (modelList == null)
+            {
+                TempData["Message"] = "Page does not exist.";
+                TempData["InputString"] = url;
 
-            TempData["Message"] = "Either permissions have not been set for this page or page does not exist.";
-            TempData["InputString"] = url;
+                return PartialView("Error");
+            }
 
-            return PartialView("Error");
+            // if the permissions list has no entries then no specific permissions have been set
+            if (!modelList.Any())
+            {
+                TempData["Message"] = "Permissions have not been set for this page.";
+                TempData["InputString"] = url;
+
+                return PartialView("Error");
+            }
+
+            // One or more Web Authors have been given permission to edit this page
+            return PartialView("CheckPagePermissions", modelList);
         }
     }
 }

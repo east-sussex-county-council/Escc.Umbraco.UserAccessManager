@@ -14,6 +14,8 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
 
         ContentTreeViewModel GetAllUsersById(int id);
 
+        IList<UmbracoUserModel> GetWebEditors();
+
         void ResetPassword(PasswordResetModel model);
 
         void DisableUser(UmbracoUserModel model);

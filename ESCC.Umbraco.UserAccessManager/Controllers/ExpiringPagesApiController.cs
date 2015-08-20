@@ -42,7 +42,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             _umbracoService = new UmbracoService();
             _emailService = new EmailService();
 
-            IList<UserPagesModel> users = _umbracoService.GetExpiringPagesByUser(_noOfDaysFrom);
+            var users = _umbracoService.GetExpiringPagesByUser(_noOfDaysFrom);
 
             // For each user:
             foreach (var user in users)
@@ -68,6 +68,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
                     }
                 }
             }
+
             if (warningList.Any())
             {
                 SendWarningEmail(warningList);

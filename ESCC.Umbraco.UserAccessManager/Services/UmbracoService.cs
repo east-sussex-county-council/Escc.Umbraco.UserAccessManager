@@ -86,6 +86,15 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             return modelList;
         }
 
+        public IList<UmbracoUserModel> GetWebEditors()
+        {
+            var response = GetMessage("GetWebEditors");
+
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
+            return modelList;
+        } 
+
         public ContentTreeViewModel GetAllUsersById(int id)
         {
             var response = GetMessage("GetUserById?id=" + id);
@@ -223,7 +232,6 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
             return response.IsSuccessStatusCode;
         }
-
 
         public IList<PermissionsModel> CheckUserPermissions(int userId)
         {

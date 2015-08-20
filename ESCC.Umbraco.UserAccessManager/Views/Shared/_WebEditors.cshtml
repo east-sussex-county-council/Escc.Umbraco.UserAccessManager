@@ -1,0 +1,17 @@
+﻿@using System.Configuration
+@model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.UmbracoUserModel>
+
+<p>Web Editors:</p>
+<ul class="list-group-x">
+    @foreach (var item in @Model)
+    {
+        <li class="list-group-item-x">
+            <p>
+                <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)" target="_blank">@item.FullName</a>
+                -
+                @item.EmailAddress
+            </p>
+        </li>
+    }
+</ul>
+
