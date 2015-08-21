@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using ESCC.Umbraco.UserAccessManager.Models;
 using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
 
 namespace ESCC.Umbraco.UserAccessManager.Controllers
@@ -27,7 +28,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             // If nodelList is null then the page does not exist in Umbraco
             if (modelList == null)
             {
-                TempData["Message"] = "Page does not exist.";
+                TempData["Message"] = "Sorry, that page does not exist.";
                 TempData["InputString"] = url;
 
                 return PartialView("Error");

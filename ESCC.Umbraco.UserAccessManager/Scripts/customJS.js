@@ -170,14 +170,22 @@ $("#lookupPermissions").click(function () {
 });
 
 $("#lookupPagePermissions").click(function () {
-    var btn = $(this);
-    btn.prop("disabled", true);
     var dest = $("#PermissionsResults");
     var otherdest = $("#UnauthordPermissions");
-    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("");
     otherdest.html("");
-
+    var btn = $(this);
     var url = $("#searchterm").val();
+
+    if (url.length === 0) {
+        dest.html("<p>Please enter a URL.</p>");
+        return false;
+    }
+
+    url = encodeURIComponent(url);
+    btn.prop("disabled", true);
+    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+
     $.get($("#apppath").html() + "/PageAuthor/CheckPagePermissions/", { url: url }, function (data) {
         dest.html(data);
         btn.prop("disabled", false);
