@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using System.Web.WebPages;
 using ESCC.Umbraco.UserAccessManager.Models;
@@ -14,6 +15,8 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 {
     public class ExpiringPagesApiController : ApiController
     {
+        private static Mutex _mutex = null;  
+
         private IUmbracoService _umbracoService;
         private IEmailService _emailService;
 
@@ -34,8 +37,46 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [HttpPost]
         public HttpResponseMessage CheckForExpiringNodesByUser()
+        {
+            HttpResponseMessage res;
+
+            try
+            {
+                // Only allow one instance to run at a time
+                const string appName = "CheckForExpiringNodesByUser";
+                bool createdNew;
+                _mutex = new Mutex(true, appName, out createdNew);
+
+                if (!createdNew)
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+
+                // Check that the correct credentials have been supplied
+                var content = Request.Content.ReadAsStringAsync().Result;
+                if (!Authentication.AuthenticateUser(content))
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden);
+                }
+
+                // OK, carry on
+                res = GetExpiringNodesByUser();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+            finally
+            {
+                _mutex.Dispose();
+            }
+
+            return res;
+        }
+
+        private HttpResponseMessage GetExpiringNodesByUser()
         {
             GetConfigSettings();
 
