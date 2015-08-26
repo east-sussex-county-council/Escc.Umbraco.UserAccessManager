@@ -29,18 +29,8 @@ Each level of content tree is retrieved when its parent is expanded, hence the i
 
 Ticking and clearing the checkbox against each page updates the permissions immediately.
 
-## Sync user permissions
-This will obtain the current set of page permissions from Umbraco and replace the page permissions recorded in the local database.
-
-**Note**: This seems unnecessary as this system should always ensure that it is synchronised with the website. The website is the source, so I have changed this application to update its local permissions store on page load. I have also hidden the button, as it should not be needed.
-
 ## Copy user permissions
 Replace permissions for the current user with those from another user.
-
-## Set editor
-What is this for?
-
-**Note**: There does not appear to be a reason for this button / function, so I have hidden it.
 
 ## Tools
 There is a tools folder (/tools/) with the following pages / options:
@@ -82,3 +72,16 @@ A scheduled job that looks for pages that will expire within a set number of day
 It is an API call with no user interface. The address is:
  
 	https://hostname/api/ExpiringPagesApi/CheckForExpiringNodesByUser/
+
+The API call has username / password protection, using the `apiuser` and `apikey` values. There is a PowerShell script in the Jobs folder of the ESCC.Umbraco.UserAccessManager solution.
+
+### Schedule Setup
+
+#### Action: 
+Start a program
+
+#### Program/script: 
+Powershell
+
+#### Add arguments:
+-File [path to script] \CheckForExpiringNodesByUser.ps1

@@ -152,23 +152,12 @@
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
-    <Reference Include="umbraco">
-      <HintPath>..\..\ESCC.Umbraco.UserAccessWebService\ESCC.Umbraco.UserAccessWebService\bin\umbraco.dll</HintPath>
-    </Reference>
-    <Reference Include="Umbraco.Core, Version=1.0.5462.37503, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Umbraco.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Umbraco.Web.UI">
-      <HintPath>..\..\ESCC.Umbraco.UserAccessWebService\ESCC.Umbraco.UserAccessWebService\bin\Umbraco.Web.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="WebGrease">
-      <Private>True</Private>
-      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
-    </Reference>
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\..\ESCC.Umbraco.UserAccessWebService\ESCC.Umbraco.UserAccessWebService\bin\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -348,7 +337,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Jobs\CheckForExpiringNodesByUser.ps1" />
+    <None Include="Jobs\CheckForExpiringNodesByUser.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\customJS.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
