@@ -337,9 +337,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Jobs\CheckForExpiringNodesByUser.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Jobs\CheckForExpiringNodesByUser.ps1" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\customJS.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
