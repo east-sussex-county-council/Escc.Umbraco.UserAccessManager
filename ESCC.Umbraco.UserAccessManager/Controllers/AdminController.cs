@@ -142,7 +142,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             // Check that User does not already exist
             FindUserModel find = new FindUserModel {EmailAddress = model.EmailAddress, UserName = null};
             var user = _userControlService.LookupUsers(find);
-            if (user.Count > 0)
+            if (user == null || user.Count > 0)
             {
                 TempData["Message"] = "Email address already being used";
                 return View();
@@ -159,7 +159,12 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 
             var newUser = _userControlService.CreateUser(model);
 
-            return (newUser != null) ? RedirectToAction("InitiatePasswordReset", "Admin", newUser) : RedirectToAction("Index", "Home");
+            // Redmine #7903 - do not email user because no permissions have been setup yet
+            //return (newUser != null) ? RedirectToAction("InitiatePasswordReset", "Admin", newUser) : RedirectToAction("Index", "Home");
+            if (newUser == null) return RedirectToAction("Index", "Home");
+
+            var findUser = new FindUserModel {EmailAddress = newUser.EmailAddress};
+            return DisplayResults(findUser);
         }
 
         [HttpGet]
