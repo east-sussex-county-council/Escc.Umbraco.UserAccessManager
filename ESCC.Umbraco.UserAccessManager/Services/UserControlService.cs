@@ -185,13 +185,13 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         {
             try
             {
-                if (model.Lock)
+                if (model.UserLocked)
                 {
-                    _umbracoService.DisableUser(model);
+                    _umbracoService.EnableUser(model);
                 }
                 else
                 {
-                    _umbracoService.EnableUser(model);
+                    _umbracoService.DisableUser(model);
                 }
                 return true;
             }

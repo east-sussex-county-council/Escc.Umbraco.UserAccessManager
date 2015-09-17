@@ -30,7 +30,7 @@
 
             @Html.ActionLink("Reset Password", "InitiatePasswordReset", new {@user.UserId, @user.EmailAddress}, new {@class = "btn btn-warning", @role = "button"})
 
-            @(@user.Lock ? Html.ActionLink("Lock Account", "DisableUser", new {@user.UserId, @user.EmailAddress, @user.Lock }, new { @class = "btn btn-danger", @role = "button" }) : Html.ActionLink("Unlock Account", "DisableUser", new {@user.UserId, @user.EmailAddress, @user.Lock }, new { @class = "btn btn-danger active", @role = "button" }))
+            @(@user.UserLocked ? Html.ActionLink("Unlock Account", "DisableUser", new {@user.UserId, @user.EmailAddress, @user.UserLocked }, new { @class = "btn btn-danger active", @role = "button" }) : Html.ActionLink("Lock Account", "DisableUser", new {@user.UserId, @user.EmailAddress, @user.UserLocked }, new { @class = "btn btn-danger", @role = "button" }))
         </div>
     }
 }

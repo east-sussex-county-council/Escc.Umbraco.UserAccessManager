@@ -212,7 +212,7 @@ namespace UnitTestProject1
             var disableUser = new UserControlService(mockDatabaseService, mockUmbracoService, mockEmailService);
 
             umbracoUserModel.UserId = userId;
-            umbracoUserModel.Lock = toggleLock;
+            umbracoUserModel.UserLocked = toggleLock;
 
             var success = disableUser.ToggleLock(umbracoUserModel);
 

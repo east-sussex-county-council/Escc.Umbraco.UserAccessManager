@@ -15,7 +15,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 {
     public class ExpiringPagesApiController : ApiController
     {
-        private static Mutex _mutex = null;  
+        private static Mutex _mutex;
 
         private IUmbracoService _umbracoService;
         private IEmailService _emailService;

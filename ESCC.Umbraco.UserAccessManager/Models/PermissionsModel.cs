@@ -24,6 +24,8 @@ namespace ESCC.Umbraco.UserAccessManager.Models
 
         public string EmailAddress { get; set; }
 
+        public bool UserLocked { get; set; }
+
         [Ignore]
         public string PagePath { get; set; }
     }

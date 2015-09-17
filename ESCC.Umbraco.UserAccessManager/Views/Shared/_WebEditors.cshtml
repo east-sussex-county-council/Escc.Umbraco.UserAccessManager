@@ -1,9 +1,13 @@
-﻿@using System.Configuration
+@using System.Configuration
 @model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.UmbracoUserModel>
-
+@{
+    // Model contains all Web Editors, including any that are disabled in Umbraco
+    // Remove any disabled Web Editors from the list
+    var activeWebEditors = Model.Where(u => u.UserLocked == false);
+}
 <h4>Web Editors:</h4>
 <ul class="list-group-x">
-    @foreach (var item in @Model)
+    @foreach (var item in @activeWebEditors)
     {
         <li class="list-group-item-x">
             <p>

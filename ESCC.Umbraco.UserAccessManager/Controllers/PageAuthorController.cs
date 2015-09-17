@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using ESCC.Umbraco.UserAccessManager.Models;
 using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
 
 namespace ESCC.Umbraco.UserAccessManager.Controllers
@@ -34,17 +33,11 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
                 return PartialView("Error");
             }
 
-            // if the permissions list has no entries then no specific permissions have been set
-            if (!modelList.Any())
-            {
-                TempData["Message"] = "Permissions have not been set for this page.";
-                TempData["InputString"] = url;
-
-                return PartialView("Error");
-            }
+            // Remove any users who are currently disabled in Umbraco
+            var validUsers = modelList.Where(u => u.UserLocked == false);
 
             // One or more Web Authors have been given permission to edit this page
-            return PartialView("CheckPagePermissions", modelList);
+            return PartialView("CheckPagePermissions", validUsers);
         }
     }
 }

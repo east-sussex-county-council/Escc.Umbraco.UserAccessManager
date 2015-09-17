@@ -11,6 +11,11 @@
                     <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)">@item.FullName</a>
                     -
                     @item.EmailAddress
+
+                    @if (item.UserLocked)
+                    {
+                        @Html.Raw(" <span class=\"highlight\">(User Disabled)</span>")
+                    }
                 </p>
             </li>
         }

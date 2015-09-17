@@ -1,19 +1,27 @@
 ﻿@model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PermissionsModel>
 
-<h4>Web Authors responsible for the page: @Model.First().PageName</h4>
+@if (Model.Any())
+{
+    <h4>Web Authors responsible for the page: @Model.First().PageName</h4>
 
-<ul class="list-group-x">
-    @foreach (var item in @Model)
-    {
-        <li class="list-group-item-x">
-            <p>
-                @item.FullName
-                -
-                @item.EmailAddress
-            </p>
-        </li>
-    }
-</ul>
+    <ul class="list-group-x">
+        @foreach (var item in @Model)
+        {
+            <li class="list-group-item-x">
+                <p>
+                    @item.FullName
+                    -
+                    @item.EmailAddress
+                </p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <h4>Web Authors</h4>
+    <p>There are no web authors responsible for this page, please contact a Web Editor instead.</p>
+}
 
 @{
     Html.RenderAction("Index", "WebEditors");   
