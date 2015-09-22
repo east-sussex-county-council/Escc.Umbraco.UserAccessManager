@@ -16,15 +16,17 @@
                         <li id="menuitemurl"><a>Page Url</a></li>
                     </ul>
                 </div>
-                <input type="text" class="form-control" id="searchterm" name="Username" placeholder="Username" />
+                <input type="text" class="form-control" id="searchterm" name="Username" placeholder="Username"/>
                 <span class="input-group-btn">
                     <button class="btn btn-primary" id="lookupPermissions" type="submit">Find</button>
                 </span>
             </div>
-            <div id="PermissionsResults"></div>
             <p class="hidden" id="apppath">@Functions.GetAppPath(Request.ApplicationPath)</p>
         </fieldset>
     </div>
+</div>
+<div class="row">
+    <div class="col-sm-12" id="PermissionsResults"></div>
 </div>
 
 <div class="row">
