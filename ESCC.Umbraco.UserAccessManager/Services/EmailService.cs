@@ -128,13 +128,14 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             const string subject = "ACTION: Your website pages expire in under 14 days";
             var body = new StringBuilder();
 
-            body.AppendLine("<p>Your website pages will expire within the next two weeks. After this they will no longer be available to the public. The dates for each page are given below.</p>");            
-            body.AppendFormatLine("<p>You need to log into the back office first at {0}</p>", siteUri);
+            body.AppendLine("<p>Your website pages will expire within the next two weeks. After this they will no longer be available to the public. The dates for each page are given below.</p>");
+            body.AppendLine("<p>Note, you should always use Google Chrome to update your pages. If your default web browser is Internet Explorer, you will need to right-click and copy and paste the links below into Chrome instead.</p>");
             body.AppendLine("<p>After you’ve logged in, click on each page below and:</p>");
             body.AppendLine("<ul>");
             body.AppendLine("<li>check they are up to date</li>");
             body.AppendLine("<li>check the information is still needed</li>");
-            body.AppendLine("<li>set a new expiry date, then click 'Save and publish'.</li>");
+            body.AppendLine("<li>go to Properties tab and use the calendar to set a new date in the 'Unpublish at' box</li>");
+            body.AppendLine("<li>then click 'Save and publish'.</li>");
             body.AppendLine("</ul>");
             body.AppendLine("<p>For details on updating your pages, see <a href=\"" + ConfigurationManager.AppSettings["WebAuthorsGuidanceUrl"] + "\">Guidance for web authors</a>.</p>");
 
@@ -198,12 +199,13 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             var body = new StringBuilder();
 
             body.AppendFormatLine("<p>These website pages will expire within the next {0} days. After this they will no longer be available to the public.</p>", emailWebStaffAtDays.ToString());
-            body.AppendFormatLine("<p>You need to log into the back office first at {0}</p>", siteUri);
+            body.AppendLine("<p>Note, you should always use Google Chrome to update your pages. If your default web browser is Internet Explorer, you will need to right-click and copy and paste the links below into Chrome instead.</p>");
             body.AppendLine("<p>After you’ve logged in, click on each page below and:</p>");
             body.AppendLine("<ul>");
             body.AppendLine("<li>check they are up to date</li>");
             body.AppendLine("<li>check the information is still needed</li>");
-            body.AppendLine("<li>set a new expiry date, then click 'Save and publish'.</li>");
+            body.AppendLine("<li>go to Properties tab and use the calendar to set a new date in the 'Unpublish at' box</li>");
+            body.AppendLine("<li>then click 'Save and publish'.</li>");
             body.AppendLine("</ul>");
             body.AppendLine("<p>For details on updating your pages, see <a href=\"" + ConfigurationManager.AppSettings["WebAuthorsGuidanceUrl"] + "\">Guidance for web authors</a>.</p>");
 
