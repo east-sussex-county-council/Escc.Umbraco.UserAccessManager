@@ -205,3 +205,19 @@ $("#searchterm").keypress(function (e) {
         $("#lookupPermissions").trigger("click");
     }
 });
+
+function lookupallauthors(elem) {
+    var btnId = $(elem).data("url");
+    $("#menuitemurl").click();
+    $("#searchterm").val(btnId);
+    $("#lookupPermissions").click();
+    return false;
+};
+
+function lookupauthorpages(elem) {
+    var btnId = $(elem).data("id");
+    $("#menuitemuser").click();
+    $("#searchterm").val(btnId);
+    $("#lookupPermissions").click();
+    return false;
+};

@@ -30,5 +30,9 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// v1.0.1 First versioned DLL. Fixes #7903
+// v1.0.2 added additional links to tools pages, to allow switching between page and user pages.
+//        also enhanced and standardised the page layouts. Ref #7696, #8019
+//
+[assembly: AssemblyVersion("1.0.2.0")]
+[assembly: AssemblyFileVersion("1.0.2.0")]

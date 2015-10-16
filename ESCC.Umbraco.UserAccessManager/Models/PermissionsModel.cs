@@ -13,6 +13,8 @@ namespace ESCC.Umbraco.UserAccessManager.Models
 
         public int UserId { get; set; }
 
+        public string Username { get; set; }
+
         public DateTime? Created { get; set; }
 
         [Ignore]
@@ -28,5 +30,8 @@ namespace ESCC.Umbraco.UserAccessManager.Models
 
         [Ignore]
         public string PagePath { get; set; }
+
+        [Ignore]
+        public string PageUrl { get; set; }
     }
 }

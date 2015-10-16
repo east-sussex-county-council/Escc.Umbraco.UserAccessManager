@@ -73,7 +73,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 
             if (success)
             {
-                TempData["Message"] = "Password reset proccess initiated, user has been emailed";
+                TempData["Message"] = "Password reset process initiated, user has been emailed";
             }
 
             return DisplayResults(new FindUserModel { EmailAddress = model.EmailAddress });

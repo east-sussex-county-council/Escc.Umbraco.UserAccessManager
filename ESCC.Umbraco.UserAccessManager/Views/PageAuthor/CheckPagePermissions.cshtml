@@ -1,21 +1,26 @@
-﻿@model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PermissionsModel>
+﻿@using System.Configuration
+@model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PermissionsModel>
 
 @if (Model.Any())
 {
     <h4>Web Authors responsible for the page: @Model.First().PageName</h4>
 
-    <ul class="list-group-x">
-        @foreach (var item in @Model)
-        {
-            <li class="list-group-item-x">
-                <p>
-                    @item.FullName
-                    -
-                    @item.EmailAddress
-                </p>
-            </li>
-        }
-    </ul>
+    <table class="table table-striped">
+    @foreach (var item in @Model)
+    {
+        <tr>
+            <td class="col-md-3">
+                @item.FullName
+            </td>
+            <td class="col-md-3">
+                <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)" target="_blank">View staff page</a>
+            </td>
+            <td class="col-md-6">
+                <a href="mailto:@item.EmailAddress">@item.EmailAddress</a>
+            </td>
+        </tr>
+    }
+    </table>
 }
 else
 {

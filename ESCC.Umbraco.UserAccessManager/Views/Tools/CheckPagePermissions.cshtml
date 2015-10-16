@@ -3,20 +3,32 @@
 
     <h4>People responsible for @Model.First().PageName - @Model.First().PageId</h4>
 
-    <ul class="list-group-x">
-        @foreach (var item in @Model)
-        {
-            <li class="list-group-item-x">
-                <p>
-                    <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)">@item.FullName</a>
-                    -
-                    @item.EmailAddress
-
-                    @if (item.UserLocked)
-                    {
-                        @Html.Raw(" <span class=\"highlight\">(User Disabled)</span>")
-                    }
-                </p>
-            </li>
-        }
-    </ul>
+<table class="table table-striped">
+    @foreach (var item in @Model)
+    {
+    <tr>
+        <td class="col-md-3">
+            @item.FullName
+        </td>
+        <td class="col-md-4">
+            <a href="mailto:@item.EmailAddress">@item.EmailAddress</a>
+        </td>
+        <td class="col-md-1">
+            <a href="#" class="lookupauthorpages" data-id="@item.Username" onclick="return lookupauthorpages(this);">all pages</a>
+        </td>
+        <td class="col-md-2">
+            <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)" target="_blank">view staff page</a>
+        </td>
+        <td class="col-md-2">
+            @if (item.UserLocked)
+            {
+                @Html.Raw(" <span class=\"highlight\">User Disabled</span>")
+            }
+            else
+            {
+                @Html.Raw("&nbsp;");
+            }
+        </td>
+    </tr>
+    }
+</table>
