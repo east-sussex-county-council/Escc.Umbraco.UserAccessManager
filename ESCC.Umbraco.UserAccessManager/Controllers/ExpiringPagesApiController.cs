@@ -96,11 +96,13 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 
             // Check for pages expiring soon and email Web Staff
             var warningList = new List<UserPageModel>();
+            var soonDate = DateTime.Now.AddDays(_emailWebStaffAtDays + 1);
 
-            var expiringSoon = users.Where(u => u.Pages.Any(p => p.ExpiryDate <= DateTime.Now.AddDays(_emailWebStaffAtDays + 1)));
+            var expiringSoon = users.Where(u => u.Pages.Any(p => p.ExpiryDate <= soonDate));
             foreach (var expiring in expiringSoon)
             {
-                foreach (var expiringPage in expiring.Pages)
+                // Add the specific pages that will expire soon ... not all of them!
+                foreach (var expiringPage in expiring.Pages.Where(p => p.ExpiryDate <= soonDate))
                 {
                     // Check we haven't already added this page to the list
                     if (warningList.All(n => n.PageId != expiringPage.PageId))
@@ -112,7 +114,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 
             if (warningList.Any())
             {
-                SendWarningEmail(warningList);
+                SendWarningEmail(warningList.OrderBy(o => o.ExpiryDate).ToList());
             }
             return Request.CreateResponse(HttpStatusCode.OK);
         }

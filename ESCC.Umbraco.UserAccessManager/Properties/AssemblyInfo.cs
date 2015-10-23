@@ -33,6 +33,8 @@ using System.Runtime.InteropServices;
 // v1.0.1 First versioned DLL. Fixes #7903
 // v1.0.2 added additional links to tools pages, to allow switching between page and user pages.
 //        also enhanced and standardised the page layouts. Ref #7696, #8019
+// v1.0.3 When looking for pages that expire within 3 days (or as configured), all pages for the related
+//        user were being added rather than just the specific page. Fixes #8082
 //
-[assembly: AssemblyVersion("1.0.2.0")]
-[assembly: AssemblyFileVersion("1.0.2.0")]
+[assembly: AssemblyVersion("1.0.3.0")]
+[assembly: AssemblyFileVersion("1.0.3.0")]
