@@ -5,6 +5,9 @@
     var editurl = string.Format("{0}#/content/content/edit/", siteUri);
     var viewurl = siteUri.Replace("/umbraco/", "");
 }
+@{
+    Html.RenderPartial("_ToolsMenu");
+}
     <h4>Pages without web authors</h4>
 
 <table class="table table-striped">

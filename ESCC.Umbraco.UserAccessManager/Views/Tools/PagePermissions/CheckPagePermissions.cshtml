@@ -1,7 +1,14 @@
-@using System.Configuration
+﻿@using System.Web.Mvc.Ajax
 @model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PermissionsModel>
+@{
+    if (Model == null)
+    {
+        return;
+    }
+}
 
-<h4>People responsible for @Model.First().PageName - @Model.First().PageId</h4>
+
+    <h4>People responsible for @Model.First().PageName - @Model.First().PageId</h4>
 
 <table class="table table-striped">
     @foreach (var item in @Model)
@@ -14,7 +21,8 @@
             <a href="mailto:@item.EmailAddress">@item.EmailAddress</a>
         </td>
         <td class="col-md-1">
-            <a href="#" class="lookupauthorpages" data-id="@item.Username" onclick="return lookupauthorpages(this);">all pages</a>
+            @Html.ActionLink("All pages", "UserPermissions", "Tools", new { userName = item.Username }, null)
+            <a href="#" class="lookupauthorpages" data-id="@item.Username" onclick=" return lookupauthorpages(this); ">all pages</a>
         </td>
         <td class="col-md-2">
             <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)" target="_blank">view staff page</a>
@@ -32,3 +40,4 @@
     </tr>
     }
 </table>
+

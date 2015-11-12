@@ -1,0 +1,81 @@
+﻿@using System.Configuration
+@model  ESCC.Umbraco.UserAccessManager.Models.PageLinksModel
+@{
+    var siteUri = ConfigurationManager.AppSettings["SiteUri"];
+    var editurl = string.Format("{0}#/content/content/edit/", siteUri);
+    var viewurl = siteUri.Replace("/umbraco/", "");
+
+}
+<h4>Inbound links to: @Model.PageName (Id @Model.PageId)</h4>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th colspan="3">Local Links</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model.InboundLinksLocal)
+        {
+            <tr>
+                <td class="col-md-3">
+                    @item.PageName
+                </td>
+                <td class="col-md-1">
+                    <a class="ui-button" href="@editurl@item.PageId" target="_blank">edit page</a>
+                </td>
+                <td class="col-md-2">
+                    <a class="ui-button" href="@viewurl@item.PageUrl" target="_blank">view page</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th colspan="3">Redirected Links</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model.InboundLinksRedirect)
+        {
+            <tr>
+                <td class="col-md-3">
+                    @item.PageName
+                </td>
+                <td class="col-md-1">
+                    <a class="ui-button" href="@editurl@item.PageId" target="_blank">edit page</a>
+                </td>
+                <td class="col-md-2">
+                    <a class="ui-button" href="@viewurl@item.PageUrl" target="_blank">view page</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th colspan="3">External Links</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model.InboundLinksExternal)
+        {
+            <tr>
+                <td class="col-md-3">
+                    @item.PageName
+                </td>
+                <td class="col-md-1">
+                    <a class="ui-button" href="@editurl@item.PageId" target="_blank">edit page</a>
+                </td>
+                <td class="col-md-2">
+                    <a class="ui-button" href="@viewurl@item.PageUrl" target="_blank">view page</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

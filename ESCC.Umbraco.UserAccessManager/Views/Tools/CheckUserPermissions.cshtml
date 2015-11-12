@@ -12,26 +12,26 @@
     var viewurl = siteUri.Replace("/umbraco/", "");
 }
 <table class="table table-striped">
-@foreach (var page in @Model)
-{
-    var allauthors = (page.PageUrl != "#") ? page.PageUrl : page.PageId.ToString();
-    
-    <tr>
-        <td class="col-md-9">
-            @page.PagePath@page.PageName
-        </td>
-        <td class="col-md-1">
-            <a href="#" class="lookupallauthors" data-url="@allauthors" onclick="return lookupallauthors(this);">all authors</a>
-        </td>
-        <td class="col-md-1">
-            <a class="ui-button" href="@editurl@page.PageId" target="_blank">edit page</a>
-        </td>
-        <td class="col-md-1">
-        @if (page.PageUrl != "#")
-        {
-            <a class="ui-button" href="@viewurl@page.PageUrl" target="_blank">view page</a>
-        }
-        </td>
-    </tr>
-}
+    @foreach (var page in @Model)
+    {
+        var allauthors = (page.PageUrl != "#") ? page.PageUrl : page.PageId.ToString();
+
+        <tr>
+            <td class="col-md-9">
+                @page.PagePath@page.PageName
+            </td>
+            <td class="col-md-1">
+                <a href="#" class="lookupallauthors" data-url="@allauthors" onclick="return lookupallauthors(this);">all authors</a>
+            </td>
+            <td class="col-md-1">
+                <a class="ui-button" href="@editurl@page.PageId" target="_blank">edit page</a>
+            </td>
+            <td class="col-md-1">
+                @if (page.PageUrl != "#")
+                {
+                    <a class="ui-button" href="@viewurl@page.PageUrl" target="_blank">view page</a>
+                }
+            </td>
+        </tr>
+    }
 </table>

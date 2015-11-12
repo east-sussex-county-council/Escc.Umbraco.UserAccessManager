@@ -285,5 +285,20 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             var modelList = response.Content.ReadAsAsync<IList<UserPagesModel>>().Result;
             return modelList;
         }
+
+        /// <summary>
+        /// Get a list of all inbound links to the provided Url
+        /// </summary>
+        /// <param name="url">page Url</param>
+        /// <returns>List of links into the provided url</returns>
+        public PageLinksModel FindInboundLinks(string url)
+        {
+            var response = GetMessage("GetPageInboundLinks?url=" + url);
+
+            if (!response.IsSuccessStatusCode) return null;
+            var model = response.Content.ReadAsAsync<PageLinksModel>().Result;
+
+            return model;
+        }
     }
 }

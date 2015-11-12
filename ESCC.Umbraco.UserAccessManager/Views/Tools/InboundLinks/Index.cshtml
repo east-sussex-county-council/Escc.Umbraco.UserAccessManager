@@ -1,0 +1,28 @@
+﻿@using ESCC.Umbraco.UserAccessManager.Utility
+@{
+    ViewBag.Title = "Tools";
+}
+@{
+    Html.RenderPartial("_ToolsMenu");
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <fieldset>
+            <h4>Page inbound links</h4>
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" id="searchinput" class="btn btn-default">Page Url</button>
+                </div>
+                <input type="text" class="form-control" id="searchterm" name="pageUrl" placeholder="Page URL" />
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" id="lookupInboundLinks" type="submit">Find</button>
+                </span>
+            </div>
+            <p class="hidden" id="apppath">@Functions.GetAppPath(Request.ApplicationPath)</p>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12" id="PermissionsResults"></div>
+</div>

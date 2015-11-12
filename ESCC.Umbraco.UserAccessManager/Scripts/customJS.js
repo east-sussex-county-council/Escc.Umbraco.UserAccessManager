@@ -119,7 +119,7 @@ $("#PagesWithoutAuthor").click(function () {
     btn.prop("disabled", true);
     var dest = $("#UnauthordPermissions");
     var otherdest = $("#PermissionsResults");
-    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
     otherdest.html("");
     $.get($("#apppath").html() + "/Tools/CheckPagesWithoutAuthor/", function (data) {
         dest.html(data);
@@ -133,7 +133,7 @@ $("#lookupPermissions").click(function () {
     btn.prop("disabled", true);
     var dest = $("#PermissionsResults");
     var otherdest = $("#UnauthordPermissions");
-    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
     otherdest.html("");
     var searchTerm = $("#searchterm").prop("name");
 
@@ -184,9 +184,34 @@ $("#lookupPagePermissions").click(function () {
 
     url = encodeURIComponent(url);
     btn.prop("disabled", true);
-    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
 
     $.get($("#apppath").html() + "/PageAuthor/CheckPagePermissions/", { url: url }, function (data) {
+        dest.html(data);
+        btn.prop("disabled", false);
+    });
+
+    return false;
+});
+
+$("#lookupInboundLinks").click(function() {
+    var dest = $("#PermissionsResults");
+    var otherdest = $("#UnauthordPermissions");
+    dest.html("");
+    otherdest.html("");
+    var btn = $(this);
+    var url = $("#searchterm").val();
+
+    if (url.length === 0) {
+        dest.html("<p>Please enter a URL.</p>");
+        return false;
+    }
+
+    url = encodeURIComponent(url);
+    btn.prop("disabled", true);
+    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+
+    $.get($("#apppath").html() + "/Tools/FindInboundLinks/", { url: url }, function (data) {
         dest.html(data);
         btn.prop("disabled", false);
     });

@@ -233,6 +233,8 @@
     <Compile Include="Models\EditorModel.cs" />
     <Compile Include="Models\ExpiringPageModel.cs" />
     <Compile Include="Models\FindUserModel.cs" />
+    <Compile Include="Models\PageInLinkModel.cs" />
+    <Compile Include="Models\PageLinksModel.cs" />
     <Compile Include="Models\PasswordResetModel.cs" />
     <Compile Include="Models\PermissionsModel.cs" />
     <Compile Include="Models\PetaPoco.cs" />
@@ -414,8 +416,8 @@
     <Content Include="Views\Permissions\Index.cshtml" />
     <Content Include="Scripts\tree\skin-win7\ui.fancytree.less" />
     <Content Include="Views\Tools\Index.cshtml" />
-    <Content Include="Views\Tools\CheckPagePermissions.cshtml" />
-    <Content Include="Views\Tools\CheckUserPermissions.cshtml" />
+    <Content Include="Views\Tools\PagePermissions\CheckPagePermissions.cshtml" />
+    <Content Include="Views\Tools\UserPermissions\CheckUserPermissions.cshtml" />
     <Content Include="Views\Tools\PagesWithoutAuthors.cshtml" />
     <Content Include="Views\Tools\ToolsError.cshtml" />
     <Content Include="Views\Admin\PasswordResetError.cshtml" />
@@ -424,6 +426,14 @@
     <Content Include="Views\PageAuthor\Index.cshtml" />
     <Content Include="Views\PageAuthor\CheckPagePermissions.cshtml" />
     <Content Include="Views\PageAuthor\Error.cshtml" />
+    <Content Include="Views\Shared\_ToolsMenu.cshtml" />
+    <Content Include="Views\Tools\PagePermissions\Index.cshtml" />
+    <Content Include="Views\Tools\UserPermissions\Index.cshtml" />
+    <Content Include="Views\Tools\InboundLinks\Index.cshtml" />
+    <Content Include="Views\Tools\InboundLinks\CheckInboundLinks.cshtml" />
+    <Content Include="Views\Tools\LookupPermissions\Index.cshtml" />
+    <Content Include="Views\Tools\CheckPagePermissions.cshtml" />
+    <Content Include="Views\Tools\CheckUserPermissions.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
