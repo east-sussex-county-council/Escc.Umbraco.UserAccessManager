@@ -27,7 +27,14 @@
                     <a class="ui-button" href="@editurl@item.PageId" target="_blank">edit page</a>
                 </td>
                 <td class="col-md-2">
-                    <a class="ui-button" href="@viewurl@item.PageUrl" target="_blank">view page</a>
+                    @if (item.PageUrl != "[Parent unpublished]" && item.PageUrl != "[Currently unpublished]")
+                    {
+                        <a class="ui-button" href="@viewurl@item.PageUrl" target="_blank">view page</a>
+                    }
+                    else
+                    {
+                        @item.PageUrl
+                    }
                 </td>
             </tr>
         }
