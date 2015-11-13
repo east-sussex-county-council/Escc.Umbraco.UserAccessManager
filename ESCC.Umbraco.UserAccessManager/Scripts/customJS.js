@@ -119,7 +119,7 @@ $("#PagesWithoutAuthor").click(function () {
     btn.prop("disabled", true);
     var dest = $("#UnauthordPermissions");
     var otherdest = $("#PermissionsResults");
-    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("<img src=\"../Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
     otherdest.html("");
     $.get($("#apppath").html() + "/Tools/CheckPagesWithoutAuthor/", function (data) {
         dest.html(data);
@@ -133,7 +133,7 @@ $("#lookupPermissions").click(function () {
     btn.prop("disabled", true);
     var dest = $("#PermissionsResults");
     var otherdest = $("#UnauthordPermissions");
-    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("<img src=\"../Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
     otherdest.html("");
     var searchTerm = $("#searchterm").prop("name");
 
@@ -209,7 +209,7 @@ $("#lookupInboundLinks").click(function() {
 
     url = encodeURIComponent(url);
     btn.prop("disabled", true);
-    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("<img src=\"../Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
 
     $.get($("#apppath").html() + "/Tools/FindInboundLinks/", { url: url }, function (data) {
         dest.html(data);

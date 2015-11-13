@@ -8,11 +8,11 @@
 }
 <h4>Inbound links to: @Model.PageName (Id @Model.PageId)</h4>
 
-<table class="table table-striped">
+<table class="table table-striped table-bordered">
     <thead>
-    <tr>
-        <th colspan="3">Local Links</th>
-    </tr>
+        <tr>
+            <th colspan="3">Local Links</th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var item in @Model.InboundLinksLocal)
@@ -20,6 +20,8 @@
             <tr>
                 <td class="col-md-3">
                     @item.PageName
+                    <br />
+                    [Fields: @string.Join(", ", item.FieldNames)]
                 </td>
                 <td class="col-md-1">
                     <a class="ui-button" href="@editurl@item.PageId" target="_blank">edit page</a>
@@ -32,7 +34,7 @@
     </tbody>
 </table>
 
-<table class="table table-striped">
+<table class="table table-striped table-bordered">
     <thead>
         <tr>
             <th colspan="3">Redirected Links</th>
@@ -56,7 +58,7 @@
     </tbody>
 </table>
 
-<table class="table table-striped">
+<table class="table table-striped table-bordered">
     <thead>
         <tr>
             <th colspan="3">External Links</th>
