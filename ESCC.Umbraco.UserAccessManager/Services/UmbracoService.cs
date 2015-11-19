@@ -293,12 +293,30 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// <returns>List of links into the provided url</returns>
         public PageLinksModel FindInboundLinks(string url)
         {
+            // Search Umbraco for internal links
             var response = GetMessage("GetPageInboundLinks?url=" + url);
 
             if (!response.IsSuccessStatusCode) return null;
             var model = response.Content.ReadAsAsync<PageLinksModel>().Result;
+            // Search the Redirects Database
+            if (!string.IsNullOrEmpty(model.PageUrl))
+            {
+                GetPageInboundLinks_Redirects(model);
+            }
+
+            // Search the Inspyder extract
 
             return model;
+        }
+
+        private void GetPageInboundLinks_Redirects(PageLinksModel model)
+        {
+            var rd = new RedirectsService();
+
+            var url = model.PageUrl;
+
+            // List<RedirectModel> links
+            model.InboundLinksRedirect.AddRange(rd.GetRedirectsByDestination(url));
         }
     }
 }

@@ -92,21 +92,22 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         {
             var modelList = _umbracoService.FindInboundLinks(url);
 
-            if (modelList != null) return PartialView("InboundLinks/CheckInboundLinks", modelList);
+            if (modelList == null)
+            {
+                TempData["Message"] = "The page was not found.";
+                TempData["InputString"] = url;
 
-            TempData["Message"] = "This page does not have any inbound links.";
-            TempData["InputString"] = url;
+                return PartialView("ToolsError");
+            }
+            if (modelList.PageId == 0)
+            {
+                TempData["Message"] = "The page was not found.";
+                TempData["InputString"] = url;
 
-            return PartialView("ToolsError");
+                return PartialView("ToolsError");
+            }
+
+            return PartialView("InboundLinks/CheckInboundLinks", modelList);
         }
-
-        //[HttpGet]
-        //public ActionResult LookupAuthorPages(string userName)
-        //{
-        //    var model = new FindUserModel() {UserName = userName};
-        //    var modelList = _permissionsControlService.CheckUserPermissions(model);
-
-        //    return View("UserPermissions/CheckUserPermissions", "UserPermissions/Index", modelList);
-        //}
     }
 }

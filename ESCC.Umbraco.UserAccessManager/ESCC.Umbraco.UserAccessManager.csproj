@@ -238,6 +238,7 @@
     <Compile Include="Models\PasswordResetModel.cs" />
     <Compile Include="Models\PermissionsModel.cs" />
     <Compile Include="Models\PetaPoco.cs" />
+    <Compile Include="Models\RedirectModel.cs" />
     <Compile Include="Models\UmbracoUserModel.cs" />
     <Compile Include="IOC\WindsorControllerFactory.cs" />
     <Compile Include="Models\UserPageModel.cs" />
@@ -248,9 +249,11 @@
     <Compile Include="Services\Interfaces\IDatabaseService.cs" />
     <Compile Include="Services\Interfaces\IEmailService.cs" />
     <Compile Include="Services\Interfaces\IPermissionsControlService.cs" />
+    <Compile Include="Services\Interfaces\IRedirectService.cs" />
     <Compile Include="Services\Interfaces\IUserControlService.cs" />
     <Compile Include="Services\Interfaces\IUmbracoService.cs" />
     <Compile Include="Services\PermissionsControlService.cs" />
+    <Compile Include="Services\RedirectsService.cs" />
     <Compile Include="Services\UserControlService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\UmbracoService.cs" />
