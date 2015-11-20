@@ -184,7 +184,7 @@ $("#lookupPagePermissions").click(function () {
 
     url = encodeURIComponent(url);
     btn.prop("disabled", true);
-    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("<img src=\"Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
 
     $.get($("#apppath").html() + "/PageAuthor/CheckPagePermissions/", { url: url }, function (data) {
         dest.html(data);
