@@ -36,6 +36,8 @@ using System.Runtime.InteropServices;
 // v1.0.3 When looking for pages that expire within 3 days (or as configured), all pages for the related
 //        user were being added rather than just the specific page. Fixes #8082
 // v1.1.0 Added inbound links lookup
+// v1.2.0 Moved Redirects DB lookup code here from WebService as no access from Azure
+// v1.2.1 Fixed path to ajax-loader image for PageAuthor page
 //
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.1.0")]
+[assembly: AssemblyFileVersion("1.2.1.0")]
