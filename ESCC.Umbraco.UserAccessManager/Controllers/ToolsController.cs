@@ -1,8 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Castle.Core.Internal;
 using ESCC.Umbraco.UserAccessManager.Models;
 using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
 using ESCC.Umbraco.UserAccessManager.Utility;
+using Exceptionless;
 
 namespace ESCC.Umbraco.UserAccessManager.Controllers
 {
@@ -40,14 +42,25 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         [HttpGet]
         public ActionResult CheckPagePermissions(string url)
         {
-            var modelList = _permissionsControlService.CheckPagePermissions(url);
+            try
+            {
+                var modelList = _permissionsControlService.CheckPagePermissions(url);
 
-            if (!modelList.IsNullOrEmpty()) return PartialView("CheckPagePermissions", modelList);
+                if (!modelList.IsNullOrEmpty()) return PartialView("CheckPagePermissions", modelList);
 
-            TempData["Message"] = "Either permissions have not been set for this page or page does not exist.";
-            TempData["InputString"] = url;
+                TempData["Message"] = "Either permissions have not been set for this page or page does not exist.";
+                TempData["InputString"] = url;
 
-            return PartialView("ToolsError");
+                return PartialView("ToolsError");
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                TempData["Message"] = string.Format("An error occurred while processing your request.");
+                TempData["InputString"] = url;
+
+                return PartialView("ToolsError");
+            }
         }
 
         [HttpGet]
@@ -59,26 +72,47 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         [HttpGet]
         public ActionResult CheckUserPermissions(FindUserModel model)
         {
-            var modelList = _permissionsControlService.CheckUserPermissions(model);
+            try
+            {
+                var modelList = _permissionsControlService.CheckUserPermissions(model);
 
-            if (!modelList.IsNullOrEmpty()) return PartialView("CheckUserPermissions", modelList);
+                if (!modelList.IsNullOrEmpty()) return PartialView("CheckUserPermissions", modelList);
 
-            TempData["Message"] = "Either user has no permissions setup or this user does not exist.";
-            TempData["InputString"] = model.EmailAddress + model.UserName;
+                TempData["Message"] = "Either user has no permissions setup or this user does not exist.";
+                TempData["InputString"] = model.EmailAddress + model.UserName;
 
-            return PartialView("ToolsError");
+                return PartialView("ToolsError");
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                TempData["Message"] = string.Format("An error occurred while processing your request.");
+                TempData["InputString"] = model.EmailAddress + model.UserName;
+
+                return PartialView("ToolsError");
+            }
         }
 
         [HttpGet]
         public ActionResult CheckPagesWithoutAuthor()
         {
-            var modelList = _permissionsControlService.PagesWithoutAuthor();
+            try
+            {
+                var modelList = _permissionsControlService.PagesWithoutAuthor();
 
-            if (!modelList.IsNullOrEmpty()) return View("PagesWithoutAuthors", modelList);
+                if (!modelList.IsNullOrEmpty()) return View("PagesWithoutAuthors", modelList);
 
-            TempData["Message"] = "Unable to find pages without authors.";
+                TempData["Message"] = "Unable to find pages without authors.";
 
-            return PartialView("ToolsError");
+                return PartialView("ToolsError");
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                TempData["Message"] = string.Format("An error occurred while processing your request.");
+
+                return PartialView("ToolsError");
+            }
         }
 
         [HttpGet]
@@ -90,24 +124,35 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         [HttpGet]
         public ActionResult FindInboundLinks(string url)
         {
-            var modelList = _umbracoService.FindInboundLinks(url);
-
-            if (modelList == null)
+            try
             {
-                TempData["Message"] = "The page was not found.";
+                var modelList = _umbracoService.FindInboundLinks(url);
+
+                if (modelList == null)
+                {
+                    TempData["Message"] = "The page was not found.";
+                    TempData["InputString"] = url;
+
+                    return PartialView("ToolsError");
+                }
+                if (modelList.PageId == 0)
+                {
+                    TempData["Message"] = "The page was not found.";
+                    TempData["InputString"] = url;
+
+                    return PartialView("ToolsError");
+                }
+
+                return PartialView("InboundLinks/CheckInboundLinks", modelList);
+            }
+            catch (Exception ex)
+            {
+                ex.ToExceptionless().Submit();
+                TempData["Message"] = string.Format("An error occurred while processing your request.");
                 TempData["InputString"] = url;
 
                 return PartialView("ToolsError");
             }
-            if (modelList.PageId == 0)
-            {
-                TempData["Message"] = "The page was not found.";
-                TempData["InputString"] = url;
-
-                return PartialView("ToolsError");
-            }
-
-            return PartialView("InboundLinks/CheckInboundLinks", modelList);
         }
     }
 }

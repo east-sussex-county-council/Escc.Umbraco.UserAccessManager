@@ -8,7 +8,7 @@ namespace ESCC.Umbraco.UserAccessManager.Models
         {
             InboundLinksLocal = new List<PageInLinkModel>();
             InboundLinksRedirect = new List<RedirectModel>();
-            InboundLinksExternal = new List<PageInLinkModel>();
+            InboundLinksExternal = new List<InspyderLinkModel>();
         }
 
         public int PageId { get; set; }
@@ -19,6 +19,6 @@ namespace ESCC.Umbraco.UserAccessManager.Models
 
         public List<PageInLinkModel> InboundLinksLocal { get; set; }
         public List<RedirectModel> InboundLinksRedirect { get; set; }
-        public List<PageInLinkModel> InboundLinksExternal { get; set; }
+        public List<InspyderLinkModel> InboundLinksExternal { get; set; }
     }
 }

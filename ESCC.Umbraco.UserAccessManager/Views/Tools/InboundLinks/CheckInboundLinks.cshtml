@@ -84,13 +84,13 @@
         {
             <tr>
                 <td class="col-md-3">
-                    @item.PageName
+                    @item.Referrer
                 </td>
                 <td class="col-md-1">
-                    <a class="ui-button" href="@editurl@item.PageId" target="_blank">edit page</a>
+                    @item.Type
                 </td>
                 <td class="col-md-2">
-                    <a class="ui-button" href="@viewurl@item.PageUrl" target="_blank">view page</a>
+                    <a class="ui-button" href="@item.Referrer" target="_blank">view page</a>
                 </td>
             </tr>
         }

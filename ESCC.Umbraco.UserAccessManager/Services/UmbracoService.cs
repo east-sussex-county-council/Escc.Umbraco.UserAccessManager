@@ -305,6 +305,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             }
 
             // Search the Inspyder extract
+            GetExternalLinks_Inspyder(model, url);
 
             return model;
         }
@@ -317,6 +318,19 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
             // List<RedirectModel> links
             model.InboundLinksRedirect.AddRange(rd.GetRedirectsByDestination(url));
+        }
+
+        private void GetExternalLinks_Inspyder(PageLinksModel model, string url)
+        {
+            // Get file path from config
+            var inspyderCsvFilePath = ConfigurationManager.AppSettings["InspyderCsvFile"];
+            if (string.IsNullOrEmpty(inspyderCsvFilePath)) return;
+
+            var el = new CsvFileService(inspyderCsvFilePath);
+
+            var res = el.GetLinksByDestination(url);
+
+            model.InboundLinksExternal.AddRange(res);
         }
     }
 }
