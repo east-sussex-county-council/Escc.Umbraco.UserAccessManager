@@ -249,6 +249,7 @@
     <Compile Include="Services\Authentication.cs" />
     <Compile Include="Services\CsvFileService.cs" />
     <Compile Include="Services\DatabaseService.cs" />
+    <Compile Include="Services\Interfaces\ICsvFileService.cs" />
     <Compile Include="Services\Interfaces\IDatabaseService.cs" />
     <Compile Include="Services\Interfaces\IEmailService.cs" />
     <Compile Include="Services\Interfaces\IPermissionsControlService.cs" />

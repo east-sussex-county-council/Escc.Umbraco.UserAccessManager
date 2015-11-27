@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
 using ESCC.Umbraco.UserAccessManager.Models;
+using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
 using Microsoft.VisualBasic.FileIO;
 
 namespace ESCC.Umbraco.UserAccessManager.Services
 {
-    public class CsvFileService
+    public class CsvFileService : ICsvFileService
     {
         private readonly string _filePath;
 
@@ -22,6 +23,9 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
             // Check a file path was supplied
             if (string.IsNullOrEmpty(_filePath)) return rtnList;
+
+            // Check file is present & accessible
+            if (!System.IO.File.Exists(_filePath)) return rtnList;
 
             // Check the destination url is valid
             destinationUrl = HttpUtility.UrlDecode(destinationUrl);
