@@ -233,12 +233,13 @@
     <Compile Include="IOC\Installers\UmbracoServiceInstaller.cs" />
     <Compile Include="Models\EditorModel.cs" />
     <Compile Include="Models\ExpiringPageModel.cs" />
+    <Compile Include="Models\FindPageModel.cs" />
     <Compile Include="Models\FindUserModel.cs" />
     <Compile Include="Models\InspyderLinkModel.cs" />
     <Compile Include="Models\PageInLinkModel.cs" />
     <Compile Include="Models\PageLinksModel.cs" />
     <Compile Include="Models\PasswordResetModel.cs" />
-    <Compile Include="Models\PermissionsModel.cs" />
+    <Compile Include="Models\PagePermissionsModel.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\RedirectModel.cs" />
     <Compile Include="Models\UmbracoUserModel.cs" />
@@ -423,8 +424,8 @@
     <Content Include="Views\Permissions\Index.cshtml" />
     <Content Include="Scripts\tree\skin-win7\ui.fancytree.less" />
     <Content Include="Views\Tools\Index.cshtml" />
-    <Content Include="Views\Tools\PagePermissions\CheckPagePermissions.cshtml" />
-    <Content Include="Views\Tools\UserPermissions\CheckUserPermissions.cshtml" />
+    <Content Include="Views\Tools\PagePermissions\LookupPagePermissions.cshtml" />
+    <Content Include="Views\Tools\UserPermissions\LookupUserPermissions.cshtml" />
     <Content Include="Views\Tools\PagesWithoutAuthors.cshtml" />
     <Content Include="Views\Tools\ToolsError.cshtml" />
     <Content Include="Views\Admin\PasswordResetError.cshtml" />
@@ -454,7 +455,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

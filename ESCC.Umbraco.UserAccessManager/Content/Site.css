@@ -53,3 +53,8 @@ input[type="checkbox"].input-validation-error {
 #tree {
     padding-top: 15px;
 }
+
+.btn-nopadding {
+    padding: 0;
+    border: 0;
+}

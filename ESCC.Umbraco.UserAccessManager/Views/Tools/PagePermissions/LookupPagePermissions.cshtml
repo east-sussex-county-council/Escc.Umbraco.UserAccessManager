@@ -1,0 +1,49 @@
+﻿@using System.Configuration
+@model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PagePermissionsModel>
+@{
+    if (Model == null)
+    {
+        return;
+    }
+}
+
+<h4>People responsible for @Model.First().PageName - @Model.First().PageId</h4>
+<p class="hidden" id="pagename">@Model.First().PageName</p>
+<p class="hidden" id="pageid">@Model.First().PageId</p>
+
+@using (Html.BeginForm("UserPermissions", "Tools", FormMethod.Post))
+{
+    <table class="table table-striped">
+        @foreach (var item in @Model)
+        {
+            var hasPermission = item.PermissionId == 1 ? "checked" : "";
+            <tr>
+                <td class="col-md-1">
+                    <input type="checkbox" @hasPermission id="@item.UserId" value="@item.UserId" name="haspermission" class="haspermission" />
+                </td>
+                <td class="col-md-3">
+                    @item.FullName
+                </td>
+                <td class="col-md-3">
+                    <a href="mailto:@item.EmailAddress">@item.EmailAddress</a>
+                </td>
+                <td class="col-md-1">
+                    <button type="submit" name="userName" value="@item.Username" class="btn btn-link btn-nopadding">All pages</button>
+                </td>
+                <td class="col-md-2">
+                    <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)" target="_blank">view staff page</a>
+                </td>
+                <td class="col-md-2">
+                    @if (item.UserLocked)
+                    {
+                        @Html.Raw(" <span class=\"highlight\">User Disabled</span>")
+                    }
+                    else
+                    {
+                        @Html.Raw("&nbsp;")
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}

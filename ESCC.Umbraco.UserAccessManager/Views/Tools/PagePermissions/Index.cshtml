@@ -1,10 +1,21 @@
 ﻿@using ESCC.Umbraco.UserAccessManager.Utility
+@model  ESCC.Umbraco.UserAccessManager.Models.FindPageModel
 @{
     ViewBag.Title = "Tools";
-
     Html.RenderPartial("_ToolsMenu");
-}
 
+    var pageId = string.Empty;
+
+    var dropdownOption = "URL";
+    var searchPlaceHolder = "Page URL";
+
+    if (Model != null)
+    {
+        pageId = Model.NodeId.ToString();
+        dropdownOption = "Id";
+        searchPlaceHolder = "Node Id";
+    }    
+}
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -12,11 +23,15 @@
             <h4>Lookup page permissions</h4>
             <div class="input-group">
                 <div class="input-group-btn">
-                    <button type="button" id="searchinput" class="btn btn-default">Page Url</button>
+                    <button type="button" id="searchinput" class="btn btn-default dropdown-toggle" data-toggle="dropdown">@dropdownOption <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li id="menuitemurl"><a>Page Url</a></li>
+                        <li id="menuitemenodeid"><a>Node Id</a></li>
+                    </ul>
                 </div>
-                <input type="text" class="form-control" id="searchterm" name="pageUrl" placeholder="Page URL" />
+                <input type="text" class="form-control" id="searchterm" name="pageUrl" placeholder="@searchPlaceHolder" value="@pageId" />
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" id="lookupPermissions" type="submit">Find</button>
+                    <button class="btn btn-primary" id="lookupPagePermissions" type="submit">Find</button>
                 </span>
             </div>
             <p class="hidden" id="apppath">@Functions.GetAppPath(Request.ApplicationPath)</p>
@@ -25,8 +40,9 @@
 </div>
 <div class="row">
     <div class="col-sm-12" id="PermissionsResults">
-        @{
-            //Html.RenderPartial("PagePermissions/CheckPagePermissions");
+        @if (!string.IsNullOrEmpty(pageId))
+        {
+            Html.RenderAction("LookupPagePermissions", "Tools");
         }
     </div>
 </div>

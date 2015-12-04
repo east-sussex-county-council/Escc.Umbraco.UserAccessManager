@@ -14,6 +14,8 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
 
         ContentTreeViewModel GetAllUsersById(int id);
 
+        IList<UmbracoUserModel> GetWebAuthors(string excludeList);
+
         IList<UmbracoUserModel> GetWebEditors();
 
         void ResetPassword(PasswordResetModel model);
@@ -30,17 +32,17 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
 
         IList<ContentTreeViewModel> GetContentChild(int id, int uid);
 
-        bool SetContentPermissions(PermissionsModel model);
+        bool SetContentPermissions(PagePermissionsModel model);
 
-        bool RemoveContentPermissions(PermissionsModel model);
+        bool RemoveContentPermissions(PagePermissionsModel model);
 
-        IList<PermissionsModel> CheckUserPermissions(int userId);
+        IList<PagePermissionsModel> CheckUserPermissions(int userId);
 
-        IList<PermissionsModel> CheckPagesWithoutAuthor();
+        IList<PagePermissionsModel> CheckPagesWithoutAuthor();
 
-        bool ClonePermissions(PermissionsModel model);
+        bool ClonePermissions(PagePermissionsModel model);
 
-        IList<PermissionsModel> CheckPagePermissions(string url);
+        IList<PagePermissionsModel> CheckPagePermissions(string url);
 
         IList<ExpiringPageModel> GetExpiringPages(int noOfDaysFrom);
 

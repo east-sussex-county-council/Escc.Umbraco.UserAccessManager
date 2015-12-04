@@ -18,11 +18,11 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
 
         bool ClonePermissions(int sourceId, int targetId);
 
-        IEnumerable<PermissionsModel> CheckPagePermissions(string url);
+        IEnumerable<PagePermissionsModel> CheckPagePermissions(string url);
 
-        IList<PermissionsModel> CheckUserPermissions(FindUserModel model);
+        IList<PagePermissionsModel> CheckUserPermissions(FindUserModel model);
 
-        IEnumerable<PermissionsModel> PagesWithoutAuthor();
+        IEnumerable<PagePermissionsModel> PagesWithoutAuthor();
 
         //void ToggleEditor(ContentTreeViewModel model);
     }

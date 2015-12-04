@@ -3,13 +3,11 @@
 @{
     var unpublishedStates = new List<string> {"[Parent unpublished]", "[Currently unpublished]", "[Not yet published]"};
 
-
     var siteUri = ConfigurationManager.AppSettings["SiteUri"];
     var editurl = string.Format("{0}#/content/content/edit/", siteUri);
     var viewurl = siteUri.Replace("/umbraco/", "");
 
     var redirectEditUri = ConfigurationManager.AppSettings["RedirectEdit"];
-
 }
 <h4>Inbound links to: @Model.PageName (Id @Model.PageId)</h4>
 

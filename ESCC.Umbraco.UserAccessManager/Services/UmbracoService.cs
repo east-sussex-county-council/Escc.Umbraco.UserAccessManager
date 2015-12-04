@@ -70,7 +70,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// <returns>List of Umbraco User</returns>
         public IList<UmbracoUserModel> GetAllUsersByEmail(string emailaddress)
         {
-            var response = GetMessage("GetAllUsersByEmail?emailaddress=" + emailaddress);
+            var response = GetMessage(string.Format("GetAllUsersByEmail?emailaddress={0}", emailaddress));
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
@@ -79,7 +79,16 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
         public IList<UmbracoUserModel> GetAllUsersByUsername(string username)
         {
-            var response = GetMessage("GetAllUsersByUsername?username=" + username);
+            var response = GetMessage(string.Format("GetAllUsersByUsername?username={0}", username));
+
+            if (!response.IsSuccessStatusCode) return null;
+            var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
+            return modelList;
+        }
+
+        public IList<UmbracoUserModel> GetWebAuthors(string excludeList)
+        {
+            var response = GetMessage(string.Format("GetWebAuthors?userIdList={0}", excludeList));
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<UmbracoUserModel>>().Result;
@@ -97,7 +106,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
         public ContentTreeViewModel GetAllUsersById(int id)
         {
-            var response = GetMessage("GetUserById?id=" + id);
+            var response = GetMessage(string.Format("GetUserById?id={0}", id));
 
             if (!response.IsSuccessStatusCode) return null;
             var model = response.Content.ReadAsAsync<ContentTreeViewModel>().Result;
@@ -178,7 +187,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// <returns>Details from content root node(s), including permissions for supplied user</returns>
         public IList<ContentTreeViewModel> GetContentRoot(int uid)
         {
-            var response = GetMessage("GetContentRootUserPerms?userId=" + uid);
+            var response = GetMessage(string.Format("GetContentRootUserPerms?userId={0}", uid));
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
@@ -192,7 +201,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// <returns>List of child nodes</returns>
         public IList<ContentTreeViewModel> GetContentChild(int id)
         {
-            var response = GetMessage("GetContentChild?id=" + id);
+            var response = GetMessage(string.Format("GetContentChild?id={0}", id));
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
@@ -207,7 +216,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// <returns>List of child nodes with permissions for supplied user</returns>
         public IList<ContentTreeViewModel> GetContentChild(int id, int uid)
         {
-            var response = GetMessage("GetContentChildUserPerms?id=" + id + "&userId=" + uid);
+            var response = GetMessage(string.Format("GetContentChildUserPerms?id={0}&userId={1}", id, uid));
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<ContentTreeViewModel>>().Result;
@@ -219,49 +228,49 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// </summary>
         /// <param name="model">Details of node, user and permissions</param>
         /// <returns>True if successful</returns>
-        public bool SetContentPermissions(PermissionsModel model)
+        public bool SetContentPermissions(PagePermissionsModel model)
         {
             var response = PostMessage("PostSetPermissions", model);
 
             return response.IsSuccessStatusCode;
         }
 
-        public bool RemoveContentPermissions(PermissionsModel model)
+        public bool RemoveContentPermissions(PagePermissionsModel model)
         {
             var response = PostMessage("PostRemovePermissions", model);
 
             return response.IsSuccessStatusCode;
         }
 
-        public IList<PermissionsModel> CheckUserPermissions(int userId)
+        public IList<PagePermissionsModel> CheckUserPermissions(int userId)
         {
-            var response = GetMessage("GetCheckUserPermissions?userId=" + userId);
+            var response = GetMessage(string.Format("GetCheckUserPermissions?userId={0}", userId));
 
             if (!response.IsSuccessStatusCode) return null;
-            var model = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
+            var model = response.Content.ReadAsAsync<IList<PagePermissionsModel>>().Result;
 
             return model;
         }
 
-        public IList<PermissionsModel> CheckPagePermissions(string url)
+        public IList<PagePermissionsModel> CheckPagePermissions(string url)
         {
-            var response = GetMessage("GetPagePermissions?url=" + url);
+            var response = GetMessage(string.Format("GetPagePermissions?url={0}", url));
 
             if (!response.IsSuccessStatusCode) return null;
-            var modelList = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
+            var modelList = response.Content.ReadAsAsync<IList<PagePermissionsModel>>().Result;
             return modelList;
         }
 
-        public IList<PermissionsModel> CheckPagesWithoutAuthor()
+        public IList<PagePermissionsModel> CheckPagesWithoutAuthor()
         {
             var response = GetMessage("GetPagesWithoutAuthor");
 
             if (!response.IsSuccessStatusCode) return null;
-            var modelList = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
+            var modelList = response.Content.ReadAsAsync<IList<PagePermissionsModel>>().Result;
             return modelList;
         }
 
-        public bool ClonePermissions(PermissionsModel model)
+        public bool ClonePermissions(PagePermissionsModel model)
         {
             var response = PostMessage("PostCloneUserPermissions", model);
 
@@ -270,7 +279,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
         public IList<ExpiringPageModel> GetExpiringPages(int noOfDaysFrom)
         {
-            var response = GetMessage("CheckForExpiringNodes?noofdaysfrom=" + noOfDaysFrom);
+            var response = GetMessage(string.Format("CheckForExpiringNodes?noofdaysfrom={0}", noOfDaysFrom));
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<ExpiringPageModel>>().Result;
@@ -279,7 +288,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
         public IList<UserPagesModel> GetExpiringPagesByUser(int noOfDaysFrom)
         {
-            var response = GetMessage("CheckForExpiringNodesByUser?noofdaysfrom=" + noOfDaysFrom);
+            var response = GetMessage(string.Format("CheckForExpiringNodesByUser?noofdaysfrom={0}", noOfDaysFrom));
 
             if (!response.IsSuccessStatusCode) return null;
             var modelList = response.Content.ReadAsAsync<IList<UserPagesModel>>().Result;
@@ -294,7 +303,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         public PageLinksModel FindInboundLinks(string url)
         {
             // Search Umbraco for internal links
-            var response = GetMessage("GetPageInboundLinks?url=" + url);
+            var response = GetMessage(string.Format("GetPageInboundLinks?url={0}", url));
 
             if (!response.IsSuccessStatusCode) return null;
             var model = response.Content.ReadAsAsync<PageLinksModel>().Result;

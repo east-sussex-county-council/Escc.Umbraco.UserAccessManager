@@ -1,11 +1,10 @@
 ﻿@using System.Configuration
-@model IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PermissionsModel>
+@model IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PagePermissionsModel>
 @{
     var siteUri = ConfigurationManager.AppSettings["SiteUri"];
     var editurl = string.Format("{0}#/content/content/edit/", siteUri);
     var viewurl = siteUri.Replace("/umbraco/", "");
-}
-@{
+
     Html.RenderPartial("_ToolsMenu");
 }
     <h4>Pages without web authors</h4>

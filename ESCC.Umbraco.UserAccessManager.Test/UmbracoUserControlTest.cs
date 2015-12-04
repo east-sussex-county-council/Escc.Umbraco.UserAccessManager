@@ -36,8 +36,8 @@ namespace UnitTestProject1
         private IList<UmbracoUserModel> umbracoUserModelListOut;
         private ContentTreeViewModel contentTreeViewModel;
         private IList<ContentTreeViewModel> contentTreeViewModelListOut;
-        private PermissionsModel permissionsModel;
-        private IList<PermissionsModel> permissionsModelsListOut;
+        private PagePermissionsModel permissionsModel;
+        private IList<PagePermissionsModel> permissionsModelsListOut;
 
         [SetUp]
         public void UmbracoUserControlTestSetup()
@@ -53,8 +53,8 @@ namespace UnitTestProject1
             contentTreeViewModel = new ContentTreeViewModel();
             contentTreeViewModelListOut = new List<ContentTreeViewModel>();
 
-            permissionsModel = new PermissionsModel();
-            permissionsModelsListOut = new List<PermissionsModel>();
+            permissionsModel = new PagePermissionsModel();
+            permissionsModelsListOut = new List<PagePermissionsModel>();
 
             mockPermissionsControlService = new Mock<IPermissionsControlService>().Object;
             mockEmailService = new Mock<IEmailService>().Object;

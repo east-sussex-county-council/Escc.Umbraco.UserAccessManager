@@ -149,7 +149,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             {
                 var user = _userControlService.LookupUserById(model.UserId);
 
-                var permissionsModel = new PermissionsModel
+                var permissionsModel = new PagePermissionsModel
                 {
                     PageId = model.PageId,
                     UserId = model.UserId,
@@ -179,7 +179,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         {
             try
             {
-                var permissionsModel = new PermissionsModel
+                var permissionsModel = new PagePermissionsModel
                 {
                     PageId = model.PageId,
                     UserId = model.UserId,
@@ -224,7 +224,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         {
             try
             {
-                var model = new PermissionsModel { UserId = sourceId, TargetId = targetId };
+                var model = new PagePermissionsModel { UserId = sourceId, TargetId = targetId };
 
                 return _umbracoService.ClonePermissions(model);
 
@@ -247,7 +247,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// </summary>
         /// <param name="url">URL of page to check</param>
         /// <returns>List of users with permissions to the supplied page</returns>
-        public IEnumerable<PermissionsModel> CheckPagePermissions(string url)
+        public IEnumerable<PagePermissionsModel> CheckPagePermissions(string url)
         {
             try
             {
@@ -284,7 +284,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// </summary>
         /// <param name="model">user details</param>
         /// <returns>List of pages</returns>
-        public IList<PermissionsModel> CheckUserPermissions(FindUserModel model)
+        public IList<PagePermissionsModel> CheckUserPermissions(FindUserModel model)
         {
             try
             {
@@ -307,7 +307,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             }
         }
 
-        public IEnumerable<PermissionsModel> PagesWithoutAuthor()
+        public IEnumerable<PagePermissionsModel> PagesWithoutAuthor()
         {
             try
             {

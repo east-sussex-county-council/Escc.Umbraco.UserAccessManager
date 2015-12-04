@@ -80,9 +80,9 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         //    return _db.Query<PermissionsModel>("Where PageName = @0", pageName);
         //}
 
-        public IEnumerable<PermissionsModel> PageWithoutAuthor()
+        public IEnumerable<PagePermissionsModel> PageWithoutAuthor()
         {
-            return _db.Query<PermissionsModel>("SELECT [PageId],[PageName] " +
+            return _db.Query<PagePermissionsModel>("SELECT [PageId],[PageName] " +
                                               "FROM permissions as p " +
                                               "left outer join Editors as e on p.userid = e.userid " +
                                               "group by [PageId],[PageName] " +
