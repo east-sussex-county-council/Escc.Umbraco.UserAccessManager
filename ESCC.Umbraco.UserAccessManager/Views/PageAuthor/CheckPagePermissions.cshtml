@@ -1,12 +1,12 @@
-﻿@using System.Configuration
-@model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PermissionsModel>
+@using System.Configuration
+@model  ESCC.Umbraco.UserAccessManager.Models.PageUsersModel
 
-@if (Model.Any())
+@if (Model.Users.Any())
 {
-    <h4>Web Authors responsible for the page: @Model.First().PageName</h4>
+    <h4>Web Authors responsible for the page: @Model.Page.PageName</h4>
 
     <table class="table table-striped">
-    @foreach (var item in @Model)
+    @foreach (var item in @Model.Users)
     {
         <tr>
             <td class="col-md-3">

@@ -5,7 +5,7 @@ namespace ESCC.Umbraco.UserAccessManager.Models
 {
     [TableName("permissions")]
     [PrimaryKey("PermissionId")]
-    public class PagePermissionsModel
+    public class PermissionsModel
     {
         public int PermissionId { get; set; }
 

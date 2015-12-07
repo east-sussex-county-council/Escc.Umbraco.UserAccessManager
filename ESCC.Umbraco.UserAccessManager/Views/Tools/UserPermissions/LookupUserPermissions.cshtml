@@ -1,5 +1,5 @@
 ﻿@using System.Configuration
-@model IList<ESCC.Umbraco.UserAccessManager.Models.PagePermissionsModel>
+@model IList<ESCC.Umbraco.UserAccessManager.Models.PermissionsModel>
 
 <h4>@Model.First().FullName is a web author for the following pages</h4>
 @{
@@ -18,12 +18,15 @@
     <table class="table table-striped">
         @foreach (var page in @Model)
         {
+            // Do a Url lookup for "All Authors" if possible
+            var pageLink = (page.PageUrl != "#") ? page.PageUrl : page.PageId.ToString();
+            
             <tr>
                 <td class="col-md-9">
                     @page.PagePath@page.PageName
                 </td>
                 <td class="col-md-1">
-                    <button type="submit" name="NodeId" value="@page.PageId" class="btn btn-link btn-nopadding">All authors</button>
+                    <button type="submit" name="pageId" value="@pageLink" class="btn btn-link btn-nopadding">All authors</button>
                 </td>
                 <td class="col-md-1">
                     <a class="ui-button" href="@editurl@page.PageId" target="_blank">edit page</a>

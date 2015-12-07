@@ -1,11 +1,12 @@
-﻿@model ESCC.Umbraco.UserAccessManager.Models.UmbracoUserModel
+﻿@using ESCC.Umbraco.UserAccessManager.Models
+@model UmbracoUserModel
 @{
     ViewBag.Title = "Create New User";
 }
 
 <h2>Create new user</h2>
 
-<p class="highlight">@TempData["Message"]</p>
+<p class="highlight">@ErrorMessageModel.ErrorMsg(TempData["MsgKey"])</p>
 
 <div class="row">
         @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))

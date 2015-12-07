@@ -232,12 +232,15 @@
     <Compile Include="IOC\Installers\PermissionsServiceInstaller.cs" />
     <Compile Include="IOC\Installers\UmbracoServiceInstaller.cs" />
     <Compile Include="Models\EditorModel.cs" />
+    <Compile Include="Models\ErrorMessageModel.cs" />
     <Compile Include="Models\ExpiringPageModel.cs" />
     <Compile Include="Models\FindPageModel.cs" />
     <Compile Include="Models\FindUserModel.cs" />
     <Compile Include="Models\InspyderLinkModel.cs" />
     <Compile Include="Models\PageInLinkModel.cs" />
     <Compile Include="Models\PageLinksModel.cs" />
+    <Compile Include="Models\PageModel.cs" />
+    <Compile Include="Models\PageUsersModel.cs" />
     <Compile Include="Models\PasswordResetModel.cs" />
     <Compile Include="Models\PagePermissionsModel.cs" />
     <Compile Include="Models\PetaPoco.cs" />
@@ -246,6 +249,7 @@
     <Compile Include="IOC\WindsorControllerFactory.cs" />
     <Compile Include="Models\UserPageModel.cs" />
     <Compile Include="Models\UserPagesModel.cs" />
+    <Compile Include="Models\UserPermissionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Authentication.cs" />
     <Compile Include="Services\CsvFileService.cs" />

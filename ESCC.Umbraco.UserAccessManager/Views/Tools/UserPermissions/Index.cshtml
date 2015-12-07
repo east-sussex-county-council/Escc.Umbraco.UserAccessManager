@@ -1,5 +1,5 @@
 ﻿@using ESCC.Umbraco.UserAccessManager.Utility
-@model ESCC.Umbraco.UserAccessManager.Models.FindUserModel
+@model ESCC.Umbraco.UserAccessManager.Models.PermissionsModel
 @{
     ViewBag.Title = "Tools";
     Html.RenderPartial("_ToolsMenu");
@@ -8,7 +8,7 @@
 
     if (Model != null)
     {
-        userName = Model.UserName;
+        userName = Model.Username;
     }
 }
 

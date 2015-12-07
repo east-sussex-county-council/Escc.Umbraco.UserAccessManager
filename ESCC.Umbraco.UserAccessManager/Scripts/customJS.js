@@ -387,12 +387,6 @@ function lookupauthorpages(elem) {
     return false;
 };
 
-function transfertouserpermissions(elem) {
-    var url = '@Url.Action(\"TransferToUserPermissions\", \"Tools\", new { UserName: " + "fred" + "})';
-    window.location = url;
-
-}
-
 function errorMessage(msg) {
     var rtnMsg = "<div class" + "=\"alert alert-danger\"><p class=\"highlight\">";
     rtnMsg = rtnMsg + msg;

@@ -73,7 +73,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 
             if (success)
             {
-                TempData["Message"] = "Password reset process initiated, user has been emailed";
+                TempData["MsgKey"] = "PwdResetInitialised";
             }
 
             return DisplayResults(new FindUserModel { EmailAddress = model.EmailAddress });
@@ -92,7 +92,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
                 return View("PasswordResetVerification", model);
             }
 
-            TempData["Message"] = "This link is no longer valid, please contact ICT Service Desk to try again";
+            TempData["MsgKey"] = "LinkNotValid";
 
             return View("PasswordResetError", model);
         }
@@ -111,7 +111,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
                 return RedirectToAction("DisplaySuccess", "Admin");
             }
 
-            TempData["Message"] = "This link is no longer valid, please contact ICT Service Desk to try again";
+            TempData["MsgKey"] = "LinkNotValid";
 
             return RedirectToAction("PasswordResetVerification", "Admin", model);
         }
@@ -144,7 +144,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             var user = _userControlService.LookupUsers(find);
             if (user == null || user.Count > 0)
             {
-                TempData["Message"] = "Email address already being used";
+                TempData["MsgKey"] = "EmailInUse";
                 return View();
             }
 
@@ -153,7 +153,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             user = _userControlService.LookupUsers(find);
             if (user.Count > 0)
             {
-                TempData["Message"] = "Logon ID already being used";
+                TempData["MsgKey"] = "LoginInUse";
                 return View();
             }
 

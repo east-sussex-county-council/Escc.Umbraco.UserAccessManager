@@ -1,12 +1,13 @@
 @using System.Web.Mvc.Html
-@model ESCC.Umbraco.UserAccessManager.Models.FindUserModel
+@model FindUserModel
+@using ESCC.Umbraco.UserAccessManager.Models
 @using ESCC.Umbraco.UserAccessManager.Utility;
 @{
     ViewBag.Title = "User Details";
 }
 
 <h2>User Details</h2>
-<p class="highlight">@TempData["Message"]</p>
+<p class="highlight">@ErrorMessageModel.ErrorMsg(TempData["MsgKey"])</p>
 
 @if (Model.SearchResult.Any())
 {

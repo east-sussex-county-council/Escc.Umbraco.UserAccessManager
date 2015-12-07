@@ -228,49 +228,49 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// </summary>
         /// <param name="model">Details of node, user and permissions</param>
         /// <returns>True if successful</returns>
-        public bool SetContentPermissions(PagePermissionsModel model)
+        public bool SetContentPermissions(PermissionsModel model)
         {
             var response = PostMessage("PostSetPermissions", model);
 
             return response.IsSuccessStatusCode;
         }
 
-        public bool RemoveContentPermissions(PagePermissionsModel model)
+        public bool RemoveContentPermissions(PermissionsModel model)
         {
             var response = PostMessage("PostRemovePermissions", model);
 
             return response.IsSuccessStatusCode;
         }
 
-        public IList<PagePermissionsModel> CheckUserPermissions(int userId)
+        public IList<PermissionsModel> CheckUserPermissions(int userId)
         {
             var response = GetMessage(string.Format("GetCheckUserPermissions?userId={0}", userId));
 
             if (!response.IsSuccessStatusCode) return null;
-            var model = response.Content.ReadAsAsync<IList<PagePermissionsModel>>().Result;
+            var model = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
 
             return model;
         }
 
-        public IList<PagePermissionsModel> CheckPagePermissions(string url)
+        public PageUsersModel CheckPagePermissions(string url)
         {
             var response = GetMessage(string.Format("GetPagePermissions?url={0}", url));
 
             if (!response.IsSuccessStatusCode) return null;
-            var modelList = response.Content.ReadAsAsync<IList<PagePermissionsModel>>().Result;
+            var modelList = response.Content.ReadAsAsync<PageUsersModel>().Result;
             return modelList;
         }
 
-        public IList<PagePermissionsModel> CheckPagesWithoutAuthor()
+        public IList<PermissionsModel> CheckPagesWithoutAuthor()
         {
             var response = GetMessage("GetPagesWithoutAuthor");
 
             if (!response.IsSuccessStatusCode) return null;
-            var modelList = response.Content.ReadAsAsync<IList<PagePermissionsModel>>().Result;
+            var modelList = response.Content.ReadAsAsync<IList<PermissionsModel>>().Result;
             return modelList;
         }
 
-        public bool ClonePermissions(PagePermissionsModel model)
+        public bool ClonePermissions(PermissionsModel model)
         {
             var response = PostMessage("PostCloneUserPermissions", model);
 

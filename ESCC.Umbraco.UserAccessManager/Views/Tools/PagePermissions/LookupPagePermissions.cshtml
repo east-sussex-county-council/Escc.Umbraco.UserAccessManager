@@ -1,5 +1,5 @@
-﻿@using System.Configuration
-@model  IEnumerable<ESCC.Umbraco.UserAccessManager.Models.PagePermissionsModel>
+@using System.Configuration
+@model  ESCC.Umbraco.UserAccessManager.Models.PageUsersModel
 @{
     if (Model == null)
     {
@@ -7,16 +7,16 @@
     }
 }
 
-<h4>People responsible for @Model.First().PageName - @Model.First().PageId</h4>
-<p class="hidden" id="pagename">@Model.First().PageName</p>
-<p class="hidden" id="pageid">@Model.First().PageId</p>
+<h4>People responsible for @Model.Page.PageName - @Model.Page.PageId</h4>
+<p class="hidden" id="pagename">@Model.Page.PageName</p>
+<p class="hidden" id="pageid">@Model.Page.PageId</p>
 
 @using (Html.BeginForm("UserPermissions", "Tools", FormMethod.Post))
 {
     <table class="table table-striped">
-        @foreach (var item in @Model)
+        @foreach (var item in @Model.Users)
         {
-            var hasPermission = item.PermissionId == 1 ? "checked" : "";
+            var hasPermission = item.PagePermissions.Any() ? "checked" : "";
             <tr>
                 <td class="col-md-1">
                     <input type="checkbox" @hasPermission id="@item.UserId" value="@item.UserId" name="haspermission" class="haspermission" />
@@ -28,7 +28,7 @@
                     <a href="mailto:@item.EmailAddress">@item.EmailAddress</a>
                 </td>
                 <td class="col-md-1">
-                    <button type="submit" name="userName" value="@item.Username" class="btn btn-link btn-nopadding">All pages</button>
+                    <button type="submit" name="userName" value="@item.UserName" class="btn btn-link btn-nopadding">All pages</button>
                 </td>
                 <td class="col-md-2">
                     <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)" target="_blank">view staff page</a>

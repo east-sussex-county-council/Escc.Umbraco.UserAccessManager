@@ -11,9 +11,17 @@
 
     if (Model != null)
     {
-        pageId = Model.NodeId.ToString();
-        dropdownOption = "Id";
-        searchPlaceHolder = "Node Id";
+        // Check if we have a Url or Page Id
+        if (!string.IsNullOrEmpty(Model.Url))
+        {
+            pageId = Model.Url;
+        }
+        else
+        {
+            pageId = Model.NodeId.ToString();
+            dropdownOption = "Id";
+            searchPlaceHolder = "Node Id";
+        }
     }    
 }
 
@@ -42,7 +50,7 @@
     <div class="col-sm-12" id="PermissionsResults">
         @if (!string.IsNullOrEmpty(pageId))
         {
-            Html.RenderAction("LookupPagePermissions", "Tools");
+            Html.RenderAction("LookupPagePermissions", "Tools", Model);
         }
     </div>
 </div>

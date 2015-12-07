@@ -32,17 +32,17 @@ namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
 
         IList<ContentTreeViewModel> GetContentChild(int id, int uid);
 
-        bool SetContentPermissions(PagePermissionsModel model);
+        bool SetContentPermissions(PermissionsModel model);
 
-        bool RemoveContentPermissions(PagePermissionsModel model);
+        bool RemoveContentPermissions(PermissionsModel model);
 
-        IList<PagePermissionsModel> CheckUserPermissions(int userId);
+        IList<PermissionsModel> CheckUserPermissions(int userId);
 
-        IList<PagePermissionsModel> CheckPagesWithoutAuthor();
+        IList<PermissionsModel> CheckPagesWithoutAuthor();
 
-        bool ClonePermissions(PagePermissionsModel model);
+        bool ClonePermissions(PermissionsModel model);
 
-        IList<PagePermissionsModel> CheckPagePermissions(string url);
+        PageUsersModel CheckPagePermissions(string url);
 
         IList<ExpiringPageModel> GetExpiringPages(int noOfDaysFrom);
 

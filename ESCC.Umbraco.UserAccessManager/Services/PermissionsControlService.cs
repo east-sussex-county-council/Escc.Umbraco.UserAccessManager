@@ -149,7 +149,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             {
                 var user = _userControlService.LookupUserById(model.UserId);
 
-                var permissionsModel = new PagePermissionsModel
+                var permissionsModel = new PermissionsModel
                 {
                     PageId = model.PageId,
                     UserId = model.UserId,
@@ -179,7 +179,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         {
             try
             {
-                var permissionsModel = new PagePermissionsModel
+                var permissionsModel = new PermissionsModel
                 {
                     PageId = model.PageId,
                     UserId = model.UserId,
@@ -224,7 +224,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         {
             try
             {
-                var model = new PagePermissionsModel { UserId = sourceId, TargetId = targetId };
+                var model = new PermissionsModel { UserId = sourceId, TargetId = targetId };
 
                 return _umbracoService.ClonePermissions(model);
 
@@ -247,7 +247,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// </summary>
         /// <param name="url">URL of page to check</param>
         /// <returns>List of users with permissions to the supplied page</returns>
-        public IEnumerable<PagePermissionsModel> CheckPagePermissions(string url)
+        public PageUsersModel CheckPagePermissions(string url)
         {
             try
             {
@@ -267,7 +267,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
                 //var modelList = _databaseService.CheckPagePermissions(pageName);
 
                 //var permissionsModels = modelList as IList<PermissionsModel> ?? modelList.ToList();
-                var permissionsModels = _umbracoService.CheckPagePermissions(url);
+                PageUsersModel permissionsModels = _umbracoService.CheckPagePermissions(url);
 
                 return permissionsModels;
             }
@@ -284,7 +284,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
         /// </summary>
         /// <param name="model">user details</param>
         /// <returns>List of pages</returns>
-        public IList<PagePermissionsModel> CheckUserPermissions(FindUserModel model)
+        public IList<PermissionsModel> CheckUserPermissions(FindUserModel model)
         {
             try
             {
@@ -307,7 +307,7 @@ namespace ESCC.Umbraco.UserAccessManager.Services
             }
         }
 
-        public IEnumerable<PagePermissionsModel> PagesWithoutAuthor()
+        public IEnumerable<PermissionsModel> PagesWithoutAuthor()
         {
             try
             {

@@ -1,3 +1,7 @@
-﻿<div class="alert alert-danger">
-    <p class="highlight">@TempData["Message"]</p>
+﻿@using ESCC.Umbraco.UserAccessManager.Models
+@{
+    var errMsg = ErrorMessageModel.ErrorMsg(TempData["MsgKey"].ToString());
+}
+<div class="alert alert-danger">
+    <p class="highlight">@errMsg</p>
 </div>

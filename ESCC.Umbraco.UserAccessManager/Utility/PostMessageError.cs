@@ -12,7 +12,7 @@ namespace ESCC.Umbraco.UserAccessManager.Utility
         public PostMessageError(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             if (info != null)
-                this.ErrorMessage = info.GetString("Message");
+                ErrorMessage = info.GetString("Message");
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -20,7 +20,7 @@ namespace ESCC.Umbraco.UserAccessManager.Utility
             base.GetObjectData(info, context);
 
             //if (info != null)
-                info.AddValue("ErrorMessage", this.ErrorMessage);
+                info.AddValue("ErrorMessage", ErrorMessage);
             info.AddValue("ClassName", "test");
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Castle.Core.Internal;
@@ -41,10 +42,19 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult PagePermissions(string NodeId)
+        public ActionResult PagePermissions(string pageId)
         {
-            var nodeId = Int32.Parse(NodeId);
-            var model = new FindPageModel {NodeId = nodeId};
+            int pId;
+            var pUrl =string.Empty;
+
+            // pageId can be either a numeric page Id or a Url string
+            if (!int.TryParse(pageId, out pId))
+            {
+                pId = int.MinValue;
+                pUrl = pageId;
+            }
+
+            var model = new FindPageModel {NodeId = pId, Url = pUrl};
             return View("PagePermissions/Index", model);
         }
 
@@ -59,10 +69,10 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 
                 // Get a list of Web Authors that have permission to manage this page
                 // Convert to a list so that we can add the other Web Authors
-                var perms = _permissionsControlService.CheckPagePermissions(url);
+                PageUsersModel perms = _permissionsControlService.CheckPagePermissions(url);
                 if (perms != null)
                 {
-                    var authorList = perms.ToList();
+                    List<UserPermissionModel> authorList = perms.Users.ToList();
 
                     // Get a list of all other Web Authors
                     var excludeUsers = authorList.Select(x => x.UserId).ToArray();
@@ -72,32 +82,32 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
                     // Combine the two lists. These have PermissionId = 0 to indicate they do not have access
                     foreach (var otherAuthor in otherAuthors)
                     {
-                        var p = new PagePermissionsModel
+                        var p = new UserPermissionModel
                         {
                             UserId = otherAuthor.UserId,
                             FullName = otherAuthor.FullName,
                             EmailAddress = otherAuthor.EmailAddress,
                             UserLocked = otherAuthor.UserLocked,
-                            Username = otherAuthor.UserName,
-                            PermissionId = 0
+                            UserName = otherAuthor.UserName,
+                            PagePermissions = new string[] { }
                         };
 
                         authorList.Add(p);
                     }
 
-                    if (!authorList.IsNullOrEmpty()) return PartialView("PagePermissions/LookupPagePermissions", authorList);
+                    perms.Users = authorList;
+
+                    if (!authorList.IsNullOrEmpty()) return PartialView("PagePermissions/LookupPagePermissions", perms);
                 }
 
-                TempData["Message"] = "This page does not exist.";
-                TempData["InputString"] = url;
+                TempData["MsgKey"] = "PageNotFound";
 
                 return PartialView("ToolsError");
             }
             catch (Exception ex)
             {
                 ex.ToExceptionless().Submit();
-                TempData["Message"] = string.Format("An error occurred while processing your request.");
-                TempData["InputString"] = url;
+                TempData["MsgKey"] = string.Format("ErrorOccurred");
 
                 return PartialView("ToolsError");
             }
@@ -108,20 +118,18 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         {
             try
             {
-                var modelList = _permissionsControlService.CheckUserPermissions(model);
+                IList<PermissionsModel> modelList = _permissionsControlService.CheckUserPermissions(model);
 
                 if (!modelList.IsNullOrEmpty()) return PartialView("UserPermissions/LookupUserPermissions", modelList);
 
-                TempData["Message"] = "Either user has no permissions setup or this user does not exist.";
-                TempData["InputString"] = model.EmailAddress + model.UserName;
+                TempData["MsgKey"] = "NoPageOrUser";
 
                 return PartialView("ToolsError");
             }
             catch (Exception ex)
             {
                 ex.ToExceptionless().Submit();
-                TempData["Message"] = string.Format("An error occurred while processing your request.");
-                TempData["InputString"] = model.EmailAddress + model.UserName;
+                TempData["MsgKey"] = string.Format("ErrorOccurred");
 
                 return PartialView("ToolsError");
             }
@@ -134,18 +142,16 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             {
                 var modelList = _permissionsControlService.CheckPagePermissions(url);
 
-                if (!modelList.IsNullOrEmpty()) return PartialView("CheckPagePermissions", modelList);
+                if (!modelList.Users.IsNullOrEmpty()) return PartialView("CheckPagePermissions", modelList);
 
-                TempData["Message"] = "Either permissions have not been set for this page or page does not exist.";
-                TempData["InputString"] = url;
+                TempData["MsgKey"] = "NoPageOrUser";
 
                 return PartialView("ToolsError");
             }
             catch (Exception ex)
             {
                 ex.ToExceptionless().Submit();
-                TempData["Message"] = string.Format("An error occurred while processing your request.");
-                TempData["InputString"] = url;
+                TempData["MsgKey"] = string.Format("ErrorOccurred");
 
                 return PartialView("ToolsError");
             }
@@ -159,7 +165,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         [HttpPost]
         public ActionResult UserPermissions(string userName)
         {
-            var model = new FindUserModel {UserName = userName};
+            var model = new PermissionsModel {Username = userName};
 
             return View("UserPermissions/Index", model);
         }
@@ -169,20 +175,18 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         {
             try
             {
-                var modelList = _permissionsControlService.CheckUserPermissions(model);
+                IList<PermissionsModel> modelList = _permissionsControlService.CheckUserPermissions(model);
 
                 if (!modelList.IsNullOrEmpty()) return PartialView("CheckUserPermissions", modelList);
 
-                TempData["Message"] = "Either user has no permissions setup or this user does not exist.";
-                TempData["InputString"] = model.EmailAddress + model.UserName;
+                TempData["MsgKey"] = "NoPageOrUser";
 
                 return PartialView("ToolsError");
             }
             catch (Exception ex)
             {
                 ex.ToExceptionless().Submit();
-                TempData["Message"] = string.Format("An error occurred while processing your request.");
-                TempData["InputString"] = model.EmailAddress + model.UserName;
+                TempData["MsgKey"] = string.Format("ErrorOccurred");
 
                 return PartialView("ToolsError");
             }
@@ -193,18 +197,18 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         {
             try
             {
-                var modelList = _permissionsControlService.PagesWithoutAuthor();
+                IEnumerable<PermissionsModel> modelList = _permissionsControlService.PagesWithoutAuthor();
 
                 if (!modelList.IsNullOrEmpty()) return View("PagesWithoutAuthors", modelList);
 
-                TempData["Message"] = "Unable to find pages without authors.";
+                TempData["MsgKey"] = "NoAuthorPagesError";
 
                 return PartialView("ToolsError");
             }
             catch (Exception ex)
             {
                 ex.ToExceptionless().Submit();
-                TempData["Message"] = string.Format("An error occurred while processing your request.");
+                TempData["MsgKey"] = string.Format("ErrorOccurred");
 
                 return PartialView("ToolsError");
             }
@@ -225,15 +229,13 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
 
                 if (modelList == null)
                 {
-                    TempData["Message"] = "The page was not found.";
-                    TempData["InputString"] = url;
+                    TempData["MsgKey"] = "PageNotFound";
 
                     return PartialView("ToolsError");
                 }
                 if (modelList.PageId == 0)
                 {
-                    TempData["Message"] = "The page was not found.";
-                    TempData["InputString"] = url;
+                    TempData["MsgKey"] = "PageNotFound";
 
                     return PartialView("ToolsError");
                 }
@@ -243,36 +245,7 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
             catch (Exception ex)
             {
                 ex.ToExceptionless().Submit();
-                TempData["Message"] = string.Format("An error occurred while processing your request.");
-                TempData["InputString"] = url;
-
-                return PartialView("ToolsError");
-            }
-        }
-
-        [HttpGet]
-        public ActionResult TransferToUserPermissions(FindUserModel model)
-        {
-            try
-            {
-                var modelList = _permissionsControlService.CheckUserPermissions(model);
-
-                if (!modelList.IsNullOrEmpty())
-                {
-                    ViewBag.UserPermissionsId = model.UserName;
-                    return View("UserPermissions/Index", modelList);
-                }
-
-                TempData["Message"] = "Either user has no permissions setup or this user does not exist.";
-                TempData["InputString"] = model.EmailAddress + model.UserName;
-
-                return PartialView("ToolsError");
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                TempData["Message"] = string.Format("An error occurred while processing your request.");
-                TempData["InputString"] = model.EmailAddress + model.UserName;
+                TempData["MsgKey"] = string.Format("ErrorOccurred");
 
                 return PartialView("ToolsError");
             }
