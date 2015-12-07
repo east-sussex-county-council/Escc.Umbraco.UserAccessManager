@@ -443,9 +443,6 @@
     <Content Include="Views\Tools\UserPermissions\Index.cshtml" />
     <Content Include="Views\Tools\InboundLinks\Index.cshtml" />
     <Content Include="Views\Tools\InboundLinks\CheckInboundLinks.cshtml" />
-    <Content Include="Views\Tools\LookupPermissions\Index.cshtml" />
-    <Content Include="Views\Tools\CheckPagePermissions.cshtml" />
-    <Content Include="Views\Tools\CheckUserPermissions.cshtml" />
     <None Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

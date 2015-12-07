@@ -30,12 +30,6 @@ namespace ESCC.Umbraco.UserAccessManager.Controllers
         }
 
         [HttpGet]
-        public ActionResult LookupPermissions()
-        {
-            return View("LookupPermissions/Index");
-        }
-
-        [HttpGet]
         public ActionResult PagePermissions()
         {
             return View("PagePermissions/Index");

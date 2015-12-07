@@ -144,76 +144,6 @@ $(document).on("change", ".haspermission", function () {
     });
 });
 
-//$("#PagesWithoutAuthor").click(function () {
-//    var btn = $(this);
-//    btn.prop("disabled", true);
-//    var dest = $("#UnauthordPermissions");
-//    var otherdest = $("#PermissionsResults");
-//    dest.html("<img src=\"../Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
-//    otherdest.html("");
-//    $.get($("#apppath").html() + "/Tools/CheckPagesWithoutAuthor/", function (data) {
-//        dest.html(data);
-//        btn.prop("disabled", false);
-//    });
-//    return false;
-//});
-
-$("#lookupPermissions").click(function () {
-    var btn = $(this);
-    btn.prop("disabled", true);
-    var dest = $("#PermissionsResults");
-    var otherdest = $("#UnauthordPermissions");
-    dest.html("<img src=\"../Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
-    otherdest.html("");
-    var searchTerm = $("#searchterm").prop("name");
-
-    switch (searchTerm) {
-        case "emailAddress":
-            var email = $("#searchterm").val();
-            if (email.length === 0) {
-                dest.html(errorMessage("Please enter an Email Address"));
-                btn.prop("disabled", false);
-                return false;
-            }
-            $.get($("#apppath").html() + "/Tools/CheckUserPermissions/", { EmailAddress: email }, function (data) {
-                dest.html(data);
-                btn.prop("disabled", false);
-            });
-            break;
-
-        case "Username":
-            var user = $("#searchterm").val();
-            if (user.length === 0) {
-                dest.html(errorMessage("Please enter a Username"));
-                btn.prop("disabled", false);
-                return false;
-            }
-            $.get($("#apppath").html() + "/Tools/CheckUserPermissions/", { UserName: user }, function (data) {
-                dest.html(data);
-                btn.prop("disabled", false);
-            });
-            break;
-
-        case "pageUrl":
-            var url = $("#searchterm").val();
-            if (url.length === 0) {
-                dest.html(errorMessage("Please enter a Page Url"));
-                btn.prop("disabled", false);
-                return false;
-            }
-            $.get($("#apppath").html() + "/Tools/CheckPagePermissions/", { url: url }, function (data) {
-                dest.html(data);
-                btn.prop("disabled", false);
-            });
-            break;
-        default:
-            dest.html("");
-            btn.prop("disabled", false);
-            break;
-    }
-    return false;
-});
-
 $("#lookupUserPermissions").click(function () {
     var btn = $(this);
     btn.prop("disabled", true);
@@ -364,7 +294,6 @@ $("#url").keypress(function (e) {
 $("#searchterm").keypress(function (e) {
     if (e.which == 13) {
         if ($("#lookupPagePermissions").length) $("#lookupPagePermissions").trigger("click");
-        if ($("#lookupPermissions").length) $("#lookupPermissions").trigger("click");
         if ($("#lookupInboundLinks").length) $("#lookupInboundLinks").trigger("click");
 
         if ($("#searchterm").length) $("#searchterm").blur();
@@ -375,7 +304,6 @@ function lookupallauthors(elem) {
     var btnId = $(elem).data("url");
     $("#menuitemurl").click();
     $("#searchterm").val(btnId);
-    $("#lookupPermissions").click();
     return false;
 };
 
@@ -383,7 +311,6 @@ function lookupauthorpages(elem) {
     var btnId = $(elem).data("id");
     $("#menuitemuser").click();
     $("#searchterm").val(btnId);
-    $("#lookupPermissions").click();
     return false;
 };
 
