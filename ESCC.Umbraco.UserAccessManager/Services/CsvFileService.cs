@@ -72,8 +72,15 @@ namespace ESCC.Umbraco.UserAccessManager.Services
 
                     var itemUri = new Uri(fields[0]);
 
+                    // Make sure neither Uri values have a trailing / to avoid unintentional misses!
+                    var itemUriAbsolutePath = itemUri.AbsolutePath;
+                    if (itemUriAbsolutePath.EndsWith("/")) itemUriAbsolutePath = itemUriAbsolutePath.Remove(itemUriAbsolutePath.Length - 1);
+
+                    var destUriAbsolutePath = destUri.AbsolutePath;
+                    if (destUriAbsolutePath.EndsWith("/")) destUriAbsolutePath = destUriAbsolutePath.Remove(destUriAbsolutePath.Length - 1);
+
                     // Ignore this line if it isn't the path we are looking for
-                    if (itemUri.AbsolutePath != destUri.AbsolutePath) continue;
+                    if (itemUriAbsolutePath != destUriAbsolutePath) continue;
 
                     // Create a record and add it to the return list
                     var rec = new InspyderLinkModel {Item = fields[0], Type = fields[1], Referrer = fields[2]};

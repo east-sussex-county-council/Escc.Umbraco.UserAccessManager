@@ -39,6 +39,7 @@ using System.Runtime.InteropServices;
 // v1.2.0 Moved Redirects DB lookup code here from WebService as no access from Azure
 // v1.2.1 Fixed path to ajax-loader image for PageAuthor page
 // v1.3.0 Added Page Permissions function
+// v1.4.0 Enabled Inspyder data search.
 //
-[assembly: AssemblyVersion("1.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyVersion("1.4.0.0")]
+[assembly: AssemblyFileVersion("1.4.0.0")]

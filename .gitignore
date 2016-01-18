@@ -53,7 +53,10 @@ _ReSharper*/
 
 [Ww]eb.config
 [Ww]eb.Debug.config
+[Ww]eb.Staging.config
 [Ww]eb.Release.config
 [Aa]pp.config
 
 [Pp]ackages
+
+[Ii]nspyder
