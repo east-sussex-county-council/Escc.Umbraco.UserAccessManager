@@ -52,17 +52,26 @@ Immediately lock the user account, which will disallow logon to the Umbraco admi
  
 ## Tools
 
-There is a tools folder (/tools/) with the following pages / options:
+Add /tools/ to the URL of the application to get a menu of tools:
 
-![](lookup-permissions.png)
+![](tools-menu.png)
  
-### Lookup permissions
+### User permissions
 
-Check which pages a user has access to, using either email address or username. Alternatively, you can check which users have permissions for a specific page.
+Check which pages a user has access to, using either email address or username.
 
-### Lookup pages without web authors
+### Page permissions
+
+Check which users have permissions for a specific page, either by page Url or node Id.
+
+### Pages without Author
 
 Search the entire site and list pages that do not have any web authors assigned.
+
+### Inbound Links
+
+Show links into a specific page Url. It checks for links in content (Umbraco nodes), the redirects database and it also checks other links (external?) by reading a file produced by Inspyder.
+
 
 ## Permissions
 
