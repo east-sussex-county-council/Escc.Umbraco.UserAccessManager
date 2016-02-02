@@ -158,7 +158,7 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
-      <HintPath>..\..\ESCC.Umbraco.UserAccessWebService\ESCC.Umbraco.UserAccessWebService\bin\WebGrease.dll</HintPath>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -276,7 +276,6 @@
   <ItemGroup>
     <Content Include="bin\bin\Dependencies\log4net.1.2.11.0.dll" />
     <Content Include="bin\Dependencies\log4net.1.2.11.0.dll" />
-    <Content Include="bin\log4net.dll" />
     <Content Include="Content\icons.gif" />
     <Content Include="Content\loading.gif" />
     <Content Include="Content\ajax-loader.gif" />
@@ -397,13 +396,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -415,15 +407,6 @@
     <Content Include="Views\PasswordReset\PasswordReset.cshtml" />
     <Content Include="Views\Admin\PasswordResetVerification.cshtml" />
     <Content Include="Views\Admin\Success.cshtml" />
-    <None Include="Example\Web.Example.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Example\Web.Example.Debug.config">
-      <DependentUpon>Web.Example.config</DependentUpon>
-    </None>
-    <None Include="Example\Web.Example.Release.config">
-      <DependentUpon>Web.Example.config</DependentUpon>
-    </None>
     <Content Include="Views\Permissions\ContentTree.cshtml" />
     <Content Include="Views\Permissions\Index.cshtml" />
     <Content Include="Scripts\tree\skin-win7\ui.fancytree.less" />
@@ -443,9 +426,10 @@
     <Content Include="Views\Tools\UserPermissions\Index.cshtml" />
     <Content Include="Views\Tools\InboundLinks\Index.cshtml" />
     <Content Include="Views\Tools\InboundLinks\CheckInboundLinks.cshtml" />
-    <None Include="Web.Staging.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="Views\Web.example.config" />
+    <Content Include="Web.example.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -455,7 +439,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
