@@ -1,6 +1,6 @@
 # User Access Manager
 
-![](user-access-manager.png)
+![](Documentation/user-access-manager.png)
 
 ## Introduction
 
@@ -14,12 +14,12 @@ Search for user either by email or user name.
 
 This application will only allow changes to be made to Web Authors.
 
-![](user-details.png)
+![](Documentation/user-details.png)
 
 If the user does not exist, you will be given the option to create a new user:
 
-![](user-not-found.png)
-![](create-user.png)
+![](Documentation/user-not-found.png)
+![](Documentation/create-user.png)
 
 Logon ID = Active directory logon ID
 
@@ -27,7 +27,7 @@ Once the new user has been created, an email will be sent to the user inviting t
 
 ## User permissions
 
-![](content-tree.png)
+![](Documentation/content-tree.png)
 
 Displays the current content tree, showing the permissions assigned to the selected user.
 
@@ -39,7 +39,7 @@ Ticking and clearing the checkbox against each page updates the permissions imme
 
 Copy specifically assigned permissions (not default group permissions) from a selected user to the current user. This does not remove any currently assigned permissions.
 
-![](copy-permissions.png) 
+![](Documentation/copy-permissions.png) 
 
 ## Reset password
 Sends an email to the user, containing a link to a page where they can change their password. The link is valid for 24 hours.
@@ -54,7 +54,7 @@ Immediately lock the user account, which will disallow logon to the Umbraco admi
 
 Add /tools/ to the URL of the application to get a menu of tools:
 
-![](tools-menu.png)
+![](Documentation/tools-menu.png)
  
 ### User permissions
 
