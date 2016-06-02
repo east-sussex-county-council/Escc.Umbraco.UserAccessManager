@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
 using Microsoft.VisualBasic.FileIO;
 
-namespace ESCC.Umbraco.UserAccessManager.Services
+namespace Escc.Umbraco.UserAccessManager.Services
 {
     public class CsvFileService : ICsvFileService
     {

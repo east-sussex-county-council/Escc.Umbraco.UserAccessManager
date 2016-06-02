@@ -97,9 +97,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ESCC.Umbraco.UserAccessManager\ESCC.Umbraco.UserAccessManager.csproj">
+    <ProjectReference Include="..\ESCC.Umbraco.UserAccessManager\Escc.Umbraco.UserAccessManager.csproj">
       <Project>{6c04ee92-2296-4f63-951b-32a2c7fbde7b}</Project>
-      <Name>ESCC.Umbraco.UserAccessManager</Name>
+      <Name>Escc.Umbraco.UserAccessManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

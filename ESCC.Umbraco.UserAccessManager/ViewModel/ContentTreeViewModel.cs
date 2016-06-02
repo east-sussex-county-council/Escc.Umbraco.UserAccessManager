@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ESCC.Umbraco.UserAccessManager.ViewModel
+namespace Escc.Umbraco.UserAccessManager.ViewModel
 {
     public class ContentTreeViewModel
     {

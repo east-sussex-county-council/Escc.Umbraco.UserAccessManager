@@ -1,7 +1,7 @@
 ﻿using System;
 using PetaPoco;
 
-namespace ESCC.Umbraco.UserAccessManager.Models
+namespace Escc.Umbraco.UserAccessManager.Models
 {
     [TableName("permissions")]
     [PrimaryKey("PermissionId")]

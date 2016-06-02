@@ -1,6 +1,6 @@
 using System.Configuration;
 
-namespace ESCC.Umbraco.UserAccessManager.Utility
+namespace Escc.Umbraco.UserAccessManager.Utility
 {
     /// <summary>
     /// Derived from http://www.squarewidget.com/authorizationattribute-with-windows-authentication-in-mvc-4
@@ -8,10 +8,10 @@ namespace ESCC.Umbraco.UserAccessManager.Utility
     /// </summary>
     public static class SystemRole
     {
-        public static string WebServices = ConfigurationManager.AppSettings["SystemRole.WebServices"];
+        public const string WebServices = "SystemRole.WebServices";
                
-        public static string ServiceDesk = ConfigurationManager.AppSettings["SystemRole.ServiceDesk"];
+        public const string ServiceDesk = "SystemRole.ServiceDesk";
 
-        public static string AllAuthorised = WebServices + "," + ServiceDesk;
+        public const string AllAuthorised = WebServices + "," + ServiceDesk;
     }
 }

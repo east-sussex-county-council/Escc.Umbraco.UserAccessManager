@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.ViewModel;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.ViewModel;
 
-namespace ESCC.Umbraco.UserAccessManager.Services.Interfaces
+namespace Escc.Umbraco.UserAccessManager.Services.Interfaces
 {
     public interface IUmbracoService
     {

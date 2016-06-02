@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ESCC.Umbraco.UserAccessManager.Models
+namespace Escc.Umbraco.UserAccessManager.Models
 {
     public class PageUsersModel
     {

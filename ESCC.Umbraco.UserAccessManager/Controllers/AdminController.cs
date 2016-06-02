@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Web.Mvc;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Utility;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.Utility;
 using PagedList;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
 
-namespace ESCC.Umbraco.UserAccessManager.Controllers
+namespace Escc.Umbraco.UserAccessManager.Controllers
 {
     [AuthorizeRedirect(Roles = SystemRole.WebServices)]
     public class AdminController : Controller

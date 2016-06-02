@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.MicroKernel;
 
-namespace ESCC.Umbraco.UserAccessManager.IOC
+namespace Escc.Umbraco.UserAccessManager.IOC
 {
     public class WindsorControllerFactory : DefaultControllerFactory
     {

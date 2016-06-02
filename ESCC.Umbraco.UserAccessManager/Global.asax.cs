@@ -5,9 +5,9 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
-using ESCC.Umbraco.UserAccessManager.IOC;
+using Escc.Umbraco.UserAccessManager.IOC;
 
-namespace ESCC.Umbraco.UserAccessManager
+namespace Escc.Umbraco.UserAccessManager
 {
     public class MvcApplication : HttpApplication
     {

@@ -1,10 +1,10 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using ESCC.Umbraco.UserAccessManager.Services;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.Services;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
 
-namespace ESCC.Umbraco.UserAccessManager.IOC.Installers
+namespace Escc.Umbraco.UserAccessManager.IOC.Installers
 {
     public class PermissionsServiceInstaller : IWindsorInstaller
     {

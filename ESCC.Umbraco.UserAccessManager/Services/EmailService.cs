@@ -4,12 +4,12 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
 using Exceptionless;
 using Exceptionless.Extensions;
 
-namespace ESCC.Umbraco.UserAccessManager.Services
+namespace Escc.Umbraco.UserAccessManager.Services
 {
     public class EmailService : IEmailService
     {

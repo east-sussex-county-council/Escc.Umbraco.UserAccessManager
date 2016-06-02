@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
-using ESCC.Umbraco.UserAccessManager.ViewModel;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.ViewModel;
 
-namespace ESCC.Umbraco.UserAccessManager.Services
+namespace Escc.Umbraco.UserAccessManager.Services
 {
     public class UmbracoService : IUmbracoService
     {

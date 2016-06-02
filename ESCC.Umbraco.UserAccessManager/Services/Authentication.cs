@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace ESCC.Umbraco.UserAccessManager.Services
+namespace Escc.Umbraco.UserAccessManager.Services
 {
     public class Authentication
     {

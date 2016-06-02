@@ -7,11 +7,11 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using System.Web.WebPages;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Services;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
 
-namespace ESCC.Umbraco.UserAccessManager.Controllers
+namespace Escc.Umbraco.UserAccessManager.Controllers
 {
     public class ExpiringPagesApiController : ApiController
     {

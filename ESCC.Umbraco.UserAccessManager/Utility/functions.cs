@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ESCC.Umbraco.UserAccessManager.Utility
+namespace Escc.Umbraco.UserAccessManager.Utility
 {
     public static class Functions
     {

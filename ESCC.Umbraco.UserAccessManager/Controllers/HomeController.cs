@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
-using ESCC.Umbraco.UserAccessManager.Utility;
+using Escc.Umbraco.UserAccessManager.Utility;
 
-namespace ESCC.Umbraco.UserAccessManager.Controllers
+namespace Escc.Umbraco.UserAccessManager.Controllers
 {
     [AuthorizeRedirect(Roles = SystemRole.AllAuthorised)]
     public class HomeController : Controller

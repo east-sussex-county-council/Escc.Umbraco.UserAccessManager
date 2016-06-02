@@ -1,10 +1,10 @@
-﻿using ESCC.Umbraco.UserAccessManager;
+﻿using Escc.Umbraco.UserAccessManager;
 using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
 
-namespace ESCC.Umbraco.UserAccessManager
+namespace Escc.Umbraco.UserAccessManager
 {
     public partial class Startup
     {

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
 
-namespace ESCC.Umbraco.UserAccessManager.Controllers
+namespace Escc.Umbraco.UserAccessManager.Controllers
 {
     public class PageAuthorController : Controller
     {

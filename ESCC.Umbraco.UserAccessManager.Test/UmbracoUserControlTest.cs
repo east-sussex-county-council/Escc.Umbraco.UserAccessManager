@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using ESCC.Umbraco.UserAccessManager.Controllers;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Services;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
-using ESCC.Umbraco.UserAccessManager.ViewModel;
+using Escc.Umbraco.UserAccessManager.Controllers;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.ViewModel;
 using Moq;
 using NUnit.Framework;
 

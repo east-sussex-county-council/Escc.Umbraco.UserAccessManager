@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Web.Mvc;
 using Castle.Core.Internal;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
-using ESCC.Umbraco.UserAccessManager.Utility;
-using ESCC.Umbraco.UserAccessManager.ViewModel;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.Utility;
+using Escc.Umbraco.UserAccessManager.ViewModel;
 
-namespace ESCC.Umbraco.UserAccessManager.Controllers
+namespace Escc.Umbraco.UserAccessManager.Controllers
 {
     [AuthorizeRedirect(Roles = SystemRole.WebServices)]
     public class PermissionsController : Controller

@@ -1,6 +1,6 @@
 ﻿using PetaPoco;
 
-namespace ESCC.Umbraco.UserAccessManager.Models
+namespace Escc.Umbraco.UserAccessManager.Models
 {
     [TableName("editors")]
     public class EditorModel

@@ -3,7 +3,7 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using System.Web.Mvc;
 
-namespace ESCC.Umbraco.UserAccessManager.IOC.Installers
+namespace Escc.Umbraco.UserAccessManager.IOC.Installers
 {
     public class ControllersInstaller : IWindsorInstaller
     {

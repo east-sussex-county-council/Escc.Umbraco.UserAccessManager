@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Configuration;
+using System.Reflection;
+using System.Security.Principal;
+using System.Web;
 using System.Web.Mvc;
 
-namespace ESCC.Umbraco.UserAccessManager.Utility
+namespace Escc.Umbraco.UserAccessManager.Utility
 {
     /// <summary>
     /// Override Authorize to allow capture of and redirect of unauthorised access
@@ -10,6 +14,26 @@ namespace ESCC.Umbraco.UserAccessManager.Utility
     public class AuthorizeRedirect : AuthorizeAttribute
     {
         public string RedirectUrl = "~/Home/Unauthorized";
+        protected override bool AuthorizeCore(HttpContextBase httpContext)
+        {
+            IPrincipal user = httpContext.User;
+            IIdentity identity = user.Identity;
+
+            if (!identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            var allowedGroups = String.IsNullOrEmpty(Roles) ? new string[0] : Roles.Split(',');
+            foreach (var allowedGroup in allowedGroups)
+            {
+                if (user.IsInRole(ConfigurationManager.AppSettings[allowedGroup]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace ESCC.Umbraco.UserAccessManager.Utility
+namespace Escc.Umbraco.UserAccessManager.Utility
 {
     [Serializable]
     public class PostMessageError : Exception

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
-using ESCC.Umbraco.UserAccessManager.Models;
-using ESCC.Umbraco.UserAccessManager.Services.Interfaces;
-using ESCC.Umbraco.UserAccessManager.ViewModel;
+using Escc.Umbraco.UserAccessManager.Models;
+using Escc.Umbraco.UserAccessManager.Services.Interfaces;
+using Escc.Umbraco.UserAccessManager.ViewModel;
 using Exceptionless;
 
-namespace ESCC.Umbraco.UserAccessManager.Services
+namespace Escc.Umbraco.UserAccessManager.Services
 {
     public class PermissionsControlService : IPermissionsControlService
     {

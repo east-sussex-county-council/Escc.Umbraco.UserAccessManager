@@ -4,7 +4,7 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using log4net.Config;
 
-namespace ESCC.Umbraco.UserAccessManager.IOC.Installers
+namespace Escc.Umbraco.UserAccessManager.IOC.Installers
 {
     public class LoggerInstaller : IWindsorInstaller
     {

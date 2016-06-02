@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ESCC.Umbraco.UserAccessManager</RootNamespace>
-    <AssemblyName>ESCC.Umbraco.UserAccessManager</AssemblyName>
+    <RootNamespace>Escc.Umbraco.UserAccessManager</RootNamespace>
+    <AssemblyName>Escc.Umbraco.UserAccessManager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
@@ -274,8 +274,6 @@
     <Compile Include="ViewModel\ContentTreeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\bin\Dependencies\log4net.1.2.11.0.dll" />
-    <Content Include="bin\Dependencies\log4net.1.2.11.0.dll" />
     <Content Include="Content\icons.gif" />
     <Content Include="Content\loading.gif" />
     <Content Include="Content\ajax-loader.gif" />
@@ -433,6 +431,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="bin\" />
     <Folder Include="Configs\" />
   </ItemGroup>
   <ItemGroup>

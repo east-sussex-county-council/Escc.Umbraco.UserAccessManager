@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace ESCC.Umbraco.UserAccessManager
+namespace Escc.Umbraco.UserAccessManager
 {
     public class WebApiConfig
     {

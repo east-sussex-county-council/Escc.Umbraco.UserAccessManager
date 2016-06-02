@@ -2,7 +2,7 @@
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 
-namespace ESCC.Umbraco.UserAccessManager
+namespace Escc.Umbraco.UserAccessManager
 {
     public partial class Startup
     {
