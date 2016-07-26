@@ -1,3 +1,4 @@
+@using System.Configuration
 @using System.Web.Mvc.Html
 @model FindUserModel
 @using Escc.Umbraco.UserAccessManager.Models
@@ -24,7 +25,7 @@
         }
 
         <div class="btn-group-x">
-            @if (User.IsInRole(SystemRole.WebServices))
+            @if (User.IsInRole(ConfigurationManager.AppSettings[SystemRole.WebServices]))
             {
                 @Html.ActionLink("User Permissions", "Index", "Permissions", new {id = @user.UserId}, new {@class = "btn btn-primary", @role = "button"})
             }
@@ -46,7 +47,7 @@ else
         <p>No user has been found with the username <strong>@Model.UserName</strong></p>
     }
 
-    if (User.IsInRole(SystemRole.WebServices))
+    if (User.IsInRole(ConfigurationManager.AppSettings[SystemRole.WebServices]))
     {
         @Html.ActionLink("Create new user", "InitiateUserCreation", null, new { @class = "btn btn-primary", @role = "button" })
     }

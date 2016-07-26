@@ -30,9 +30,12 @@
                 <td class="col-md-1">
                     <button type="submit" name="userName" value="@item.UserName" class="btn btn-link btn-nopadding">All pages</button>
                 </td>
-                <td class="col-md-2">
-                    <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)" target="_blank">view staff page</a>
-                </td>
+                @if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["StaffLookupUrl"]))
+                {
+                    <td class="col-md-2">
+                        <a href="@String.Format(ConfigurationManager.AppSettings["StaffLookupUrl"], item.FullName)" target="_blank">view staff page</a>
+                    </td>
+                }
                 <td class="col-md-2">
                     @if (item.UserLocked)
                     {
