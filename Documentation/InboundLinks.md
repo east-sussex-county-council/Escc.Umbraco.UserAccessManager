@@ -13,7 +13,7 @@ Allows members of the `WebServices` role (see [Configuring the Umbraco User Acce
 *	Could be multiple links from the same page (different content elements).
 
 
-A new index called `NodeLinks` has been created specifically for this search, containing all content fields. It is maintained by an `ExamineEventHandler` in [Escc.Umbraco](https://github.com/east-sussex-county-council/Escc.Umbraco/) when content is updated. It contains a list of node Ids for pages linked to (out) from each page. 
+A new index called `NodeLinks` has been created specifically for this search, containing all content fields. It is maintained by an `ExamineEventHandler` in [Escc.Umbraco.UserAccessWebService](https://github.com/east-sussex-county-council/Escc.Umbraco.UserAccessWebService/) when content is updated. It contains a list of node Ids for pages linked to (out) from each page. 
 
 A new custom field, `NodeLinksTo` is added in the `GatheringNodeData` Examine event which contains a list of outgoing link node Ids. See an [example of a “Gathering Node Data” function](http://thecogworks.co.uk/blog/posts/2012/november/examiness-hints-and-tips-from-the-trenches-part-2/).
 
