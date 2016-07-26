@@ -1,8 +1,6 @@
-# Umbraco User Control API
+# Page expiry notifications
 
-## Page Expiry Email System
-
-A scheduled job that looks for pages that will expire within a set number of days, the number of days is set in `web.config` (`NoOfDaysFrom`).
+A scheduled job that looks for pages that will expire within a set number of days, the number of days is set in `web.config`  (see [Configuring the Umbraco User Access Manager](Configuration.md)).
 
 It is an API call with no user interface. The address is:
  

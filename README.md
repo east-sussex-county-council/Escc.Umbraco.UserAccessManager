@@ -1,4 +1,4 @@
-# User Access Manager
+# Umbraco User Access Manager
 
 ![](Documentation/user-access-manager.png)
 
@@ -10,13 +10,13 @@ Search for user either by email or user name.
 
 *	Reset password
 *	Lock (unlock) account
-*	User permissions
+*	User permissions (only visible if you are in the `WebServices` role - see [Configuring the Umbraco User Access Manager](Documentation/Configuration.md))
 
 This application will only allow changes to be made to Web Authors.
 
 ![](Documentation/user-details.png)
 
-If the user does not exist, you will be given the option to create a new user:
+If the user does not exist and you are in the `WebServices` role (see [Configuring the Umbraco User Access Manager](Documentation/Configuration.md)), you will be given the option to create a new user:
 
 ![](Documentation/user-not-found.png)
 ![](Documentation/create-user.png)
@@ -70,11 +70,8 @@ Search the entire site and list pages that do not have any web authors assigned.
 
 ### Inbound Links
 
-Show links into a specific page Url. It checks for links in content (Umbraco nodes), the redirects database and it also checks other links (external?) by reading a file produced by Inspyder.
+Show links into a specific page Url. It checks for links in content (Umbraco nodes), the redirects database and it also checks other links (external?) by reading a file produced by Inspyder. Read more about [checking for inbound links to a page](Documentation/InboundLinks.md).
 
+## Page expiry notifications
 
-## Permissions
-
-**WebServices**: Has full permission to the entire application.
-
-**ServiceDesk**: Has permission to lookup a user and initiate a password reset.
+Web authors are emailed when pages they are responsible for are due to expire in the next few days. Read more about [page expiry notifications](Documentation/PageExpiry.md).
