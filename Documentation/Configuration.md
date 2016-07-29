@@ -53,6 +53,6 @@ The permission set assigned by the permissions tree is also defined in `web.conf
 
 	<appSettings>
     	<add key="WebAuthorUserType" value="NewUser" />
-		<add key="defaultUserPermissions" value="ACFKU" />
+		<add key="defaultUserPermissions" value="ACFKUP" />
 	</appSettings>
 
