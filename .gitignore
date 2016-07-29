@@ -29,6 +29,7 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.scc
 .vs/*
+*.dbmdl
 
 # Office temp files
 *.tmp

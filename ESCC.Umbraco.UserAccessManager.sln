@@ -19,6 +19,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Escc.Umbraco.UserAccessManager.SqlServer", "Escc.Umbraco.UserAccessManager.SqlServer\Escc.Umbraco.UserAccessManager.SqlServer.sqlproj", "{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{64F19FBB-066F-432C-A5C8-C3E561CD169B}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Configuration.md = Documentation\Configuration.md
+		Documentation\content-tree.png = Documentation\content-tree.png
+		Documentation\copy-permissions.png = Documentation\copy-permissions.png
+		Documentation\create-user.png = Documentation\create-user.png
+		Documentation\InboundLinks.md = Documentation\InboundLinks.md
+		Documentation\PageExpiry.md = Documentation\PageExpiry.md
+		Documentation\tools-menu.png = Documentation\tools-menu.png
+		Documentation\user-access-manager.png = Documentation\user-access-manager.png
+		Documentation\user-details.png = Documentation\user-details.png
+		Documentation\user-not-found.png = Documentation\user-not-found.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +56,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{64F19FBB-066F-432C-A5C8-C3E561CD169B} = {5787B5E5-8692-4418-9983-02959AA26137}
 	EndGlobalSection
 EndGlobal
