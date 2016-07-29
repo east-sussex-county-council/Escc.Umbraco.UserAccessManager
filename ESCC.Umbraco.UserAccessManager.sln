@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.Umbraco.UserAccessManager", "ESCC.Umbraco.UserAccessManager\Escc.Umbraco.UserAccessManager.csproj", "{6C04EE92-2296-4F63-951B-32A2C7FBDE7B}"
 EndProject
@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ScheduledJob.ps1 = ScheduledJob.ps1
 	EndProjectSection
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Escc.Umbraco.UserAccessManager.SqlServer", "Escc.Umbraco.UserAccessManager.SqlServer\Escc.Umbraco.UserAccessManager.SqlServer.sqlproj", "{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,12 @@ Global
 		{3C2ED7DD-E1E2-44CB-987A-6AEC4AA6486D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C2ED7DD-E1E2-44CB-987A-6AEC4AA6486D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C2ED7DD-E1E2-44CB-987A-6AEC4AA6486D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
