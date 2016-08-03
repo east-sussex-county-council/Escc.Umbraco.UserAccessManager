@@ -30,16 +30,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
-// v1.0.1 First versioned DLL. Fixes #7903
-// v1.0.2 added additional links to tools pages, to allow switching between page and user pages.
-//        also enhanced and standardised the page layouts. Ref #7696, #8019
-// v1.0.3 When looking for pages that expire within 3 days (or as configured), all pages for the related
-//        user were being added rather than just the specific page. Fixes #8082
-// v1.1.0 Added inbound links lookup
-// v1.2.0 Moved Redirects DB lookup code here from WebService as no access from Azure
-// v1.2.1 Fixed path to ajax-loader image for PageAuthor page
-// v1.3.0 Added Page Permissions function
-// v1.4.0 Enabled Inspyder data search.
-//
-[assembly: AssemblyVersion("1.4.0.0")]
-[assembly: AssemblyFileVersion("1.4.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

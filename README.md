@@ -68,10 +68,6 @@ Check which users have permissions for a specific page, either by page Url or no
 
 Search the entire site and list pages that do not have any web authors assigned.
 
-### Inbound Links
-
-Show links into a specific page Url. It checks for links in content (Umbraco nodes), the redirects database and it also checks other links (external?) by reading a file produced by Inspyder. Read more about [checking for inbound links to a page](Documentation/InboundLinks.md).
-
 ## Page expiry notifications
 
 Web authors are emailed when pages they are responsible for are due to expire in the next few days. Read more about [page expiry notifications](Documentation/PageExpiry.md).

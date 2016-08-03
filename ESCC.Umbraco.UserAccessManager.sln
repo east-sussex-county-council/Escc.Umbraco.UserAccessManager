@@ -25,7 +25,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		Documentation\content-tree.png = Documentation\content-tree.png
 		Documentation\copy-permissions.png = Documentation\copy-permissions.png
 		Documentation\create-user.png = Documentation\create-user.png
-		Documentation\InboundLinks.md = Documentation\InboundLinks.md
 		Documentation\PageExpiry.md = Documentation\PageExpiry.md
 		Documentation\tools-menu.png = Documentation\tools-menu.png
 		Documentation\user-access-manager.png = Documentation\user-access-manager.png

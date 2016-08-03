@@ -207,42 +207,5 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                 return PartialView("ToolsError");
             }
         }
-
-        [HttpGet]
-        public ActionResult InboundLinks()
-        {
-            return View("InboundLinks/Index");
-        }
-
-        [HttpGet]
-        public ActionResult FindInboundLinks(string url)
-        {
-            try
-            {
-                var modelList = _umbracoService.FindInboundLinks(url);
-
-                if (modelList == null)
-                {
-                    TempData["MsgKey"] = "PageNotFound";
-
-                    return PartialView("ToolsError");
-                }
-                if (modelList.PageId == 0)
-                {
-                    TempData["MsgKey"] = "PageNotFound";
-
-                    return PartialView("ToolsError");
-                }
-
-                return PartialView("InboundLinks/CheckInboundLinks", modelList);
-            }
-            catch (Exception ex)
-            {
-                ex.ToExceptionless().Submit();
-                TempData["MsgKey"] = string.Format("ErrorOccurred");
-
-                return PartialView("ToolsError");
-            }
-        }
     }
 }

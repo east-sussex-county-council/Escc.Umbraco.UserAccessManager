@@ -236,15 +236,11 @@
     <Compile Include="Models\ExpiringPageModel.cs" />
     <Compile Include="Models\FindPageModel.cs" />
     <Compile Include="Models\FindUserModel.cs" />
-    <Compile Include="Models\InspyderLinkModel.cs" />
-    <Compile Include="Models\PageInLinkModel.cs" />
-    <Compile Include="Models\PageLinksModel.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\PageUsersModel.cs" />
     <Compile Include="Models\PasswordResetModel.cs" />
     <Compile Include="Models\PagePermissionsModel.cs" />
     <Compile Include="Models\PetaPoco.cs" />
-    <Compile Include="Models\RedirectModel.cs" />
     <Compile Include="Models\UmbracoUserModel.cs" />
     <Compile Include="IOC\WindsorControllerFactory.cs" />
     <Compile Include="Models\UserPageModel.cs" />
@@ -252,17 +248,13 @@
     <Compile Include="Models\UserPermissionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Authentication.cs" />
-    <Compile Include="Services\CsvFileService.cs" />
     <Compile Include="Services\DatabaseService.cs" />
-    <Compile Include="Services\Interfaces\ICsvFileService.cs" />
     <Compile Include="Services\Interfaces\IDatabaseService.cs" />
     <Compile Include="Services\Interfaces\IEmailService.cs" />
     <Compile Include="Services\Interfaces\IPermissionsControlService.cs" />
-    <Compile Include="Services\Interfaces\IRedirectService.cs" />
     <Compile Include="Services\Interfaces\IUserControlService.cs" />
     <Compile Include="Services\Interfaces\IUmbracoService.cs" />
     <Compile Include="Services\PermissionsControlService.cs" />
-    <Compile Include="Services\RedirectsService.cs" />
     <Compile Include="Services\UserControlService.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\UmbracoService.cs" />
@@ -422,8 +414,6 @@
     <Content Include="Views\Shared\_ToolsMenu.cshtml" />
     <Content Include="Views\Tools\PagePermissions\Index.cshtml" />
     <Content Include="Views\Tools\UserPermissions\Index.cshtml" />
-    <Content Include="Views\Tools\InboundLinks\Index.cshtml" />
-    <Content Include="Views\Tools\InboundLinks\CheckInboundLinks.cshtml" />
     <Content Include="Views\Web.example.config" />
     <Content Include="Web.example.config">
       <SubType>Designer</SubType>

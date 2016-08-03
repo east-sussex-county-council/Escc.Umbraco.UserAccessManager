@@ -47,7 +47,5 @@ namespace Escc.Umbraco.UserAccessManager.Services.Interfaces
         IList<ExpiringPageModel> GetExpiringPages(int noOfDaysFrom);
 
         IList<UserPagesModel> GetExpiringPagesByUser(int noOfDaysFrom);
-
-        PageLinksModel FindInboundLinks(string url);
     }
 }

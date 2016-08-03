@@ -258,31 +258,6 @@ $("#lookupPageAuthors").click(function () {
     return false;
 });
 
-$("#lookupInboundLinks").click(function() {
-    var dest = $("#PermissionsResults");
-    var otherdest = $("#UnauthordPermissions");
-    dest.html("");
-    otherdest.html("");
-    var btn = $(this);
-    var url = $("#searchterm").val();
-
-    if (url.length === 0) {
-        dest.html(errorMessage("Please enter a URL"));
-        return false;
-    }
-
-    url = encodeURIComponent(url);
-    btn.prop("disabled", true);
-    dest.html("<img src=\"../Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
-
-    $.get($("#apppath").html() + "/Tools/FindInboundLinks/", { url: url }, function (data) {
-        dest.html(data);
-        btn.prop("disabled", false);
-    });
-
-    return false;
-});
-
 $("#url").keypress(function (e) {
     if (e.which == 13) {
         $("#checkpage").trigger("click");
@@ -294,7 +269,6 @@ $("#url").keypress(function (e) {
 $("#searchterm").keypress(function (e) {
     if (e.which == 13) {
         if ($("#lookupPagePermissions").length) $("#lookupPagePermissions").trigger("click");
-        if ($("#lookupInboundLinks").length) $("#lookupInboundLinks").trigger("click");
 
         if ($("#searchterm").length) $("#searchterm").blur();
     }
