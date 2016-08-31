@@ -35,7 +35,8 @@ namespace Escc.Umbraco.UserAccessManager.Services
             //    handler.UseProxy = true;
             //}
 
-            _client = new HttpClient(handler) { BaseAddress = new Uri(siteUri) };
+            // Set a long timeout because some queries have to check all pages and can take a long time
+            _client = new HttpClient(handler) { BaseAddress = new Uri(siteUri), Timeout = TimeSpan.FromMinutes(5)};
         }
 
         /// <summary>

@@ -9,6 +9,8 @@ $NVC = New-Object System.Collections.Specialized.NameValueCollection
 $NVC.Add('apiuser', 'username');
 $NVC.Add('apikey', 'password');
 
+# Note that this request may return a timeout to the command line, but because it kicks off an async request
+# inside ExpiringPagesApiController, that continues on another thread once it returns.
 $WC = New-Object System.Net.WebClient
 $WC.UseDefaultCredentials = $true
 $Result = $WC.UploadValues($URL,"post", $NVC);
