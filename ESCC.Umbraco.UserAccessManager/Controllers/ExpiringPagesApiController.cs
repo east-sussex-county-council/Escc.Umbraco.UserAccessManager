@@ -10,6 +10,7 @@ using System.Web.WebPages;
 using Escc.Umbraco.UserAccessManager.Models;
 using Escc.Umbraco.UserAccessManager.Services;
 using Escc.Umbraco.UserAccessManager.Services.Interfaces;
+using Exceptionless;
 
 namespace Escc.Umbraco.UserAccessManager.Controllers
 {
@@ -90,7 +91,14 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             {
                 if (user.Pages.Any())
                 {
-                    SendEmail(user);
+                    try
+                    {
+                        SendEmail(user);
+                    }
+                    catch (Exception ex)
+                    {
+                        new Exception(ex.ToString()).ToExceptionless().Submit(); 
+                    }
                 }
             }
 
