@@ -93,7 +93,6 @@
   <ItemGroup>
     <None Include="app.example.config" />
     <None Include="Example\app.Example.config" />
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

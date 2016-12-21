@@ -89,7 +89,17 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                         authorList.Add(p);
                     }
 
-                    perms.Users = authorList;
+                    var authorListEnabledOnly = authorList.ToList();
+                    // remove disabled users from the list      
+                    foreach (var author in authorList)
+                    {       
+                        if(author.UserLocked == true)
+                        {
+                            authorListEnabledOnly.Remove(author);
+                        }
+                    }
+
+                    perms.Users = authorListEnabledOnly;
 
                     if (!authorList.IsNullOrEmpty()) return PartialView("PagePermissions/LookupPagePermissions", perms);
                 }
