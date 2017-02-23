@@ -28,7 +28,7 @@
             <div class="form-group">
                 @Html.Label("emailAddress", "Email Address", new { @class = "col-sm-2 control-label" })
                 <div class="col-sm-10 col-md-6">
-                    @Html.TextBox("emailAddress", "", new { @class = "form-control", @id = "emailAddress", @placeholder = "Email Address" })
+                    @Html.TextBox("emailAddress", "", new { @class = "form-control", @id = "emailAddress", @placeholder = "Email Address", @pattern = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"})
                 </div>
             </div>
             <div class="form-group">
