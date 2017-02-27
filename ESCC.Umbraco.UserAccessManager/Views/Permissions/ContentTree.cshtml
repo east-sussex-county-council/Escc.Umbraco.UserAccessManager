@@ -7,7 +7,7 @@
         <div class="btn-group">
             <!-- Button trigger modal -->
             <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                Copy user permissions
+                Copy another user's permissions
             </button>
 
             @*Html.ActionLink("Sync user permissions", "CheckPermissionsForUser", "Permissions", new { id = @Model.UserId }, new { @class = "btn btn-info", @role = "button", title = "Synchronise permissions with website" })*@
@@ -28,7 +28,8 @@
                 <h4 class="modal-title" id="myModalLabel">Copy Permissions</h4>
             </div>
             <div class="modal-body" id="lesspadding">
-                <p>Find the user you want to copy permissions from</p>
+                <p>Find the user you want to copy permissions from.</p>
+                <p>This wont overwrite current permissions.</p>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-btn">
