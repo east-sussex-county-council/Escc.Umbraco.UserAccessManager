@@ -11,11 +11,13 @@ using Escc.Umbraco.UserAccessManager.Models;
 using Escc.Umbraco.UserAccessManager.Services;
 using Escc.Umbraco.UserAccessManager.Services.Interfaces;
 using Exceptionless;
+using log4net;
 
 namespace Escc.Umbraco.UserAccessManager.Controllers
 {
     public class ExpiringPagesApiController : ApiController
     {
+        private static readonly ILog log = LogManager.GetLogger("RollingFileAppender");
         private static Mutex _mutex;
 
         private IUmbracoService _umbracoService;
@@ -142,7 +144,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             {
                 emailTo = _forceSendTo;
             }
-
+            log.Info("Expiry Email Sent to: " + emailTo);
             _emailService.UserPageExpiryEmail(emailTo, userPages);
         }
 
