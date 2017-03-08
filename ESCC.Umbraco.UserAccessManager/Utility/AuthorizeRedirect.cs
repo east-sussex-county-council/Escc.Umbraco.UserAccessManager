@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Configuration;
-using System.Reflection;
+using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
@@ -24,7 +24,7 @@ namespace Escc.Umbraco.UserAccessManager.Utility
                 return false;
             }
 
-            var allowedGroups = String.IsNullOrEmpty(Roles) ? new string[0] : Roles.Split(',');
+            var allowedGroups = string.IsNullOrEmpty(Roles) ? new string[0] : Roles.Split(',');
             foreach (var allowedGroup in allowedGroups)
             {
                 if (user.IsInRole(ConfigurationManager.AppSettings[allowedGroup]))
@@ -32,6 +32,15 @@ namespace Escc.Umbraco.UserAccessManager.Utility
                     return true;
                 }
             }
+
+            var userOverride = ConfigurationManager.AppSettings["UsersOverride"];
+            if (!string.IsNullOrEmpty(userOverride))
+            {
+                var users = userOverride.Split(',');
+                if (users.Any(x => x.ToLower() == user.Identity.Name.Replace("ESCC\\", "").ToLower()))
+                { return true; }
+            }
+
             return false;
         }
 

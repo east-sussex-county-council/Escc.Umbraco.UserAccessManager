@@ -41,7 +41,10 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
 
             var pageIndex = model.Page ?? 1;
 
-            model.SearchResult = _userControlService.LookupUsers(model).ToPagedList(pageIndex, 10);
+            var results = _userControlService.LookupUsers(model);
+
+            if (results != null)
+                model.SearchResult = results.ToPagedList(pageIndex, 10);
 
             return View("UserLookup", model);
         }

@@ -13,6 +13,8 @@ namespace Escc.Umbraco.UserAccessManager.Services
 {
     public class EmailService : IEmailService
     {
+        private readonly string _umbracoSystem = ConfigurationManager.AppSettings["UmbracoSystem"];
+
         /// <summary>
         /// Sends and email to the given address
         /// </summary>
@@ -54,19 +56,14 @@ namespace Escc.Umbraco.UserAccessManager.Services
         /// <param name="url">root url for the site eg http://localhost:53201/ </param>
         public void PasswordResetEmail(PasswordResetModel model, string url)
         {
-            const string subject = "ESCC website – web author password";
+            var subject = string.Format("{0} – web author password", _umbracoSystem);
 
             var body = new StringBuilder();
 
             body.AppendLine("<p>Hello,</p>");
-            body.AppendLine("<p>This link takes you to the screen where you can set or change your password for the ESCC website content management system. Please note, this link will expire in 24 hours.</p>");
-            body.AppendFormatLine("<p>{0}/Admin/PasswordResetVerification?userId={1}&uniqueResetId={2}</p>", url, model.UserId.ToString(), model.UniqueResetId);
-            body.AppendLine("<p>If you need any help using the system, please refer to the user guides on the intranet.</p>");
-            body.AppendLine("<p>Kind regards,<br/>Digital Services</p>");
-            body.AppendFormatLine("<p>Guidance for web authors: <a href=\"{0}\">{0}</a>", ConfigurationManager.AppSettings["WebAuthorsGuidanceUrl"]);
-            body.AppendFormatLine("<br/>Yammer: <a href=\"{0}\">{0}</a></p>", ConfigurationManager.AppSettings["WebAuthorsYammerUrl"]);
-
-            //var link = String.Format("<p>Click this link, or paste into a browser to reset your password:</p><p>{0}/Admin/PasswordResetVerification?userId={1}&uniqueResetId={2}</p>", url, model.UserId, model.UniqueResetId);
+            body.AppendFormatLine("<p>This link takes you to the screen where you can set or change your password for the {0} content management system. Please note, this link will expire in 24 hours.</p>", _umbracoSystem);
+            body.AppendFormatLine("<a href=\"{0}\">{0}</a>", string.Format("{0}/Admin/PasswordResetVerification?userId={1}&uniqueResetId={2}", url, model.UserId.ToString(), model.UniqueResetId));
+            GetHelpText(body);
 
             SmtpSendEmail(model.EmailAddress, subject, body.ToString());
         }
@@ -77,19 +74,28 @@ namespace Escc.Umbraco.UserAccessManager.Services
         /// <param name="model">PasswordResetModel - EmailAddress</param>
         public void PasswordResetConfirmationEmail(PasswordResetModel model)
         {
-            const string subject = "ESCC website – web author password successfully reset";
+            var subject = string.Format("{0} – web author password successfully reset", _umbracoSystem);
 
             var body = new StringBuilder();
 
             body.AppendLine("<p>Hello,</p>");
-            body.AppendLine("<p>Your web author password has been successfully changed. You are now ready to start updating the ESCC website. Below is the website back office link where you need to login to edit your content.</p>");
-            body.AppendFormatLine("<p><a href=\"{0}\">{0}</a>", ConfigurationManager.AppSettings["UmbracoBackOfficeUrl"]);
+            body.AppendFormatLine("<p>Your web author password has been successfully changed. You are now ready to start updating the {0}. Below is the website back office link where you need to login to edit your content.</p>", _umbracoSystem);
+            body.AppendFormatLine("<a href=\"{0}\">{0}</a>", ConfigurationManager.AppSettings["UmbracoBackOfficeUrl"]);
+            GetHelpText(body);
+
+            SmtpSendEmail(model.EmailAddress, subject, body.ToString());
+        }
+
+        /// <summary>
+        /// Get the text detailing where they can get help using the system
+        /// </summary>
+        /// <param name="body"></param>
+        private void GetHelpText(StringBuilder body)
+        {
             body.AppendLine("<p>If you need any help using the system, please refer to the user guides on the intranet.</p>");
             body.AppendLine("<p>Kind regards,<br/>Digital Services</p>");
             body.AppendFormatLine("<p>Guidance for web authors: <a href=\"{0}\">{0}</a>", ConfigurationManager.AppSettings["WebAuthorsGuidanceUrl"]);
             body.AppendFormatLine("<br/>Yammer: <a href=\"{0}\">{0}</a></p>", ConfigurationManager.AppSettings["WebAuthorsYammerUrl"]);
-
-            SmtpSendEmail(model.EmailAddress, subject, body.ToString());
         }
 
         /// <summary>
@@ -98,7 +104,7 @@ namespace Escc.Umbraco.UserAccessManager.Services
         /// <param name="model">UmbracoUserModel - FullName, UserName and EmailAddress</param>
         public void CreateNewUserEmail(UmbracoUserModel model)
         {
-            var subject = string.Format("ESCC website - new web author account created for {0}", model.FullName);
+            var subject = string.Format("{0} - new web author account created for {1}", _umbracoSystem, model.FullName);
 
             var body = new StringBuilder();
 
@@ -125,10 +131,10 @@ namespace Escc.Umbraco.UserAccessManager.Services
         {
             var siteUri = ConfigurationManager.AppSettings["SiteUri"];
 
-            const string subject = "ACTION: Your website pages expire in under 14 days";
+            var subject = string.Format("ACTION: Your {0} pages expire in under 14 days", _umbracoSystem);
             var body = new StringBuilder();
 
-            body.AppendLine("<p>Your website pages will expire within the next two weeks. After this they will no longer be available to the public. The dates for each page are given below.</p>");
+            body.AppendFormatLine("<p>Your {0} pages will expire within the next two weeks. After this they will no longer be available to the public. The dates for each page are given below.</p>", _umbracoSystem);
             body.AppendLine("<p>Note, you should always use Google Chrome to update your pages. If your default web browser is Internet Explorer, you will need to right-click and copy and paste the links below into Chrome instead.</p>");
             body.AppendLine("<p>After you’ve logged in, click on each page below and:</p>");
             body.AppendLine("<ul>");
@@ -195,10 +201,10 @@ namespace Escc.Umbraco.UserAccessManager.Services
         {
             var siteUri = ConfigurationManager.AppSettings["SiteUri"];
 
-            var subject = string.Format("ACTION: The following website pages expire in under {0} days", emailWebStaffAtDays);
+            var subject = string.Format("ACTION: The following {0} pages expire in under {1} days", _umbracoSystem, emailWebStaffAtDays);
             var body = new StringBuilder();
 
-            body.AppendFormatLine("<p>These website pages will expire within the next {0} days. After this they will no longer be available to the public.</p>", emailWebStaffAtDays.ToString());
+            body.AppendFormatLine("<p>These {0} pages will expire within the next {1} days. After this they will no longer be available to the public.</p>", _umbracoSystem, emailWebStaffAtDays.ToString());
             body.AppendLine("<p>Note, you should always use Google Chrome to update your pages. If your default web browser is Internet Explorer, you will need to right-click and copy and paste the links below into Chrome instead.</p>");
             body.AppendLine("<p>After you’ve logged in, click on each page below and:</p>");
             body.AppendLine("<ul>");

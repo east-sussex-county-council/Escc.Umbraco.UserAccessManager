@@ -3,8 +3,12 @@
 @model FindUserModel
 @using Escc.Umbraco.UserAccessManager.Models
 @using Escc.Umbraco.UserAccessManager.Utility;
+@using System.Linq;
 @{
     ViewBag.Title = "User Details";
+    var overrideUsers = !string.IsNullOrEmpty(ConfigurationManager.AppSettings["UsersOverride"]) ? ConfigurationManager.AppSettings["UsersOverride"] : "";
+    var hasHigherPrivileges = User.IsInRole(ConfigurationManager.AppSettings[SystemRole.WebServices])
+                || overrideUsers.Split(',').Any(x => x.ToLower() == User.Identity.Name.Replace("ESCC\\", "").ToLower());
 }
 
 <h2>User Details</h2>
@@ -25,14 +29,19 @@
         }
 
         <div class="btn-group-x">
-            @if (User.IsInRole(ConfigurationManager.AppSettings[SystemRole.WebServices]))
+            @if (hasHigherPrivileges)
             {
                 @Html.ActionLink("User Permissions", "Index", "Permissions", new {id = @user.UserId}, new {@class = "btn btn-primary", @role = "button"})
             }
 
             @Html.ActionLink("Reset Password", "InitiatePasswordReset", new {@user.UserId, @user.EmailAddress}, new {@class = "btn btn-warning", @role = "button"})
 
-            @(@user.UserLocked ? Html.ActionLink("Unlock Account", "DisableUser", new {@user.UserId, @user.EmailAddress, @user.UserLocked }, new { @class = "btn btn-danger active", @role = "button" }) : Html.ActionLink("Lock Account", "DisableUser", new {@user.UserId, @user.EmailAddress, @user.UserLocked }, new { @class = "btn btn-danger", @role = "button" }))
+            @{ 
+                var activeClass = user.UserLocked ? "active" : "";
+                var statusText = user.UserLocked ? "Unlock" : "Lock";
+            }
+
+            @Html.ActionLink(statusText + " Account", "DisableUser", new {user.UserId, user.EmailAddress, user.UserLocked }, new { @class = "btn btn-danger " + activeClass, @role = "button" })
         </div>
     }
 }
@@ -47,7 +56,7 @@ else
         <p>No user has been found with the username <strong>@Model.UserName</strong></p>
     }
 
-    if (User.IsInRole(ConfigurationManager.AppSettings[SystemRole.WebServices]))
+    if (hasHigherPrivileges)
     {
         @Html.ActionLink("Create new user", "InitiateUserCreation", null, new { @class = "btn btn-primary", @role = "button" })
     }
