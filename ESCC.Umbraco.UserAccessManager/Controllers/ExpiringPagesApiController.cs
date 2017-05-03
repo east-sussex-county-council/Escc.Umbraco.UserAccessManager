@@ -99,6 +99,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                     }
                     catch (Exception ex)
                     {
+                        log.Error("Failure sending email to:" + user.User.EmailAddress);
                         new Exception(ex.ToString()).ToExceptionless().Submit(); 
                     }
                 }

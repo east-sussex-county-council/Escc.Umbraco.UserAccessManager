@@ -12,6 +12,6 @@ namespace Escc.Umbraco.UserAccessManager.Models
 
         public string PageUrl { get; set; }
 
-        public DateTime ExpiryDate { get; set; }
+        public DateTime? ExpiryDate { get; set; }
     }
 }

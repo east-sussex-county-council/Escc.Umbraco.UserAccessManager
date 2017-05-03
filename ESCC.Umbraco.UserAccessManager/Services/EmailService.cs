@@ -156,7 +156,7 @@ namespace Escc.Umbraco.UserAccessManager.Services
                 {
                     var linkUrl = string.Format("{0}#/content/content/edit/{1}", siteUri, page.PageId);
                     body.Append("<li>");
-                    body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.ToLongDateString(), page.ExpiryDate.ToShortTimeString());
+                    body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.Value.ToLongDateString(), page.ExpiryDate.Value.ToShortTimeString());
                     body.AppendFormat("<br/>{0}", page.PageUrl);
                     body.Append("</li>");
                 }
@@ -175,14 +175,40 @@ namespace Escc.Umbraco.UserAccessManager.Services
                 {
                     var linkUrl = string.Format("{0}#/content/content/edit/{1}", siteUri, page.PageId);
                     body.Append("<li>");
-                    body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.ToLongDateString(), page.ExpiryDate.ToShortTimeString());
+                    body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.Value.ToLongDateString(), page.ExpiryDate.Value.ToShortTimeString());
                     body.AppendFormat("<br/>{0}", page.PageUrl);
                     body.Append("</li>");
                 }
                 body.AppendLine("</ol>");
             }
 
-            SmtpSendEmail(emailTo, subject, body.ToString());
+            var neverExpiringPages = userPages.Pages.Where(d => d.ExpiryDate == null).ToList();
+            if (neverExpiringPages.Any() && (nonWarningPages.Any() || lastWarningPages.Any()))
+            {
+                body.AppendLine("<strong>Pages Never Expiring:</strong>");
+                body.AppendLine("<p>As these pages never expire, its important to check them periodically.<p>");
+                body.AppendLine("<p>After you’ve logged in, click on each page below and:</p>");
+                body.AppendLine("<ul>");
+                body.AppendLine("<li>check they are up to date</li>");
+                body.AppendLine("<li>check the information is still needed</li>");
+                body.AppendLine("<li>then click 'Save and publish'.</li>");
+                body.AppendLine("</ul>");
+                body.AppendLine("<p>You don't need to worry about setting any dates</p>");
+                body.AppendLine("<ol>");
+                foreach (var page in neverExpiringPages)
+                {
+                    var linkUrl = string.Format("{0}#/content/content/edit/{1}", siteUri, page.PageId);
+                    body.Append("<li>");
+                    body.AppendFormat("<a href=\"{0}\">{1}</a>", linkUrl, page.PageName);
+                    body.AppendFormat("<br/>{0}", page.PageUrl);
+                    body.Append("</li>");
+                }
+                body.AppendLine("</ol>");
+            }
+            if(lastWarningPages.Any() || nonWarningPages.Any())
+            {
+                SmtpSendEmail(emailTo, subject, body.ToString());
+            }
         }
 
         /// <summary>
@@ -222,7 +248,7 @@ namespace Escc.Umbraco.UserAccessManager.Services
             {
                 var linkUrl = string.Format("{0}#/content/content/edit/{1}", siteUri, page.PageId);
                 body.Append("<li>");
-                body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.ToLongDateString(), page.ExpiryDate.ToShortTimeString());
+                body.AppendFormat("<a href=\"{0}\">{1}</a> (expires {2}, {3})", linkUrl, page.PageName, page.ExpiryDate.Value.ToLongDateString(), page.ExpiryDate.Value.ToShortTimeString());
                 body.AppendFormat("<br/>{0}", page.PageUrl);
                 body.Append("</li>");
             }
