@@ -47,6 +47,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
 
             try
             {
+                log.Info("Starting Process");
                 // Only allow one instance to run at a time
                 const string appName = "CheckForExpiringNodesByUser";
                 bool createdNew;
@@ -65,10 +66,13 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                 }
 
                 // OK, carry on
+                log.Info("Checking for expring nodes");
                 res = GetExpiringNodesByUser();
             }
             catch (Exception ex)
             {
+                log.Error("Process failed - check Exceptionless");
+                new Exception(ex.ToString()).ToExceptionless().Submit();
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
             finally
@@ -88,6 +92,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
 
             var users = _umbracoService.GetExpiringPagesByUser(_noOfDaysFrom);
 
+            log.Info("Starting expiry email process");
             // For each user:
             foreach (var user in users)
             {
@@ -125,7 +130,15 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
 
             if (warningList.Any())
             {
-                SendWarningEmail(warningList.OrderBy(o => o.ExpiryDate).ToList());
+                try
+                {
+                    SendWarningEmail(warningList.OrderBy(o => o.ExpiryDate).ToList());
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Failure sending warning email to Webstaff - Check Exceptionless");
+                    new Exception(ex.ToString()).ToExceptionless().Submit();
+                }
             }
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -164,7 +177,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             {
                 emailTo = _forceSendTo;
             }
-
+            log.Info("Warning Email Sent to: " + emailTo);
             _emailService.UserPageLastWarningEmail(emailTo, warningPages, _emailWebStaffAtDays);            
         }
 
