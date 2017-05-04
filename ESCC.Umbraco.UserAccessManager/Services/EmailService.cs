@@ -131,6 +131,14 @@ namespace Escc.Umbraco.UserAccessManager.Services
         {
             var siteUri = ConfigurationManager.AppSettings["SiteUri"];
 
+            foreach (var item in userPages.Pages)
+            {
+                if(item.PageUrl == null || item.PageUrl == "#")
+                {
+                    item.PageUrl = "This page is not visible on the live site.";
+                }
+            }
+
             var subject = string.Format("ACTION: Your {0} pages expire in under 14 days", _umbracoSystem);
             var body = new StringBuilder();
 
