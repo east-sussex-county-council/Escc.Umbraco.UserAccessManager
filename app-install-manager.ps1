@@ -65,7 +65,7 @@ $transformsFolder = NormaliseFolderPath $transformsFolder
 
 BackupApplication "$destinationFolder/$projectName" $backupFolder $comment
 
-robocopy $sourceFolder "$destinationFolder/$projectName" /MIR /IF *.gif *.png *.eot *.svg *.ttf *.woff *.cshtml *.asax *.aspx *.dll *.less vista_colors.txt *.js *.map *.css csc.* csi.* /XD aspnet_client obj Properties App_Start
+robocopy $sourceFolder "$destinationFolder/$projectName" /MIR /IF *.gif *.png *.eot *.svg *.ttf *.woff *.cshtml *.asax *.aspx *.dll *.less vista_colors.txt *.js *.map *.css csc.* csi.* /XD aspnet_client obj Properties App_Start Controllers IOC Models Services Utility ViewModel
 
 TransformConfig "$sourceFolder\web.example.config" "$destinationFolder\$projectName\web.config" "$transformsFolder\$projectName\web.release.config"
 if (Test-Path "$transformsFolder\$projectName\web.$websiteName.config") {
@@ -73,21 +73,17 @@ if (Test-Path "$transformsFolder\$projectName\web.$websiteName.config") {
 	copy "$destinationFolder\$projectName\web.temp1.config" "$destinationFolder\$projectName\web.config"
 	del "$destinationFolder\$projectName\web.temp1.config"
 }
-TransformConfig "$sourceFolder\Views\web.example.config" "$destinationFolder\$projectName\Views\web.config" "$transformsFolder\$projectName\Views\web.release.config"
-if (Test-Path "$transformsFolder\$projectName\Views\web.$websiteName.config") {
-	TransformConfig "$destinationFolder\$projectName\Views\web.config" "$destinationFolder\$projectName\Views\web.temp1.config" "$transformsFolder\$projectName\Views\web.$websiteName.config"
-	copy "$destinationFolder\$projectName\Views\web.temp1.config" "$destinationFolder\$projectName\Views\web.config"
-	del "$destinationFolder\$projectName\Views\web.temp1.config"
-}
+copy "$sourceFolder\Views\web.example.config" "$destinationFolder\$projectName\Views\web.config"
+copy "$transformsFolder\$projectName\Jobs\CheckForExpiringNodesByUser.ps1" "$destinationFolder\$projectName\Jobs\CheckForExpiringNodesByUser.ps1"
 
 EnableDotNet40InIIS
 CreateApplicationPool "$projectName-$websiteName"
 CheckSiteExistsBeforeAddingApplication $websiteName
-CreateVirtualDirectory $websiteName "redirects" "$destinationFolder\$projectName" true "$projectName-$websiteName"
-DisableAnonymousAuthentication $websiteName "redirects"
-EnableWindowsAuthentication $websiteName "redirects"
+CreateVirtualDirectory $websiteName $projectName "$destinationFolder\$projectName" true "$projectName-$websiteName"
+DisableAnonymousAuthentication $websiteName $projectName
+EnableWindowsAuthentication $websiteName $projectName
 
-# Give application pool account write access so that it can create clientDependency cache files
+# Give application pool account write access so that it can create clientDependency cache files and logs
 Write-Host "Granting Modify access to the application pool account"
 if (!(Test-Path "$destinationFolder\$projectName\App_Data")) {
 	md "$destinationFolder\$projectName\App_Data"
