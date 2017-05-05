@@ -269,6 +269,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\AuthorizeRedirect.cs" />
     <Compile Include="Utility\functions.cs" />
+    <Compile Include="Utility\LoggingFilterAttribute.cs" />
     <Compile Include="Utility\PostMessageError.cs" />
     <Compile Include="Utility\SystemRole.cs" />
     <Compile Include="ViewModel\ContentTreeViewModel.cs" />

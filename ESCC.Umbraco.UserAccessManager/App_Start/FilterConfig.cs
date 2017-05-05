@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using Escc.Umbraco.UserAccessManager.Utility;
+using System.Web.Mvc;
 
 namespace Escc.Umbraco.UserAccessManager
 {
@@ -7,6 +8,7 @@ namespace Escc.Umbraco.UserAccessManager
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new LoggingFilterAttribute());
         }
     }
 }

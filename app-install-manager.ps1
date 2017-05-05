@@ -65,7 +65,7 @@ $transformsFolder = NormaliseFolderPath $transformsFolder
 
 BackupApplication "$destinationFolder/$projectName" $backupFolder $comment
 
-robocopy $sourceFolder "$destinationFolder/$projectName" /MIR /IF *.gif *.png *.eot *.svg *.ttf *.woff *.cshtml *.asax *.aspx *.dll *.less *.txt *.js *.map *.css csc.* csi.* /XD aspnet_client obj Properties App_Start
+robocopy $sourceFolder "$destinationFolder/$projectName" /MIR /IF *.gif *.png *.eot *.svg *.ttf *.woff *.cshtml *.asax *.aspx *.dll *.less vista_colors.txt *.js *.map *.css csc.* csi.* /XD aspnet_client obj Properties App_Start
 
 TransformConfig "$sourceFolder\web.example.config" "$destinationFolder\$projectName\web.config" "$transformsFolder\$projectName\web.release.config"
 if (Test-Path "$transformsFolder\$projectName\web.$websiteName.config") {

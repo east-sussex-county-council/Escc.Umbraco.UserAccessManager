@@ -17,5 +17,16 @@ namespace Escc.Umbraco.UserAccessManager.Models
         public bool IsEmailRequest { get { return !string.IsNullOrWhiteSpace(EmailAddress); } }
 
         public bool IsValidRequest { get { return IsEmailRequest | IsUserRequest; } }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance in activity logs
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format("[EmailAddress:{0},UserName:{1}]", EmailAddress, UserName);
+        }
     }
 }
