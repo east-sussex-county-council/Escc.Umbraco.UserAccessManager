@@ -108,7 +108,7 @@ namespace Escc.Umbraco.UserAccessManager.Services
 
             var body = new StringBuilder();
 
-            body.AppendLine("<p>Hello Web Staff,</p>");
+            body.AppendLine("<p>Hello,</p>");
             body.AppendFormatLine("<p>A new web author account has been created for {0}:</P>", model.FullName);
             body.AppendFormatLine("<p>Username: {0}<br/>Email address: {1}</p>", model.UserName, model.EmailAddress);
             body.AppendLine("<p>You can now go to the User Access Manager to set up the pages that this web author will be responsible for.</p>");
