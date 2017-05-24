@@ -71,7 +71,8 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             }
             catch (Exception ex)
             {
-                log.Error("Process failed - check Exceptionless");
+                log.Error("Process failed (Also logged in Exceptionless if linked)", ex);
+                //log.Error("Process failed - check Exceptionless");
                 new Exception(ex.ToString()).ToExceptionless().Submit();
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
