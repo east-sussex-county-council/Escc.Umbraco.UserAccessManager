@@ -49,12 +49,14 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             {
                 log.Info("Starting Process");
                 // Only allow one instance to run at a time
-                const string appName = "CheckForExpiringNodesByUser";
+                string appName = ConfigurationManager.AppSettings["MutexAppName"];
                 bool createdNew;
                 _mutex = new Mutex(true, appName, out createdNew);
+                log.Info("Mutex Created");
 
                 if (!createdNew)
                 {
+                    log.Info("Mutex not new");
                     return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
@@ -62,6 +64,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                 var content = Request.Content.ReadAsStringAsync().Result;
                 if (!Authentication.AuthenticateUser(content))
                 {
+                    log.Info("Incorrect credentials - Forbidden returned");
                     return Request.CreateResponse(HttpStatusCode.Forbidden);
                 }
 
@@ -72,7 +75,6 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             catch (Exception ex)
             {
                 log.Error("Process failed (Also logged in Exceptionless if linked)", ex);
-                //log.Error("Process failed - check Exceptionless");
                 new Exception(ex.ToString()).ToExceptionless().Submit();
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }

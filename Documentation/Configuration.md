@@ -39,6 +39,9 @@ You can also control when emails are sent and where to:
 		<add key="NoOfDaysFrom" value="14" />
 		<add key="EmailWebStaffAtDays" value="3" />
 
+		<!-- Unique name for the mutex created when CheckForExpiringNodesByUser is called -->
+		<add key="MutexAppName" value="CheckForExpiringNodesByUser"/>
+
 		<!-- Override to avoid sending emails to web authors during development -->
 		<add key="ForceSendTo" value="developer-override@example.org" />
 	</appSettings>
