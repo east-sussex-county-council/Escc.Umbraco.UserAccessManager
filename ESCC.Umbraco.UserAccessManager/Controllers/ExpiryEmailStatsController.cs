@@ -19,6 +19,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
         private IDatabaseService _databaseService = new DatabaseService();
 
         #region ActionResults
+        [AuthorizeRedirect(Roles = SystemRole.WebServices + "," + SystemRole.WebAuthors)]
         public ActionResult Index()
         {
             // Create the ViewModel and Lists

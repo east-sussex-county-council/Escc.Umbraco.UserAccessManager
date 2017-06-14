@@ -12,6 +12,8 @@ namespace Escc.Umbraco.UserAccessManager.Utility
                
         public const string ServiceDesk = "SystemRole.ServiceDesk";
 
+        public const string WebAuthors = "SystemRole.WebAuthors";
+
         public const string AllAuthorised = WebServices + "," + ServiceDesk;
     }
 }
