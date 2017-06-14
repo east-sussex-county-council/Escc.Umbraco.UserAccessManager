@@ -1,0 +1,28 @@
+﻿@model Escc.Umbraco.UserAccessManager.ViewModel.PagesViewModel
+<p></p>
+<div class="row">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">@Model.User.EmailAddress</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-11">
+                <p>ID: @Model.User.ID</p>
+                <p>Date Emailed: @Model.User.DateAdded</p>
+            </div>
+            <div class="col-sm-1">
+                @Html.ActionLink("Go Back", "Index", "ExpiryEmailStats", new { }, new { @class = "btn btn-info" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Pages</h3>
+        </div>
+        <div class="panel-body">
+            @{Html.RenderPartial("_DataTable", Model.Pages);}
+        </div>
+    </div>
+</div>

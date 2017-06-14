@@ -1,0 +1,163 @@
+﻿@model Escc.Umbraco.UserAccessManager.ViewModel.ExpiryEmailStatsViewModel
+<p></p>
+<div id="Stats">
+    <div class="list-group panel panel-info">
+        <a href="#EmailStats" class="list-group-item" data-toggle="active" data-parent="#Stats"><span class="glyphicon-heart-empty glyphicon"></span> <b>Expiry Emails</b></a>
+        <div class="active" id="EmailStats">
+            <div class="thumbnail">
+                <p>  </p>
+                <div class="panel with-nav-tabs panel-czone">
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#Success" data-toggle="tab"><b>Successful Emails</b></a></li>
+                            <li><a href="#Failure" data-toggle="tab"><b>Failed Emails</b></a></li>
+                            <li><a href="#LastSuccessful" data-toggle="tab"><b>Last Successful</b></a></li>
+                            <li><a href="#LastFailed" data-toggle="tab"><b>Last Failed</b></a></li>
+                            <li><a href="#Expiring" data-toggle="tab"><b>Expiring Pages</b></a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="Success">
+                                <div class="row">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+                                        <div class="panel-body">
+                                            This tab displays all emails that have been successfully sent. If an author claims to not have recieved an email, but you can see it here, then its safe to say they did actually recieve it. You can then check all the expiring pages they were notified about in that email.
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Successful Emails</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            @{Html.RenderPartial("_DataTable", Model.SuccessfulEmails);}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Failure">
+                                <div class="row">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+                                        <div class="panel-body">
+                                            This tab displays all emails that  have failed to send. If an author claims to have not recieved an email at all, you should see it here.
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Failed Emails</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            @{Html.RenderPartial("_DataTable", Model.FailedEmails);}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="LastSuccessful">
+                                <div class="row">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+                                        <div class="panel-body">
+                                            This tab displays the last email that was sent successfully without any errors. The date here is a good indication of the last time the expiry email process ran successfully.
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Last Successful Email</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Email</th>
+                                                        <th>Date Sent</th>
+                                                        <th>Pages</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="default">
+                                                        <td>@Model.LastSuccessfulEmail.ID</td>
+                                                        <td>@Model.LastSuccessfulEmail.EmailAddress</td>
+                                                        <td>@Model.LastSuccessfulEmail.DateAdded</td>
+                                                        <td>@Html.ActionLink("Pages", "GetPages", "ExpiryEmailStats", new { ID = Model.LastSuccessfulEmail.ID }, new { @class = "btn btn-info" })<span class="badge badge-info">@Model.LastSuccessfulEmail.PageCount</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="LastFailed">
+                                <div class="row">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+                                        <div class="panel-body">
+                                            This tab displays the last recorded email that failed to send. The date here is a good indication of the last time the expiry email process had a problem.
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Last Failed Email : </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            @if (Model.LastFailedEmail != null)
+                                            {
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Email</th>
+                                                            <th>Date Sent</th>
+                                                            <th>Pages</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="default">
+                                                            <td>@Model.LastFailedEmail.ID</td>
+                                                            <td>@Model.LastFailedEmail.EmailAddress</td>
+                                                            <td>@Model.LastFailedEmail.DateAdded</td>
+                                                            <td>@Html.ActionLink("Pages", "GetPages", "ExpiryEmailStats", new { ID = Model.LastFailedEmail.ID }, new { @class = "btn btn-info" })<span class="badge badge-info">@Model.LastFailedEmail.PageCount</span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            }
+                                            else
+                                            {
+                                                <p>There are currently no failed emails.</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Expiring">
+                                <div class="row">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+                                        <div class="panel-body">
+                                            <p>
+                                                This tab displays all expiring pages that have had a recent expiry email, where the expiry date is greater than or equal to today. If you can't find a page here thats meant to be expiring, then it's safe to say no one has been notified about it.
+                                            </p>
+                                            <p>
+                                                The 'Authors' drop down list shows all authors that have been sent an email about that page expiring. If an author claims they have not recieved an email for a page, and that page is listed here, you can simply check to see if that authors email is listed for that page.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-warning">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Expiring Pages</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            @{Html.RenderPartial("_DataTable", Model.ExpiringPages);}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

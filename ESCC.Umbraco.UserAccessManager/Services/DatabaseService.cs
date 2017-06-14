@@ -3,18 +3,151 @@ using System.Linq;
 using Escc.Umbraco.UserAccessManager.Models;
 using Escc.Umbraco.UserAccessManager.Services.Interfaces;
 using PetaPoco;
+using System.Data.SqlClient;
+using System.Configuration;
+using System;
 
 namespace Escc.Umbraco.UserAccessManager.Services
 {
     public class DatabaseService : IDatabaseService
     {
+        #region Initialization
         private readonly Database _db;
 
         public DatabaseService()
         {
             _db = new Database("DefaultConnection");
         }
+        #endregion
 
+        #region PageExpiryStats
+        /// <summary>
+        /// Run SP to input the expiry email details into the database
+        /// </summary>
+        /// <param name="model">ExpiryLogModel - </param>
+        public void SetExpiryLogDetails(ExpiryLogModel model)
+        {
+            _db.Execute("EXEC SetExpiryLogDetails @EmailAddress, @DateAdded, @EmailSuccess, @Pages", new { model.EmailAddress, model.DateAdded, model.EmailSuccess, model.Pages });
+        }
+
+        /// <summary>
+        /// Run query to get all expiry logs
+        /// </summary>
+        /// <param name="model">ExpiryLogModel - </param>
+        public List<ExpiryLogModel> GetExpiryLogs()
+        {
+            List<ExpiryLogModel> expiryEmails = new List<ExpiryLogModel>();
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                cn.Open();
+                var sql = string.Format("SELECT * FROM ExpiryEmails");
+                SqlCommand sqlCommand = new SqlCommand(sql, cn);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    ExpiryLogModel model = new ExpiryLogModel(0, null, DateTime.Now, false, null);
+                    model.Pages = reader["Pages"].ToString();
+                    model.DateAdded = (DateTime)reader["DateAdded"];
+                    model.EmailAddress = reader["EmailAddress"].ToString();
+                    model.EmailSuccess = (bool)reader["EmailSuccess"];
+                    model.ID = (int)reader["ID"];
+                    expiryEmails.Add(model);
+                }
+                cn.Close();
+            }
+
+            return expiryEmails;
+        }
+
+        /// <summary>
+        /// Run query to get successful expiry logs
+        /// </summary>
+        /// <param name="model">ExpiryLogModel - </param>
+        public List<ExpiryLogModel> GetExpiryLogSuccessDetails()
+        {
+            List<ExpiryLogModel> expiryEmails = new List<ExpiryLogModel>();
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                cn.Open();
+                var sql = string.Format("SELECT * FROM ExpiryEmails WHERE [EmailSuccess] = {0}", 1);
+                SqlCommand sqlCommand = new SqlCommand(sql, cn);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    ExpiryLogModel model = new ExpiryLogModel(0, null, DateTime.Now, false, null);
+                    model.Pages = reader["Pages"].ToString();
+                    model.DateAdded = (DateTime)reader["DateAdded"];
+                    model.EmailAddress = reader["EmailAddress"].ToString();
+                    model.EmailSuccess = (bool)reader["EmailSuccess"];
+                    model.ID = (int)reader["ID"];
+                    expiryEmails.Add(model);
+                }
+                cn.Close();
+            }
+
+            return expiryEmails;
+        }
+
+        /// <summary>
+        /// Run query to get failed expiry logs
+        /// </summary>
+        /// <param name="model">ExpiryLogModel - </param>
+        public List<ExpiryLogModel> GetExpiryLogFailureDetails()
+        {
+            List<ExpiryLogModel> expiryEmails = new List<ExpiryLogModel>();
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                cn.Open();
+                var sql = string.Format("SELECT * FROM ExpiryEmails WHERE [EmailSuccess] = {0}", 0);
+                SqlCommand sqlCommand = new SqlCommand(sql, cn);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    ExpiryLogModel model = new ExpiryLogModel(0, null, DateTime.Now, false, null);
+                    model.Pages = reader["Pages"].ToString();
+                    model.DateAdded = (DateTime)reader["DateAdded"];
+                    model.EmailAddress = reader["EmailAddress"].ToString();
+                    model.EmailSuccess = (bool)reader["EmailSuccess"];
+                    model.ID = (int)reader["ID"];
+                    expiryEmails.Add(model);
+                }
+                cn.Close();
+            }
+
+            return expiryEmails;
+        }
+
+        /// <summary>
+        /// Run query to get a single log entry
+        /// </summary>
+        /// <param name="model">ExpiryLogModel - </param>
+        public ExpiryLogModel GetExpiryLogByID(int id)
+        {
+            ExpiryLogModel expiryEmail = new ExpiryLogModel();
+            using (SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString()))
+            {
+                cn.Open();
+                var sql = string.Format("SELECT * FROM ExpiryEmails WHERE [ID] = {0}", id);
+                SqlCommand sqlCommand = new SqlCommand(sql, cn);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    ExpiryLogModel model = new ExpiryLogModel(0, null, DateTime.Now, false, null);
+                    model.Pages = reader["Pages"].ToString();
+                    model.DateAdded = (DateTime)reader["DateAdded"];
+                    model.EmailAddress = reader["EmailAddress"].ToString();
+                    model.EmailSuccess = (bool)reader["EmailSuccess"];
+                    model.ID = (int)reader["ID"];
+                    expiryEmail = model;
+                }
+                cn.Close();
+            }
+
+            return expiryEmail;
+        }
+        #endregion
+
+        #region PassWord Reset
         /// <summary>
         /// Run SP to input the reset details into the database
         /// </summary>
@@ -42,7 +175,9 @@ namespace Escc.Umbraco.UserAccessManager.Services
         {
             _db.Execute("Exec DeleteResetDetails @UniqueResetId, @UserId", new { model.UniqueResetId, model.UserId });
         }
+        #endregion
 
+        #region Misc Unused
         //public IEnumerable<PermissionsModel> CheckUserPermissions(int userId)
         //{
         //    return _db.Query<PermissionsModel>("SELECT * FROM permissions where [UserId] = @0", userId);
@@ -79,6 +214,9 @@ namespace Escc.Umbraco.UserAccessManager.Services
         //{
         //    return _db.Query<PermissionsModel>("Where PageName = @0", pageName);
         //}
+        #endregion
+
+        #region PageAuthor
 
         public IEnumerable<PermissionsModel> PageWithoutAuthor()
         {
@@ -88,7 +226,9 @@ namespace Escc.Umbraco.UserAccessManager.Services
                                               "group by [PageId],[PageName] " +
                                               "having sum(case when e.userid is null then 1 else 0 end) = 0");
         }
+        #endregion
 
+        #region Editor
         public IEnumerable<EditorModel> IsEditor(int userId)
         {
             return _db.Query<EditorModel>("Where UserId = @0", userId);
@@ -103,5 +243,6 @@ namespace Escc.Umbraco.UserAccessManager.Services
         {
             _db.Delete<EditorModel>("WHERE UserId = @0", model.UserId);
         }
+        #endregion
     }
 }

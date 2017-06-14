@@ -12,6 +12,7 @@ using Escc.Umbraco.UserAccessManager.Services;
 using Escc.Umbraco.UserAccessManager.Services.Interfaces;
 using Exceptionless;
 using log4net;
+using System.Web.Script.Serialization;
 
 namespace Escc.Umbraco.UserAccessManager.Controllers
 {
@@ -22,6 +23,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
 
         private IUmbracoService _umbracoService;
         private IEmailService _emailService;
+        private IDatabaseService _databaseService = new DatabaseService();
 
         private string _webStaffEmail;
         private string _forceSendTo;
@@ -108,6 +110,8 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                     catch (Exception ex)
                     {
                         log.Error("Failure sending email to:" + user.User.EmailAddress);
+                        var jsonPages = new JavaScriptSerializer().Serialize(user.Pages);
+                        _databaseService.SetExpiryLogDetails(new ExpiryLogModel(0, user.User.EmailAddress, DateTime.Now, false, jsonPages));
                         new Exception(ex.ToString()).ToExceptionless().Submit(); 
                     }
                 }
@@ -162,6 +166,8 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                 emailTo = _forceSendTo;
             }
             log.Info("Expiry Email Sent to: " + emailTo);
+            var jsonPages = new JavaScriptSerializer().Serialize(userPages.Pages);
+            _databaseService.SetExpiryLogDetails(new ExpiryLogModel(0, emailTo, DateTime.Now, true, jsonPages));
             _emailService.UserPageExpiryEmail(emailTo, userPages);
         }
 
