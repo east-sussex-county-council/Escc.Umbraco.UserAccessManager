@@ -72,7 +72,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             foreach (var page in Pages)
             {
                 HtmlString PublishedLink = new HtmlString(string.Format("<a href=\"{0}{1}\">{2}</a>", ConfigurationManager.AppSettings["PublishedURI"], page.PageUrl, page.PageUrl));
-                HtmlString EditLink = new HtmlString(string.Format("<a href=\"{0}{1}{2}\">Edit</a>", ConfigurationManager.AppSettings["PublishedURI"], ConfigurationManager.AppSettings["EditURI"], page.PageId));
+                HtmlString EditLink = new HtmlString(string.Format("<a href=\"{0}{1}\">Edit</a>",ConfigurationManager.AppSettings["EditURI"], page.PageId));
                 model.Pages.Table.Rows.Add(page.PageId, page.PageName, PublishedLink, EditLink, page.ExpiryDate);
             }
 
@@ -129,7 +129,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             {
                 HtmlString Authors = GetAuthorsHtmlString(page.Authors, page.PageId);
                 HtmlString PublishedLink = new HtmlString(string.Format("<a href=\"{0}{1}\">{2}</a>", ConfigurationManager.AppSettings["PublishedURI"], page.PageUrl, page.PageUrl));
-                HtmlString EditLink = new HtmlString(string.Format("<a href=\"{0}{1}{2}\">Edit</a>", ConfigurationManager.AppSettings["PublishedURI"], ConfigurationManager.AppSettings["EditURI"], page.PageId));
+                HtmlString EditLink = new HtmlString(string.Format("<a href=\"{0}{1}\">Edit</a>", ConfigurationManager.AppSettings["EditURI"], page.PageId));
                 table.Rows.Add(page.PageId, page.PageName, PublishedLink, EditLink, Authors, page.ExpiryDate);
             }
 
