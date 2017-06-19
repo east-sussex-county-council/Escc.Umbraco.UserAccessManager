@@ -11,8 +11,6 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#Success" data-toggle="tab"><b>Successful Emails</b></a></li>
                             <li><a href="#Failure" data-toggle="tab"><b>Failed Emails</b></a></li>
-                            <li><a href="#LastSuccessful" data-toggle="tab"><b>Last Successful</b></a></li>
-                            <li><a href="#LastFailed" data-toggle="tab"><b>Last Failed</b></a></li>
                             <li><a href="#Expiring" data-toggle="tab"><b>Expiring Pages</b></a></li>
                         </ul>
                     </div>
@@ -50,83 +48,6 @@
                                         </div>
                                         <div class="panel-body">
                                             @{Html.RenderPartial("_DataTable", Model.FailedEmails);}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="LastSuccessful">
-                                <div class="row">
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
-                                        <div class="panel-body">
-                                            This tab displays the last email that was sent successfully without any errors. The date here is a good indication of the last time the expiry email process ran successfully.
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-success">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Last Successful Email</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Email</th>
-                                                        <th>Date Sent</th>
-                                                        <th>Pages</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="default">
-                                                        <td>@Model.LastSuccessfulEmail.ID</td>
-                                                        <td>@Model.LastSuccessfulEmail.EmailAddress</td>
-                                                        <td>@Model.LastSuccessfulEmail.DateAdded</td>
-                                                        <td>@Html.ActionLink("Pages", "GetPages", "ExpiryEmailStats", new { ID = Model.LastSuccessfulEmail.ID }, new { @class = "btn btn-info" })<span class="badge badge-info">@Model.LastSuccessfulEmail.PageCount</span></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="LastFailed">
-                                <div class="row">
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
-                                        <div class="panel-body">
-                                            This tab displays the last recorded email that failed to send. The date here is a good indication of the last time the expiry email process had a problem.
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Last Failed Email : </h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            @if (Model.LastFailedEmail != null)
-                                            {
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Email</th>
-                                                            <th>Date Sent</th>
-                                                            <th>Pages</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="default">
-                                                            <td>@Model.LastFailedEmail.ID</td>
-                                                            <td>@Model.LastFailedEmail.EmailAddress</td>
-                                                            <td>@Model.LastFailedEmail.DateAdded</td>
-                                                            <td>@Html.ActionLink("Pages", "GetPages", "ExpiryEmailStats", new { ID = Model.LastFailedEmail.ID }, new { @class = "btn btn-info" })<span class="badge badge-info">@Model.LastFailedEmail.PageCount</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            }
-                                            else
-                                            {
-                                                <p>There are currently no failed emails.</p>
-                                            }
                                         </div>
                                     </div>
                                 </div>

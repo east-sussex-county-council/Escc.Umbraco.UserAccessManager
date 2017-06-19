@@ -31,20 +31,10 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             EmailSuccess = _databaseService.GetExpiryLogSuccessDetails();
             EmailFailures = _databaseService.GetExpiryLogFailureDetails();
 
-            // Find the last success and failure
-            var MostRecentFailure = EmailFailures.Any() ? EmailFailures.OrderByDescending(x => x.ID).FirstOrDefault() : null;
-            var MostRecentSuccess = EmailSuccess.OrderByDescending(x => x.ID).FirstOrDefault();
-
             // Assign variables to the ViewModel
             model.FailedEmails.Table = CreateTable(EmailFailures);
             model.SuccessfulEmails.Table = CreateTable(EmailSuccess);
-            model.LastFailedEmail = MostRecentFailure;
-            model.LastSuccessfulEmail = MostRecentSuccess;
-            if (model.LastFailedEmail != null)
-            {
-                model.LastFailedEmail.PageCount = CountPages(model.LastFailedEmail.ID);
-            }
-            model.LastSuccessfulEmail.PageCount = CountPages(model.LastSuccessfulEmail.ID);
+
             model.ExpiringPages.Table = CreateExpiringPagesTable();
 
             // Return the Index view and pass it the ViewModel

@@ -9,8 +9,6 @@ namespace Escc.Umbraco.UserAccessManager.ViewModel
 {
     public class ExpiryEmailStatsViewModel
     {
-        public ExpiryLogModel LastSuccessfulEmail { get; set; }
-        public ExpiryLogModel LastFailedEmail { get; set; }
         public TableModel SuccessfulEmails { get; set; }
         public TableModel FailedEmails { get; set; }
         public TableModel ExpiringPages { get; set; }
