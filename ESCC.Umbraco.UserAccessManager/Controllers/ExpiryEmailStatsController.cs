@@ -22,7 +22,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
         [AuthorizeRedirect(Roles = SystemRole.WebServices + "," + SystemRole.WebAuthors)]
         public ActionResult Index()
         {
-            // Create the ViewModel and Lists
+            // Instantiate the ViewModel and Lists
             ExpiryEmailStatsViewModel model = new ExpiryEmailStatsViewModel();
             List<ExpiryLogModel> EmailFailures = new List<ExpiryLogModel>();
             List<ExpiryLogModel> EmailSuccess = new List<ExpiryLogModel>();
@@ -56,14 +56,21 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             model.Pages.Table.Columns.Add("Name", typeof(string));
             model.Pages.Table.Columns.Add("Published Link", typeof(HtmlString));
             model.Pages.Table.Columns.Add("Edit Link", typeof(HtmlString));
-            model.Pages.Table.Columns.Add("Expiry Date", typeof(DateTime));
+            model.Pages.Table.Columns.Add("Expiry Date", typeof(string));
 
             //Populate the Datatable
             foreach (var page in Pages)
             {
-                HtmlString PublishedLink = new HtmlString(string.Format("<a href=\"{0}{1}\">{2}</a>", ConfigurationManager.AppSettings["PublishedURI"], page.PageUrl, page.PageUrl));
+                HtmlString PublishedLink = getPublishLink(page);
                 HtmlString EditLink = new HtmlString(string.Format("<a href=\"{0}{1}\">Edit</a>", ConfigurationManager.AppSettings["EditURI"], page.PageId));
-                model.Pages.Table.Rows.Add(page.PageId, page.PageName, PublishedLink, EditLink, page.ExpiryDate);
+                if(page.ExpiryDate == null)
+                {
+                    model.Pages.Table.Rows.Add(page.PageId, page.PageName, PublishedLink, EditLink, "Never Expires");
+                }
+                else
+                {
+                    model.Pages.Table.Rows.Add(page.PageId, page.PageName, PublishedLink, EditLink, page.ExpiryDate.ToString());
+                }
             }
 
             // Return the view model to the GetPages View
@@ -72,6 +79,73 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
         #endregion
 
         #region Helper Methods
+
+        public int CountPages(int ID)
+        {
+            // Find the Log for the User ID
+            var LogEntry = _databaseService.GetExpiryLogByID(ID);
+            // Deserialize the Json pages string.
+            List<UserPageModel> Pages = new JavaScriptSerializer().Deserialize<List<UserPageModel>>(LogEntry.Pages);
+            return Pages.Count;
+        }
+
+        private static HtmlString getPublishLink(UserPageModel page)
+        {
+            HtmlString PublishedLink;
+            if (page.PageUrl == "#")
+            {
+                page.PageUrl = "This page has an expiry date but is not published - This is usually caused by an unpublished parent page.";
+                PublishedLink = new HtmlString(string.Format("{0}", page.PageUrl));
+            }
+            else
+            {
+                PublishedLink = new HtmlString(string.Format("<a href=\"{0}{1}\">{2}</a>", ConfigurationManager.AppSettings["PublishedURI"], page.PageUrl, page.PageUrl));
+            }
+            return PublishedLink;
+        }
+
+        private HtmlString GetAuthorsHtmlString(List<string> authors, int pageID)
+        {
+            var authorString = string.Format("<div class=\"dropdown\"><button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"{0}\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">Authors<span class=\"caret\"></span>  </button>  <ul class=\"dropdown-menu\" aria-labelledby=\"{1}\">", pageID, pageID);
+            foreach (var author in authors)
+            {
+                authorString += string.Format("<li><a href=mailto:\"{0}\">{1}</a></li>", author, author);
+            }
+            authorString += string.Format("</ul></div>");
+
+            HtmlString AuthorsHtmlString = new HtmlString(authorString);
+            return AuthorsHtmlString;
+        }
+
+        private DataTable CreateTable(List<ExpiryLogModel> modelList)
+        {
+
+            List<ExpiryLogModel> EmailLogList = new List<ExpiryLogModel>();
+            foreach (var item in modelList)
+            {
+                var log = _databaseService.GetExpiryLogByID(item.ID);
+
+
+            }
+       
+            //Create a new DataTable
+            DataTable table = new DataTable();
+            table.Columns.Add("ID", typeof(int));
+            table.Columns.Add("Email", typeof(HtmlString));
+            table.Columns.Add("Date", typeof(string));
+            table.Columns.Add("Pages", typeof(HtmlString));
+
+            //Populate the DataTable
+            foreach (var model in modelList)
+            {
+                HtmlString Email = new HtmlString("<a href=mailto:" + model.EmailAddress + ">" + model.EmailAddress + "</a>");
+                var pagesString = this.Url.Action("GetPages", "ExpiryEmailStats", new { ID = model.ID }, this.Request.Url.Scheme);
+                HtmlString Pages = new HtmlString(string.Format("<a href=\"{0}\" class=\"btn btn-info\">Pages</a> <span class=\"badge badge-info\">{1}</span>", pagesString, CountPages(model.ID)));
+                table.Rows.Add(model.ID, Email, model.DateAdded, Pages);
+            }
+            return table;
+        }
+
         private DataTable CreateExpiringPagesTable()
         {
             // Instantiate our lists and get all of the logs from the database
@@ -115,7 +189,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                             if (!ExpiringPage.Authors.Contains(log.EmailAddress))
                             {
                                 ExpiringPage.Authors.Add(log.EmailAddress);
-                            }                       
+                            }
                         }
                     }
                 }
@@ -125,7 +199,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             foreach (var page in ExpiringPages)
             {
                 HtmlString Authors = GetAuthorsHtmlString(page.Authors, page.PageId);
-                HtmlString PublishedLink = new HtmlString(string.Format("<a href=\"{0}{1}\">{2}</a>", ConfigurationManager.AppSettings["PublishedURI"], page.PageUrl, page.PageUrl));
+                HtmlString PublishedLink = getPublishLink(page);
                 HtmlString EditLink = new HtmlString(string.Format("<a href=\"{0}{1}\">Edit</a>", ConfigurationManager.AppSettings["EditURI"], page.PageId));
                 table.Rows.Add(page.PageId, page.PageName, PublishedLink, EditLink, Authors, page.ExpiryDate);
             }
@@ -133,50 +207,6 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             // return the datatable
             return table;
         }
-
-        private HtmlString GetAuthorsHtmlString(List<string> authors, int pageID)
-        {
-            var authorString = string.Format("<div class=\"dropdown\"><button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"{0}\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">Authors<span class=\"caret\"></span>  </button>  <ul class=\"dropdown-menu\" aria-labelledby=\"{1}\">", pageID, pageID);
-            foreach (var author in authors)
-            {
-                authorString += string.Format("<li><a href=mailto:\"{0}\">{1}</a></li>", author, author);
-            }
-            authorString += string.Format("</ul></div>");
-
-            HtmlString AuthorsHtmlString = new HtmlString(authorString);
-            return AuthorsHtmlString;
-        }
-
-        private DataTable CreateTable(List<ExpiryLogModel> modelList)
-        {
-            //Create a new DataTable
-            DataTable table = new DataTable();
-            table.Columns.Add("ID", typeof(int));
-            table.Columns.Add("Email", typeof(HtmlString));
-            table.Columns.Add("Date", typeof(string));
-            table.Columns.Add("Pages", typeof(HtmlString));
-
-            //Populate the DataTable
-            foreach (var model in modelList)
-            {
-                HtmlString Email = new HtmlString("<a href=mailto:" + model.EmailAddress + ">" + model.EmailAddress + "</a>");
-                var pagesString = this.Url.Action("GetPages", "ExpiryEmailStats", new { ID = model.ID }, this.Request.Url.Scheme);
-                HtmlString Pages = new HtmlString(string.Format("<a href=\"{0}\" class=\"btn btn-info\">Pages</a> <span class=\"badge badge-info\">{1}</span>", pagesString, CountPages(model.ID)));
-                table.Rows.Add(model.ID, Email, model.DateAdded, Pages);
-            }
-            return table;
-        }
-
-        public int CountPages(int ID)
-        {
-            // Find the Log for the User ID
-            var LogEntry = _databaseService.GetExpiryLogByID(ID);
-            // Deserialize the Json pages string.
-            List<UserPageModel> Pages = new JavaScriptSerializer().Deserialize<List<UserPageModel>>(LogEntry.Pages);
-            return Pages.Count;
-        }
-
         #endregion
-
     }
 }
