@@ -72,7 +72,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             foreach (var page in Pages)
             {
                 HtmlString PublishedLink = new HtmlString(string.Format("<a href=\"{0}{1}\">{2}</a>", ConfigurationManager.AppSettings["PublishedURI"], page.PageUrl, page.PageUrl));
-                HtmlString EditLink = new HtmlString(string.Format("<a href=\"{0}{1}\">Edit</a>",ConfigurationManager.AppSettings["EditURI"], page.PageId));
+                HtmlString EditLink = new HtmlString(string.Format("<a href=\"{0}{1}\">Edit</a>", ConfigurationManager.AppSettings["EditURI"], page.PageId));
                 model.Pages.Table.Rows.Add(page.PageId, page.PageName, PublishedLink, EditLink, page.ExpiryDate);
             }
 
@@ -96,7 +96,7 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
             table.Columns.Add("Edit Link", typeof(HtmlString));
             table.Columns.Add("Authors", typeof(HtmlString));
             table.Columns.Add("Expiry Date", typeof(DateTime));
- 
+
             // Go through each log
             foreach (var log in ExpiryLogs)
             {
@@ -106,21 +106,28 @@ namespace Escc.Umbraco.UserAccessManager.Controllers
                 foreach (var page in LogPages)
                 {
                     // if its expire date is greater than todays date
-                    //if (page.ExpiryDate >= DateTime.Now)
-                    //{
-                    // if the page isn't already in the expiring pages list
-                    if (!ExpiringPages.Any(x => x.PageId == page.PageId))
+                    if (page.ExpiryDate >= DateTime.Now)
                     {
-                        // add the page to the expiring pages list
-                        page.Authors = new List<string>();
-                        page.Authors.Add(log.EmailAddress);
-                        ExpiringPages.Add(page);
+                        // if the page isn't already in the expiring pages list
+                        if (!ExpiringPages.Any(x => x.PageId == page.PageId))
+                        {
+                            // add the page to the expiring pages list
+                            // Add Author for that page.
+                            page.Authors = new List<string>();
+                            page.Authors.Add(log.EmailAddress);
+                            ExpiringPages.Add(page);
+                        }
+                        else
+                        {
+                            // If the page is already in the table then just add the authors to the page
+                            var ExpiringPage = ExpiringPages.Single(x => x.PageId == page.PageId);
+                            // if the author isn't already added.
+                            if (!ExpiringPage.Authors.Contains(log.EmailAddress))
+                            {
+                                ExpiringPage.Authors.Add(log.EmailAddress);
+                            }                       
+                        }
                     }
-                    else
-                    {
-                        ExpiringPages.Single(x => x.PageId == page.PageId).Authors.Add(log.EmailAddress);
-                    }
-                    //}
                 }
             }
 
