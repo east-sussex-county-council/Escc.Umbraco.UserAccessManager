@@ -67,7 +67,3 @@ Check which users have permissions for a specific page, either by page Url or no
 ### Pages without Author
 
 Search the entire site and list pages that do not have any web authors assigned.
-
-## Page expiry notifications
-
-Web authors are emailed when pages they are responsible for are due to expire in the next few days. Read more about [page expiry notifications](Documentation/PageExpiry.md).

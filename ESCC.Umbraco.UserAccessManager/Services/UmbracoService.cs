@@ -277,23 +277,5 @@ namespace Escc.Umbraco.UserAccessManager.Services
 
             return response.IsSuccessStatusCode;
         }
-
-        public IList<ExpiringPageModel> GetExpiringPages(int noOfDaysFrom)
-        {
-            var response = GetMessage(string.Format("CheckForExpiringNodes?noofdaysfrom={0}", noOfDaysFrom));
-
-            if (!response.IsSuccessStatusCode) return null;
-            var modelList = response.Content.ReadAsAsync<IList<ExpiringPageModel>>().Result;
-            return modelList;
-        }
-
-        public IList<UserPagesModel> GetExpiringPagesByUser(int noOfDaysFrom)
-        {
-            var response = GetMessage(string.Format("CheckForExpiringNodesByUser?noofdaysfrom={0}", noOfDaysFrom));
-
-            if (!response.IsSuccessStatusCode) return null;
-            var modelList = response.Content.ReadAsAsync<IList<UserPagesModel>>().Result;
-            return modelList;
-        }
     }
 }

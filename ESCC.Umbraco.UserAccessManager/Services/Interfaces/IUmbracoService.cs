@@ -43,9 +43,5 @@ namespace Escc.Umbraco.UserAccessManager.Services.Interfaces
         bool ClonePermissions(PermissionsModel model);
 
         PageUsersModel CheckPagePermissions(string url);
-
-        IList<ExpiringPageModel> GetExpiringPages(int noOfDaysFrom);
-
-        IList<UserPagesModel> GetExpiringPagesByUser(int noOfDaysFrom);
     }
 }

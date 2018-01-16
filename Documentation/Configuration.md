@@ -28,22 +28,10 @@ The following configuration options can be set in `web.config` to change the tex
 	    <add key="WebAuthorsYammerUrl" value="https://www.yammer.com/organisation-name/group-for-web-authors" />
 	</appSettings>
 
-You can also control when emails are sent and where to:
+You can also control where emails are sent to:
 
 	<appSettings>
-		<!-- Duplicate setting used in different contexts -->
 	    <add key="EmailTo" value="website-admin@example.org" />
-	    <add key="WebStaffEmail" value="website-admin@example.org" />
-
-		<!-- When to notify web authors and the admin team about pages due to expire, with default values shown -->
-		<add key="NoOfDaysFrom" value="14" />
-		<add key="EmailWebStaffAtDays" value="3" />
-
-		<!-- Unique name for the mutex created when CheckForExpiringNodesByUser is called -->
-		<add key="MutexAppName" value="CheckForExpiringNodesByUser"/>
-
-		<!-- Override to avoid sending emails to web authors during development -->
-		<add key="ForceSendTo" value="developer-override@example.org" />
 	</appSettings>
 
 ## Umbraco user type

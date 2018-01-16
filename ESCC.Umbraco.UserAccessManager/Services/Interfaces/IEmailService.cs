@@ -10,9 +10,5 @@ namespace Escc.Umbraco.UserAccessManager.Services.Interfaces
         void PasswordResetEmail(PasswordResetModel model, string url);
 
         void CreateNewUserEmail(UmbracoUserModel model);
-        
-        void UserPageExpiryEmail(string emailTo, UserPagesModel userPages);
-
-        void UserPageLastWarningEmail(string emailTo, List<UserPageModel> userPages, int emailWebStaffAtDays);
     }
 }

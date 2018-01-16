@@ -223,8 +223,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\ExpiringPagesApiController.cs" />
-    <Compile Include="Controllers\ExpiryEmailStatsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PageAuthorController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
@@ -242,8 +240,6 @@
     <Compile Include="IOC\Installers\UmbracoServiceInstaller.cs" />
     <Compile Include="Models\EditorModel.cs" />
     <Compile Include="Models\ErrorMessageModel.cs" />
-    <Compile Include="Models\ExpiringLogModel.cs" />
-    <Compile Include="Models\ExpiringPageModel.cs" />
     <Compile Include="Models\FindPageModel.cs" />
     <Compile Include="Models\FindUserModel.cs" />
     <Compile Include="Models\PageModel.cs" />
@@ -253,8 +249,6 @@
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\UmbracoUserModel.cs" />
     <Compile Include="IOC\WindsorControllerFactory.cs" />
-    <Compile Include="Models\UserPageModel.cs" />
-    <Compile Include="Models\UserPagesModel.cs" />
     <Compile Include="Models\UserPermissionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Authentication.cs" />
@@ -275,9 +269,6 @@
     <Compile Include="Utility\PostMessageError.cs" />
     <Compile Include="Utility\SystemRole.cs" />
     <Compile Include="ViewModel\ContentTreeViewModel.cs" />
-    <Compile Include="ViewModel\ExpiryEmailStatsViewModel.cs" />
-    <Compile Include="ViewModel\PagesViewModel.cs" />
-    <Compile Include="ViewModel\TableModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -514,7 +505,6 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
-    <None Include="Jobs\CheckForExpiringNodesByUser.ps1" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\customJS.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -664,9 +654,6 @@
     <Content Include="Web.example.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\ExpiryEmailStats\GetPages.cshtml" />
-    <Content Include="Views\ExpiryEmailStats\Index.cshtml" />
-    <Content Include="Views\ExpiryEmailStats\_DataTable.cshtml" />
     <None Include="Views\Web.config" />
     <None Include="Web.config">
       <SubType>Designer</SubType>

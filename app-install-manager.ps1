@@ -74,7 +74,6 @@ if (Test-Path "$transformsFolder\$projectName\web.$websiteName.config") {
 	del "$destinationFolder\$projectName\web.temp1.config"
 }
 copy "$sourceFolder\Views\web.example.config" "$destinationFolder\$projectName\Views\web.config"
-copy "$transformsFolder\$projectName\Jobs\CheckForExpiringNodesByUser.ps1" "$destinationFolder\$projectName\Jobs\CheckForExpiringNodesByUser.ps1"
 
 EnableDotNet40InIIS
 CreateApplicationPool "$projectName-$websiteName"

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escc.Umbraco.UserAccessManager", "ESCC.Umbraco.UserAccessManager\Escc.Umbraco.UserAccessManager.csproj", "{6C04EE92-2296-4F63-951B-32A2C7FBDE7B}"
 EndProject
@@ -16,7 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		app-setup-dev.ps1 = app-setup-dev.ps1
 		LICENSE.md = LICENSE.md
 		README.md = README.md
-		ScheduledJob.ps1 = ScheduledJob.ps1
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Escc.Umbraco.UserAccessManager.SqlServer", "Escc.Umbraco.UserAccessManager.SqlServer\Escc.Umbraco.UserAccessManager.SqlServer.sqlproj", "{C6CBC148-082A-4F3A-AAA4-7CA6DF6815F4}"
@@ -27,7 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		Documentation\content-tree.png = Documentation\content-tree.png
 		Documentation\copy-permissions.png = Documentation\copy-permissions.png
 		Documentation\create-user.png = Documentation\create-user.png
-		Documentation\PageExpiry.md = Documentation\PageExpiry.md
 		Documentation\tools-menu.png = Documentation\tools-menu.png
 		Documentation\user-access-manager.png = Documentation\user-access-manager.png
 		Documentation\user-details.png = Documentation\user-details.png
@@ -60,5 +58,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{64F19FBB-066F-432C-A5C8-C3E561CD169B} = {5787B5E5-8692-4418-9983-02959AA26137}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD7B5982-3A16-44FA-B6F2-95C1D10FC6D5}
 	EndGlobalSection
 EndGlobal
